@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\LmsApplication.Api.AuthService.props" />
+</Project>

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "jfdZLK3XE6otnw2n3LX1Zi7ct5TnhuDoQhEYvdk2bkQ=",
+  "Source": "LmsApplication.Api.Gateway",
+  "BasePath": "_content/LmsApplication.Api.Gateway",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

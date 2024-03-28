@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "hP2SuQarz0WXn27IkmcSNSPx0ZQHaZmXTmCrqgHti4M=",
+  "Source": "LmsApplication.Api.AuthService",
+  "BasePath": "_content/LmsApplication.Api.AuthService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,12 @@
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\bin\Debug\net8.0\LmsApplication.ServiceDefaults.deps.json
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\bin\Debug\net8.0\LmsApplication.ServiceDefaults.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\bin\Debug\net8.0\LmsApplication.ServiceDefaults.pdb
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.csproj.AssemblyReference.cache
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.AssemblyInfoInputs.cache
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.AssemblyInfo.cs
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.csproj.CoreCompileInputs.cache
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\refint\LmsApplication.ServiceDefaults.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.pdb
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\ref\LmsApplication.ServiceDefaults.dll

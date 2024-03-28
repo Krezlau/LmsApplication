@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\LmsApplication.Api.Gateway.props" />
+</Project>
