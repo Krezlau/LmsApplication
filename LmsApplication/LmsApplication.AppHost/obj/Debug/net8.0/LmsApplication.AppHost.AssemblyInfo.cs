@@ -11,18 +11,18 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyMetadata("dcpclipath", "C:\\Program Files\\dotnet\\packs\\Aspire.Hosting.Orchestration.win-x64\\8.0.0-preview." +
-    "4.24156.9\\tools\\dcp.exe")]
+    "5.24201.12\\tools\\dcp.exe")]
 [assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", "C:\\Program Files\\dotnet\\packs\\Aspire.Hosting.Orchestration.win-x64\\8.0.0-preview." +
-    "4.24156.9\\tools\\ext\\")]
+    "5.24201.12\\tools\\ext\\")]
 [assembly: System.Reflection.AssemblyMetadata("dcpbinpath", "C:\\Program Files\\dotnet\\packs\\Aspire.Hosting.Orchestration.win-x64\\8.0.0-preview." +
-    "4.24156.9\\tools\\ext\\bin\\")]
-[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost")]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", "C:\\Program Files\\dotnet\\packs\\Aspire.Dashboard.Sdk.win-x64\\8.0.0-preview.4.24156." +
-    "9\\tools\\Aspire.Dashboard.exe")]
+    "5.24201.12\\tools\\ext\\bin\\")]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost")]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", "C:\\Program Files\\dotnet\\packs\\Aspire.Dashboard.Sdk.win-x64\\8.0.0-preview.5.24201." +
+    "12\\tools\\Aspire.Dashboard.exe")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("LmsApplication.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a82fbb9ba9a000ae3a7cb1b4d3e8134011817859")]
 [assembly: System.Reflection.AssemblyProductAttribute("LmsApplication.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LmsApplication.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

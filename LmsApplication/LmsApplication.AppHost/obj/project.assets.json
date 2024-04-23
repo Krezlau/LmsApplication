@@ -2,12 +2,13 @@
   "version": 3,
   "targets": {
     "net8.0": {
-      "Aspire.Hosting/8.0.0-preview.4.24156.9": {
+      "Aspire.Hosting/8.0.0-preview.5.24201.12": {
         "type": "package",
         "dependencies": {
           "Grpc.AspNetCore": "2.60.0",
           "KubernetesClient": "13.0.11",
-          "Microsoft.Extensions.Hosting": "8.0.0"
+          "Microsoft.Extensions.Hosting": "8.0.0",
+          "Polly": "8.3.0"
         },
         "compile": {
           "lib/net8.0/Aspire.Hosting.dll": {
@@ -59,14 +60,30 @@
           "lib/net8.0/zh-Hant/Aspire.Hosting.resources.dll": {
             "locale": "zh-Hant"
           }
+        }
+      },
+      "Aspire.Hosting.AppHost/8.0.0-preview.5.24201.12": {
+        "type": "package",
+        "dependencies": {
+          "Aspire.Hosting": "8.0.0-preview.5.24201.12"
+        },
+        "compile": {
+          "lib/net8.0/Aspire.Hosting.AppHost.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Aspire.Hosting.AppHost.dll": {
+            "related": ".xml"
+          }
         },
         "build": {
-          "buildTransitive/Aspire.Hosting.props": {},
-          "buildTransitive/Aspire.Hosting.targets": {}
+          "buildTransitive/Aspire.Hosting.AppHost.props": {},
+          "buildTransitive/Aspire.Hosting.AppHost.targets": {}
         },
         "buildMultiTargeting": {
-          "buildMultiTargeting/Aspire.Hosting.props": {},
-          "buildMultiTargeting/Aspire.Hosting.targets": {}
+          "buildMultiTargeting/Aspire.Hosting.AppHost.props": {},
+          "buildMultiTargeting/Aspire.Hosting.AppHost.targets": {}
         }
       },
       "Fractions/7.3.0": {
@@ -950,6 +967,35 @@
           "buildMultiTargeting/_._": {}
         }
       },
+      "Polly/8.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Polly.Core": "8.3.0"
+        },
+        "compile": {
+          "lib/net6.0/Polly.dll": {
+            "related": ".pdb"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Polly.dll": {
+            "related": ".pdb"
+          }
+        }
+      },
+      "Polly.Core/8.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Polly.Core.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Polly.Core.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "prometheus-net/8.2.1": {
         "type": "package",
         "dependencies": {
@@ -1083,23 +1129,17 @@
     }
   },
   "libraries": {
-    "Aspire.Hosting/8.0.0-preview.4.24156.9": {
-      "sha512": "YFgiU37EFePQ5KXPQOLd/oct2SoLXdUOikCFu8s7JvJFgF0eD5fjuGpxg07bdggy1UgotpIsZ8GF4gOBRX5rNA==",
+    "Aspire.Hosting/8.0.0-preview.5.24201.12": {
+      "sha512": "U/nwszBrPxYQq941ajsYiXHwqIyLqvLzsDWjhrx3rrvZC9+iUrIOnsBmwmJHoFFYpVlKYOSNhaLb/gWa1VV0Xg==",
       "type": "package",
-      "path": "aspire.hosting/8.0.0-preview.4.24156.9",
+      "path": "aspire.hosting/8.0.0-preview.5.24201.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "THIRD-PARTY-NOTICES.TXT",
-        "aspire.hosting.8.0.0-preview.4.24156.9.nupkg.sha512",
+        "aspire.hosting.8.0.0-preview.5.24201.12.nupkg.sha512",
         "aspire.hosting.nuspec",
-        "build/Aspire.Hosting.props",
-        "build/Aspire.Hosting.targets",
-        "buildMultiTargeting/Aspire.Hosting.props",
-        "buildMultiTargeting/Aspire.Hosting.targets",
-        "buildTransitive/Aspire.Hosting.props",
-        "buildTransitive/Aspire.Hosting.targets",
         "lib/net8.0/Aspire.Hosting.dll",
         "lib/net8.0/Aspire.Hosting.xml",
         "lib/net8.0/cs/Aspire.Hosting.resources.dll",
@@ -1115,6 +1155,27 @@
         "lib/net8.0/tr/Aspire.Hosting.resources.dll",
         "lib/net8.0/zh-Hans/Aspire.Hosting.resources.dll",
         "lib/net8.0/zh-Hant/Aspire.Hosting.resources.dll"
+      ]
+    },
+    "Aspire.Hosting.AppHost/8.0.0-preview.5.24201.12": {
+      "sha512": "U4dzC+mzawxIckK9TRuvrpYy0FyFU8EMpIWB2IqiM4FhZNBT+hGaD87MyotRqjaSCV1hMv18acMNaQVkC4owGw==",
+      "type": "package",
+      "path": "aspire.hosting.apphost/8.0.0-preview.5.24201.12",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "aspire.hosting.apphost.8.0.0-preview.5.24201.12.nupkg.sha512",
+        "aspire.hosting.apphost.nuspec",
+        "build/Aspire.Hosting.AppHost.props",
+        "build/Aspire.Hosting.AppHost.targets",
+        "buildMultiTargeting/Aspire.Hosting.AppHost.props",
+        "buildMultiTargeting/Aspire.Hosting.AppHost.targets",
+        "buildTransitive/Aspire.Hosting.AppHost.props",
+        "buildTransitive/Aspire.Hosting.AppHost.targets",
+        "lib/net8.0/Aspire.Hosting.AppHost.dll",
+        "lib/net8.0/Aspire.Hosting.AppHost.xml"
       ]
     },
     "Fractions/7.3.0": {
@@ -2501,6 +2562,55 @@
         "tools/net9.0/slngen.runtimeconfig.json"
       ]
     },
+    "Polly/8.3.0": {
+      "sha512": "vqAQmLO1gZcS8Ox9Ky+hrq0HxYrYVSBS1vzv6o6RZH3vvECutngIxkUHw9YijbG0QrycxvHo0Hbx0/D7MGgdow==",
+      "type": "package",
+      "path": "polly/8.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net462/Polly.dll",
+        "lib/net462/Polly.pdb",
+        "lib/net472/Polly.dll",
+        "lib/net472/Polly.pdb",
+        "lib/net6.0/Polly.dll",
+        "lib/net6.0/Polly.pdb",
+        "lib/netstandard2.0/Polly.dll",
+        "lib/netstandard2.0/Polly.pdb",
+        "package-icon.png",
+        "package-readme.md",
+        "polly.8.3.0.nupkg.sha512",
+        "polly.nuspec"
+      ]
+    },
+    "Polly.Core/8.3.0": {
+      "sha512": "A3r4xkWasffyrIJGjA3jWQi86ZGcR9BEbpIIoP9xYRAKYwiaGbKpqpsHdWv5sCeLZdaWpVs7pc4EM8Tei+LluA==",
+      "type": "package",
+      "path": "polly.core/8.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net462/Polly.Core.dll",
+        "lib/net462/Polly.Core.pdb",
+        "lib/net462/Polly.Core.xml",
+        "lib/net472/Polly.Core.dll",
+        "lib/net472/Polly.Core.pdb",
+        "lib/net472/Polly.Core.xml",
+        "lib/net6.0/Polly.Core.dll",
+        "lib/net6.0/Polly.Core.pdb",
+        "lib/net6.0/Polly.Core.xml",
+        "lib/net8.0/Polly.Core.dll",
+        "lib/net8.0/Polly.Core.pdb",
+        "lib/net8.0/Polly.Core.xml",
+        "lib/netstandard2.0/Polly.Core.dll",
+        "lib/netstandard2.0/Polly.Core.pdb",
+        "lib/netstandard2.0/Polly.Core.xml",
+        "package-icon.png",
+        "package-readme.md",
+        "polly.core.8.3.0.nupkg.sha512",
+        "polly.core.nuspec"
+      ]
+    },
     "prometheus-net/8.2.1": {
       "sha512": "3wVgdEPOCBF752s2xps5T+VH+c9mJK8S8GKEDg49084P6JZMumTZI5Te6aJ9MQpX0sx7om6JOnBpIi7ZBmmiDQ==",
       "type": "package",
@@ -2749,35 +2859,29 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Aspire.Hosting >= 8.0.0-preview.4.24156.9"
+      "Aspire.Hosting >= 8.0.0-preview.5.24201.12",
+      "Aspire.Hosting.AppHost >= 8.0.0-preview.5.24201.12"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\janus\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Krzycho\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj",
+      "projectUniqueName": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj",
       "projectName": "LmsApplication.AppHost",
-      "projectPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj",
-      "packagesPath": "C:\\Users\\janus\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\obj\\",
+      "projectPath": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj",
+      "packagesPath": "C:\\Users\\Krzycho\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\janus\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Krzycho\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
@@ -2799,7 +2903,11 @@
         "dependencies": {
           "Aspire.Hosting": {
             "target": "Package",
-            "version": "[8.0.0-preview.4.24156.9, )"
+            "version": "[8.0.0-preview.5.24201.12, )"
+          },
+          "Aspire.Hosting.AppHost": {
+            "target": "Package",
+            "version": "[8.0.0-preview.5.24201.12, )"
           }
         },
         "imports": [
@@ -2818,7 +2926,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.103/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.104/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LmsApplication.AppHost
-build_property.ProjectDir = C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\
+build_property.ProjectDir = C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

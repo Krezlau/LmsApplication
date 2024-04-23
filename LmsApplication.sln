@@ -4,11 +4,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.AppHost", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.ServiceDefaults", "LmsApplication\LmsApplication.ServiceDefaults\LmsApplication.ServiceDefaults.csproj", "{12C4CD5B-F641-4E24-B3C5-AB18EC7AF1C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Web", "LmsApplication\LmsApplication.Web\LmsApplication.Web.csproj", "{376BEA92-1DFD-494C-BCE6-751E90BEA91E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Api.AuthService", "LmsApplication\LmsApplication.Api.AuthService\LmsApplication.Api.AuthService.csproj", "{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Api.AuthService", "LmsApplication.Api.AuthService\LmsApplication.Api.AuthService.csproj", "{1D3CF691-A583-420B-B09C-4731061B6997}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Api.Gateway", "LmsApplication.Api.Gateway\LmsApplication.Api.Gateway.csproj", "{ACAD3645-8C6B-4473-AC1E-78A4A4F0C1B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Api.Gateway", "LmsApplication\LmsApplication.Api.Gateway\LmsApplication.Api.Gateway.csproj", "{244BC532-883F-4DBC-AB5A-C2DF88A729D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,17 +22,13 @@ Global
 		{12C4CD5B-F641-4E24-B3C5-AB18EC7AF1C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12C4CD5B-F641-4E24-B3C5-AB18EC7AF1C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12C4CD5B-F641-4E24-B3C5-AB18EC7AF1C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{376BEA92-1DFD-494C-BCE6-751E90BEA91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{376BEA92-1DFD-494C-BCE6-751E90BEA91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{376BEA92-1DFD-494C-BCE6-751E90BEA91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{376BEA92-1DFD-494C-BCE6-751E90BEA91E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1D3CF691-A583-420B-B09C-4731061B6997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D3CF691-A583-420B-B09C-4731061B6997}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D3CF691-A583-420B-B09C-4731061B6997}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D3CF691-A583-420B-B09C-4731061B6997}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ACAD3645-8C6B-4473-AC1E-78A4A4F0C1B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ACAD3645-8C6B-4473-AC1E-78A4A4F0C1B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ACAD3645-8C6B-4473-AC1E-78A4A4F0C1B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ACAD3645-8C6B-4473-AC1E-78A4A4F0C1B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{244BC532-883F-4DBC-AB5A-C2DF88A729D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{244BC532-883F-4DBC-AB5A-C2DF88A729D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{244BC532-883F-4DBC-AB5A-C2DF88A729D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{244BC532-883F-4DBC-AB5A-C2DF88A729D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
