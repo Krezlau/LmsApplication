@@ -1,0 +1,13 @@
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\bin\Debug\net8.0\LmsApplication.Resources.deps.json
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\bin\Debug\net8.0\LmsApplication.Resources.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\bin\Debug\net8.0\LmsApplication.Resources.pdb
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\LmsApplication.Resources.csproj.AssemblyReference.cache
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\LmsApplication.Resources.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\LmsApplication.Resources.AssemblyInfoInputs.cache
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\LmsApplication.Resources.AssemblyInfo.cs
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\LmsApplication.Resources.csproj.CoreCompileInputs.cache
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\LmsApplication.Resources.sourcelink.json
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\LmsApplication.Resources.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\refint\LmsApplication.Resources.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\LmsApplication.Resources.pdb
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.Resources\obj\Debug\net8.0\ref\LmsApplication.Resources.dll
