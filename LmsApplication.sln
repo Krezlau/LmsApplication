@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Api.Gateway"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Resources", "LmsApplication\LmsApplication.Resources\LmsApplication.Resources.csproj", "{1DB0AEC7-2984-4543-8013-8FF6BC310FAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Data", "LmsApplication\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj", "{9E1D5341-2978-48E3-8ECE-182EA75EDECC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Services", "LmsApplication\LmsApplication.Core.Services\LmsApplication.Core.Services.csproj", "{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{1DB0AEC7-2984-4543-8013-8FF6BC310FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DB0AEC7-2984-4543-8013-8FF6BC310FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DB0AEC7-2984-4543-8013-8FF6BC310FAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E1D5341-2978-48E3-8ECE-182EA75EDECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E1D5341-2978-48E3-8ECE-182EA75EDECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E1D5341-2978-48E3-8ECE-182EA75EDECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E1D5341-2978-48E3-8ECE-182EA75EDECC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
