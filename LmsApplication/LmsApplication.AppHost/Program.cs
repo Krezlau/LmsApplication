@@ -11,6 +11,7 @@ var apiGateway = builder.AddProject<LmsApplication_Api_Gateway>("apiGateway")
 builder.AddYarp("yarp")
     .WithEndpoint(8080, scheme: "http")
     .WithReference(authService)
+    // .Route("u", target: authService, path: "/api/auth/weatherforecast");
     .LoadFromConfiguration("ReverseProxy");
 
 builder.Build().Run();

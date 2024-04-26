@@ -169,7 +169,7 @@ internal class YarpResourceLifecyclehook(
             return;
         }
 
-        var builder = WebApplication.CreateSlimBuilder();
+        var builder = WebApplication.CreateBuilder();
 
         builder.Logging.ClearProviders();
 
@@ -219,6 +219,9 @@ internal class YarpResourceLifecyclehook(
         }
 
         proxyBuilder.AddServiceDiscoveryDestinationResolver();
+        
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         _app = builder.Build();
         

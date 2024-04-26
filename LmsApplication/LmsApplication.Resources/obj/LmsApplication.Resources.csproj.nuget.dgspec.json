@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj": {}
+    "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj": {}
   },
   "projects": {
-    "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj": {
+    "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj",
+        "projectUniqueName": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj",
         "projectName": "LmsApplication.Resources",
-        "projectPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj",
-        "packagesPath": "C:\\Users\\janus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\obj\\",
+        "projectPath": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj",
+        "packagesPath": "C:\\Users\\Krzycho\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\janus\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Krzycho\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -52,6 +46,18 @@
             "Microsoft.Extensions.ServiceDiscovery.Yarp": {
               "target": "Package",
               "version": "[8.0.0-preview.5.24201.12, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerGen": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUI": {
+              "target": "Package",
+              "version": "[6.5.0, )"
             }
           },
           "imports": [
