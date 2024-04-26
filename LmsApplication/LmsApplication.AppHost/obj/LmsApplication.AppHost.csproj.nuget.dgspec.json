@@ -1,25 +1,105 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj": {}
+    "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj": {
+    "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj",
+        "projectUniqueName": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj",
         "projectName": "LmsApplication.AppHost",
-        "projectPath": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj",
-        "packagesPath": "C:\\Users\\Krzycho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\obj\\",
+        "projectPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\LmsApplication.AppHost.csproj",
+        "packagesPath": "C:\\Users\\janus\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.AppHost\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Krzycho\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\janus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj": {
+                "projectPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Aspire.Hosting": {
+              "target": "Package",
+              "version": "[8.0.0-preview.5.24201.12, )"
+            },
+            "Aspire.Hosting.AppHost": {
+              "target": "Package",
+              "version": "[8.0.0-preview.5.24201.12, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.104/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj",
+        "projectName": "LmsApplication.Resources",
+        "projectPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\LmsApplication.Resources.csproj",
+        "packagesPath": "C:\\Users\\janus\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Resources\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\janus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -43,7 +123,7 @@
               "target": "Package",
               "version": "[8.0.0-preview.5.24201.12, )"
             },
-            "Aspire.Hosting.AppHost": {
+            "Microsoft.Extensions.ServiceDiscovery.Yarp": {
               "target": "Package",
               "version": "[8.0.0-preview.5.24201.12, )"
             }

@@ -460,24 +460,31 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Krzycho\\.nuget\\packages\\": {}
+    "C:\\Users\\janus\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Api.AuthService\\LmsApplication.Api.AuthService.csproj",
+      "projectUniqueName": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Api.AuthService\\LmsApplication.Api.AuthService.csproj",
       "projectName": "LmsApplication.Api.AuthService",
-      "projectPath": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Api.AuthService\\LmsApplication.Api.AuthService.csproj",
-      "packagesPath": "C:\\Users\\Krzycho\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Krzycho\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Api.AuthService\\obj\\",
+      "projectPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Api.AuthService\\LmsApplication.Api.AuthService.csproj",
+      "packagesPath": "C:\\Users\\janus\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\janus\\Documents\\LmsApplication\\LmsApplication\\LmsApplication.Api.AuthService\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Krzycho\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\janus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },

@@ -40,7 +40,6 @@ C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\ob
 C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\obj\Debug\net8.0\LmsApplication.AppHost.AssemblyInfoInputs.cache
 C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\obj\Debug\net8.0\LmsApplication.AppHost.AssemblyInfo.cs
 C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\obj\Debug\net8.0\LmsApplication.AppHost.csproj.CoreCompileInputs.cache
-C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\obj\Debug\net8.0\Aspire\references\LmsApplication_Web.ProjectMetadata.g.cs
 C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\obj\Debug\net8.0\Aspire\references\_AppHost.ProjectMetadata.g.cs
 C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\obj\Debug\net8.0\LmsApplication.AppHost.csproj.CopyComplete
 C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\obj\Debug\net8.0\LmsApplication.AppHost.dll
@@ -105,3 +104,19 @@ C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\
 C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Aspire.Hosting.AppHost.dll
 C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Polly.dll
 C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Polly.Core.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Aspire.Hosting.AppHost.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Polly.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Polly.Core.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\obj\Debug\net8.0\LmsApplication.AppHost.sourcelink.json
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Microsoft.Extensions.Features.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Microsoft.Extensions.ServiceDiscovery.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Microsoft.Extensions.ServiceDiscovery.Abstractions.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Microsoft.Extensions.ServiceDiscovery.Yarp.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\System.IO.Hashing.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\Yarp.ReverseProxy.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\LmsApplication.Resources.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.AppHost\bin\Debug\net8.0\LmsApplication.Resources.pdb

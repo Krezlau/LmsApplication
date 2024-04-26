@@ -23,3 +23,4 @@ C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceD
 C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\refint\LmsApplication.ServiceDefaults.dll
 C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.pdb
 C:\Users\Krzycho\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\ref\LmsApplication.ServiceDefaults.dll
+C:\Users\janus\Documents\LmsApplication\LmsApplication\LmsApplication.ServiceDefaults\obj\Debug\net8.0\LmsApplication.ServiceDefaults.sourcelink.json

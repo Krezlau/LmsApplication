@@ -11,6 +11,7 @@
     <ItemGroup>
       <ProjectReference Include="..\LmsApplication.Api.AuthService\LmsApplication.Api.AuthService.csproj" />
       <ProjectReference Include="..\LmsApplication.Api.Gateway\LmsApplication.Api.Gateway.csproj" />
+      <ProjectReference Include="..\LmsApplication.Resources\LmsApplication.Resources.csproj" IsAspireProjectResource="false"/>
     </ItemGroup>
 
     <ItemGroup>
