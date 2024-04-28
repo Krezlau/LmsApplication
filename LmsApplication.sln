@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.ServiceDefau
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Api.AuthService", "LmsApplication\LmsApplication.Api.AuthService\LmsApplication.Api.AuthService.csproj", "{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Api.Gateway", "LmsApplication\LmsApplication.Api.Gateway\LmsApplication.Api.Gateway.csproj", "{244BC532-883F-4DBC-AB5A-C2DF88A729D8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Resources", "LmsApplication\LmsApplication.Resources\LmsApplication.Resources.csproj", "{1DB0AEC7-2984-4543-8013-8FF6BC310FAB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Data", "LmsApplication\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj", "{9E1D5341-2978-48E3-8ECE-182EA75EDECC}"
@@ -32,10 +30,6 @@ Global
 		{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14A98D7-7B1A-4CCE-87ED-491ECE6669CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{244BC532-883F-4DBC-AB5A-C2DF88A729D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{244BC532-883F-4DBC-AB5A-C2DF88A729D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{244BC532-883F-4DBC-AB5A-C2DF88A729D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{244BC532-883F-4DBC-AB5A-C2DF88A729D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1DB0AEC7-2984-4543-8013-8FF6BC310FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1DB0AEC7-2984-4543-8013-8FF6BC310FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DB0AEC7-2984-4543-8013-8FF6BC310FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
