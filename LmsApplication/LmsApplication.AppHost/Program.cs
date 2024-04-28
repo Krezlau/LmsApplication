@@ -13,8 +13,10 @@ var authService = builder.AddProject<LmsApplication_Api_AuthService>("authServic
 foreach (var tenant in builder.Configuration.GetSection("Tenants").GetChildren())
 {
     var db = builder.AddAzureCosmosDB($"db{tenant.Value}")
-        .AddDatabase("Auth")
-        .RunAsEmulator(); // local development
+        .AddDatabase("auth")
+        .RunAsEmulator(container =>
+        {
+        }); // local development
     authService = authService.WithReference(db);
 }
 
