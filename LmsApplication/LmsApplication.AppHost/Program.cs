@@ -11,6 +11,9 @@ var appconfig = builder.AddConnectionString("AppConfig");
 var authService = builder.AddProject<LmsApplication_Api_AuthService>("authService")
     .WithReference(appconfig);
 
+var dbInitializer = builder.AddProject<LmsApplication_Core_DbInitializer>("dbInitializer")
+    .WithReference(appconfig);
+
 // Create database for each tenant and reference it to the services
 List<IResourceBuilder<IResourceWithConnectionString>> dbs = new();
 foreach (var tenant in builder.Configuration.GetSection("Tenants").GetChildren())
@@ -20,7 +23,9 @@ foreach (var tenant in builder.Configuration.GetSection("Tenants").GetChildren()
         : builder.AddConnectionString($"db{tenant.Value}");
     
     dbs.Add(db);
+    
     authService.WithReference(db);
+    dbInitializer.WithReference(db);
 }
 
 // Add YARP reverse proxy

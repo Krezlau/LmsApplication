@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Data", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Services", "LmsApplication\LmsApplication.Core.Services\LmsApplication.Core.Services.csproj", "{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.DbInitializer", "LmsApplication\LmsApplication.Core.DbInitializer\LmsApplication.Core.DbInitializer.csproj", "{C814DB44-7097-416A-ACE8-B2727CE3C020}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA26B2E0-5671-44A6-9E3F-8619F8562BAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C814DB44-7097-416A-ACE8-B2727CE3C020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C814DB44-7097-416A-ACE8-B2727CE3C020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C814DB44-7097-416A-ACE8-B2727CE3C020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C814DB44-7097-416A-ACE8-B2727CE3C020}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
