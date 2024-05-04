@@ -4,6 +4,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using User = LmsApplication.Core.Data.Entities.User;
 
 namespace LmsApplication.Core.Data;
 
@@ -27,7 +28,7 @@ public static class ServiceCollectionExtensions
             using (var cosmosClient = new CosmosClient(connectionString))
             {
                 var database = cosmosClient.CreateDatabaseIfNotExistsAsync("auth").Result;
-                database.Database.CreateContainerIfNotExistsAsync("Users", "/PartitionKey", 400).Wait();
+                database.Database.CreateContainerIfNotExistsAsync("Users", $"/{nameof(User.PartitionKey)}", 400).Wait();
             }
         }
     }
