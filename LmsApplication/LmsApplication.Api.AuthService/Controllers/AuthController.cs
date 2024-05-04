@@ -1,4 +1,3 @@
-using System.Net;
 using LmsApplication.Core.Data.Database;
 using LmsApplication.Core.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
