@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LmsApplication.Api.AuthService\LmsApplication.Api.AuthService.csproj" />
+      <ProjectReference Include="..\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj" />
       <ProjectReference Include="..\LmsApplication.Core.DbInitializer\LmsApplication.Core.DbInitializer.csproj" />
       <ProjectReference Include="..\LmsApplication.Resources\LmsApplication.Resources.csproj" IsAspireProjectResource="false"/>
     </ItemGroup>
@@ -19,6 +20,7 @@
         <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.0-preview.6.24214.1" />
         <PackageReference Include="Aspire.Hosting.Azure.AppConfiguration" Version="8.0.0-preview.6.24214.1" />
         <PackageReference Include="Aspire.Hosting.Azure.CosmosDB" Version="8.0.0-preview.6.24214.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="7.2.0" />
     </ItemGroup>
 
 </Project>

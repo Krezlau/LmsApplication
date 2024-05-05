@@ -1,3 +1,4 @@
+using LmsApplication.Core.Data.ConfigModels;
 using LmsApplication.Core.Data.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.Cosmos;
@@ -18,13 +19,13 @@ public static class ServiceCollectionExtensions
     
     public static void CreateContainers(this HostApplicationBuilder builder)
     {
-        var tenants = builder.Configuration.GetSection("Tenants").GetChildren();
+        var tenants = builder.Configuration.GetSection(TenantsModel.Key).Get<TenantsModel>();
         Console.WriteLine("Creating containers...");
         
-        foreach (var tenant in tenants)
+        foreach (var tenant in tenants!.Tenants)
         {
-            Console.WriteLine(tenant.Value);
-            var connectionString = builder.Configuration.GetConnectionString($"db{tenant.Value}");
+            Console.WriteLine(tenant);
+            var connectionString = builder.Configuration.GetConnectionString($"db{tenant}");
             using (var cosmosClient = new CosmosClient(connectionString))
             {
                 var database = cosmosClient.CreateDatabaseIfNotExistsAsync("auth").Result;
