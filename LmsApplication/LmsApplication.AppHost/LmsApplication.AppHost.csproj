@@ -10,8 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LmsApplication.Api.AuthService\LmsApplication.Api.AuthService.csproj" />
-      <ProjectReference Include="..\LmsApplication.Core.Config\LmsApplication.Core.Config.csproj" />
-      <ProjectReference Include="..\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj" />
+      <ProjectReference Include="..\LmsApplication.Core.Config\LmsApplication.Core.Config.csproj" IsAspireProjectResource="false"/>
       <ProjectReference Include="..\LmsApplication.Core.DbInitializer\LmsApplication.Core.DbInitializer.csproj" />
       <ProjectReference Include="..\LmsApplication.Resources\LmsApplication.Resources.csproj" IsAspireProjectResource="false"/>
     </ItemGroup>
