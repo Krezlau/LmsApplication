@@ -1,13 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace LmsApplication.Core.Data.Entities;
 
-public class User : IAuditable
+public class User : IdentityUser, IAuditable
 {
-    [Key]
-    public Guid Id { get; set; }
-
     public Audit Audit { get; set; } = new();
     
-    public string PartitionKey { get => $"{Id.ToString()}"; set { } }
+    public string PartitionKey { get => $"{Id}"; set { } }
 }

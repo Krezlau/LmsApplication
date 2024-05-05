@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LmsApplication.Core.Data.Configuration;
 
-public class UsersConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
@@ -12,6 +12,9 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
         builder.HasPartitionKey(x => x.PartitionKey);
         builder.HasNoDiscriminator();
         
-        builder.Property(x => x.Id).ToJsonProperty("id");
+        builder.Property(x => x.Id)
+            .ToJsonProperty("id");
+        builder.Property(d => d.ConcurrencyStamp)
+            .IsETagConcurrency();
     }
 }

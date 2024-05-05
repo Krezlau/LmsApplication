@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LmsApplication.Core.ApplicationServices\LmsApplication.Core.ApplicationServices.csproj" />
       <ProjectReference Include="..\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj" />
       <ProjectReference Include="..\LmsApplication.Core.Services\LmsApplication.Core.Services.csproj" />
     </ItemGroup>

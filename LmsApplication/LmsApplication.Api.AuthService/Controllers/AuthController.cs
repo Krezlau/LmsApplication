@@ -1,7 +1,7 @@
-using LmsApplication.Core.Data.Database;
-using LmsApplication.Core.Data.Entities;
+using LmsApplication.Core.ApplicationServices.Auth;
+using LmsApplication.Core.Data.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LmsApplication.Api.AuthService.Controllers;
 
@@ -9,18 +9,17 @@ namespace LmsApplication.Api.AuthService.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly AuthDbContext _authDbContext;
+    private readonly IAuthAppService _authAppService;
 
-    public AuthController(AuthDbContext authDbContext)
+    public AuthController(IAuthAppService authAppService)
     {
-        _authDbContext = authDbContext;
+        _authAppService = authAppService;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    [Authorize]
+    public async Task<string> LoginUserAsync([FromBody] LoginRequestDto model)
     {
-        _authDbContext.Users.Add(new User());
-        await _authDbContext.SaveChangesAsync();
-        return Ok(await _authDbContext.Users.ToListAsync());
+        return await _authAppService.LoginUserAsync(model);
     }
 }
