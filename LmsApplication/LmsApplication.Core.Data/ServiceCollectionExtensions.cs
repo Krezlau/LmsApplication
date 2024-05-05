@@ -1,5 +1,6 @@
-using LmsApplication.Core.Data.ConfigModels;
+using LmsApplication.Core.Config.ConfigModels;
 using LmsApplication.Core.Data.Database;
+using LmsApplication.Core.Data.Tenants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,8 @@ public static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder AddAuthDatabase(this WebApplicationBuilder builder)
     {
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<ITenantProviderService, TenantProviderService>();
         builder.Services.AddDbContext<AuthDbContext>();
         return builder;
     }

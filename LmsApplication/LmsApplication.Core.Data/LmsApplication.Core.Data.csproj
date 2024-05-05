@@ -12,6 +12,7 @@
       <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.39.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="8.0.4" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="7.2.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LmsApplication.Core.Services\LmsApplication.Core.Services.csproj" />
+      <ProjectReference Include="..\LmsApplication.Core.Config\LmsApplication.Core.Config.csproj" />
     </ItemGroup>
 
 </Project>

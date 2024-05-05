@@ -1,4 +1,4 @@
-using LmsApplication.AppHost;
+using LmsApplication.Core.Config.ConfigModels;
 using LmsApplication.Resources.Yarp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;

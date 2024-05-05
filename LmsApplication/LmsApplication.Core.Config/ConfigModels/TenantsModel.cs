@@ -1,4 +1,4 @@
-namespace LmsApplication.Core.Data.ConfigModels;
+namespace LmsApplication.Core.Config.ConfigModels;
 
 public class TenantsModel
 {

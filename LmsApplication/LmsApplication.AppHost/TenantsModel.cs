@@ -1,6 +1,5 @@
-namespace LmsApplication.AppHost;
+namespace LmsApplication.Core.Config.ConfigModels;
 
-// not the best 
 public class TenantsModel
 {
     public static string Key = "App:Tenants";
