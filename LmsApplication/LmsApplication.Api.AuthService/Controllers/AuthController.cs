@@ -1,5 +1,4 @@
 using LmsApplication.Core.ApplicationServices.Auth;
-using LmsApplication.Core.Data.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,8 +17,8 @@ public class AuthController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public async Task<string> LoginUserAsync([FromBody] LoginRequestDto model)
+    public async Task<IActionResult> LoginUserAsync()
     {
-        return await _authAppService.LoginUserAsync(model);
+        return Ok();
     }
 }
