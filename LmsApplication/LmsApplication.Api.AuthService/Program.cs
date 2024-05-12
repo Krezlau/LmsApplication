@@ -1,4 +1,5 @@
-using LmsApplication.Api.AuthService.Infrastructure.AuthRequirements;
+using Finbuckle.MultiTenant;
+using LmsApplication.Api.AuthService.Infrastructure.Auth;
 using LmsApplication.Core.ApplicationServices;
 using LmsApplication.Core.Config;
 using LmsApplication.Core.Config.Swagger;
@@ -6,6 +7,7 @@ using LmsApplication.Core.Data;
 using LmsApplication.Core.Data.Database;
 using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.OpenApi.Models;
@@ -61,18 +63,31 @@ builder.Services.AddCoreApplicationServices();
 builder.Services.AddCoreServices();
 builder.Services.ConfigureModels(builder.Configuration);
 
-builder.Services.AddScoped<IAuthorizationHandler, TenantAuthHandler>();
-builder.Services.AddAuthorization(c =>
+builder.Services.ConfigurePerTenant<JwtBearerOptions, TenantInfo>((options, tenantInfo) =>
 {
-    c.DefaultPolicy = new AuthorizationPolicyBuilder()
-        .AddRequirements(new TenantAuthRequirement())
-        .RequireAuthenticatedUser()
-        .Build();
+    options.Audience = tenantInfo.Identifier;
+    options.TokenValidationParameters.RequireAudience = true;
+    options.TokenValidationParameters.ValidAudiences = new[] { tenantInfo.Identifier };
+    options.TokenValidationParameters.ValidateAudience = true;
 });
-builder.Services.AddIdentityApiEndpoints<User>()
-    .AddEntityFrameworkStores<AuthDbContext>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+
+// builder.Services.AddAuthorization(c =>
+// {
+//     c.DefaultPolicy = new AuthorizationPolicyBuilder()
+//         .RequireAuthenticatedUser()
+//         .Build();
+// });
+// builder.Services.AddIdentityApiEndpoints<User>()
+//     .AddEntityFrameworkStores<AuthDbContext>();
 
 builder.AddAuthDatabase();
+
+builder.Services.AddMultiTenant<TenantInfo>()
+    .WithHeaderStrategy("X-Tenant-Id")
+    .WithConfigurationStore(builder.Configuration, "App:Tenants")
+    .WithPerTenantAuthentication();
 
 var app = builder.Build();
 
@@ -83,8 +98,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseHttpsRedirection();
 app.MapControllers();
-app.MapIdentityApi<User>();
+// app.MapIdentityApi<User>();
+app.UseMultiTenant();
 
 app.Run();

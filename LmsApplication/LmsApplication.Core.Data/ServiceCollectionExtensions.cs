@@ -27,8 +27,7 @@ public static class ServiceCollectionExtensions
         
         foreach (var tenant in tenants!.Tenants)
         {
-            Console.WriteLine(tenant);
-            var connectionString = builder.Configuration.GetConnectionString($"db{tenant}");
+            var connectionString = builder.Configuration.GetConnectionString($"db{tenant.Identifier}");
             using (var cosmosClient = new CosmosClient(connectionString))
             {
                 var database = cosmosClient.CreateDatabaseIfNotExistsAsync("auth").Result;

@@ -3,7 +3,7 @@ using LmsApplication.Core.Data.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
-namespace LmsApplication.Api.AuthService.Infrastructure.AuthRequirements;
+namespace LmsApplication.Api.AuthService.Infrastructure.Auth;
 
 public class TenantAuthHandler : AuthorizationHandler<TenantAuthRequirement>
 {

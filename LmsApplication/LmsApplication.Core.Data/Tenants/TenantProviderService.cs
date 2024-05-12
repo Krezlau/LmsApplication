@@ -24,14 +24,6 @@ public class TenantProviderService : ITenantProviderService
 
     public string GetTenantId()
     {
-        Console.WriteLine(_tenantsModel);
-        Console.WriteLine(_tenantsModel.Tenants);
-        Console.WriteLine(_tenantsModel.Tenants.Length);
-        foreach (var tenant in _tenantsModel.Tenants)
-        {
-            Console.WriteLine(tenant);
-        }
-        
         var tenantIdHeaderValue = _httpContextAccessor.HttpContext?.Request.Headers[TenantIdHeader];
 
         if (tenantIdHeaderValue is null)
@@ -41,10 +33,9 @@ public class TenantProviderService : ITenantProviderService
         if (tenantId is null)
             throw new ArgumentException("TenantId header is missing");
         
-        if (!_tenantsModel.Tenants.Contains(tenantId))
+        if (!_tenantsModel.Tenants.Select(x => x.Identifier).Contains(tenantId))
             throw new ArgumentException("Invalid TenantId header value");
         
-        Console.WriteLine(tenantId);
         return tenantId;
     }
     
