@@ -30,14 +30,7 @@ public static class ServiceCollectionExtensions
             var connectionString = builder.Configuration.GetConnectionString($"db{tenant.Identifier}");
             using (var cosmosClient = new CosmosClient(connectionString))
             {
-                var database = cosmosClient.CreateDatabaseIfNotExistsAsync("auth").Result;
-                database.Database.CreateContainerIfNotExistsAsync("Users", $"/{nameof(User.PartitionKey)}", 400).Wait();
-                database.Database.CreateContainerIfNotExistsAsync("Roles", "/id", 400).Wait();
-                database.Database.CreateContainerIfNotExistsAsync("UserRoles", "/id", 400).Wait();
-                database.Database.CreateContainerIfNotExistsAsync("UserClaims", "/id", 400).Wait();
-                database.Database.CreateContainerIfNotExistsAsync("UserLogins", "/id", 400).Wait();
-                database.Database.CreateContainerIfNotExistsAsync("UserTokens", "/id", 400).Wait();
-                database.Database.CreateContainerIfNotExistsAsync("RoleClaims", "/id", 400).Wait();
+                var database = cosmosClient.CreateDatabaseIfNotExistsAsync("auth", 400).Result;
             }
         }
     }

@@ -30,7 +30,7 @@ var tenants = builder.Configuration.GetSection(TenantsModel.Key).Get<TenantsMode
 foreach (var tenant in tenants!.Tenants)
 {
     var db = publish || builder.ExecutionContext.IsPublishMode
-        ? builder.AddAzureCosmosDB($"db{tenant.Identifier}").AddDatabase("auth")
+        ? builder.AddAzureCosmosDB($"db{tenant.Identifier}").AddDatabase("auth")//.RunAsEmulator()
         : builder.AddConnectionString($"db{tenant.Identifier}");
     
     dbs.Add(db);

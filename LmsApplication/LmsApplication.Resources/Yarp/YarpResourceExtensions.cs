@@ -247,6 +247,7 @@ internal class YarpResourceLifecyclehook(
         }
 
         _app.MapReverseProxy();
+        _app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
         await _app.StartAsync(cancellationToken);
 

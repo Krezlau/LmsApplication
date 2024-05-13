@@ -1,14 +1,13 @@
 using Finbuckle.MultiTenant;
-using LmsApplication.Api.AuthService.Infrastructure.Auth;
 using LmsApplication.Core.ApplicationServices;
 using LmsApplication.Core.Config;
+using LmsApplication.Core.Config.ConfigModels;
 using LmsApplication.Core.Config.Swagger;
 using LmsApplication.Core.Data;
-using LmsApplication.Core.Data.Database;
-using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.OpenApi.Models;
 
@@ -63,31 +62,51 @@ builder.Services.AddCoreApplicationServices();
 builder.Services.AddCoreServices();
 builder.Services.ConfigureModels(builder.Configuration);
 
-builder.Services.ConfigurePerTenant<JwtBearerOptions, TenantInfo>((options, tenantInfo) =>
-{
-    options.Audience = tenantInfo.Identifier;
-    options.TokenValidationParameters.RequireAudience = true;
-    options.TokenValidationParameters.ValidAudiences = new[] { tenantInfo.Identifier };
-    options.TokenValidationParameters.ValidateAudience = true;
-});
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-
 // builder.Services.AddAuthorization(c =>
 // {
 //     c.DefaultPolicy = new AuthorizationPolicyBuilder()
 //         .RequireAuthenticatedUser()
 //         .Build();
 // });
-// builder.Services.AddIdentityApiEndpoints<User>()
-//     .AddEntityFrameworkStores<AuthDbContext>();
-
 builder.AddAuthDatabase();
 
-builder.Services.AddMultiTenant<TenantInfo>()
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddCookie()
+    .AddOpenIdConnect(options =>
+    {
+        options.Authority = "https://localhost:5000";
+        options.ClientId = "jsdflkasj";
+        options.ClientSecret = "asjflsdjafl";
+        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    });
+
+builder.Services.AddMultiTenant<AppTenantInfo>()
     .WithHeaderStrategy("X-Tenant-Id")
-    .WithConfigurationStore(builder.Configuration, "App:Tenants")
-    .WithPerTenantAuthentication();
+    .WithConfigurationStore(builder.Configuration, TenantsModel.Key)
+    .WithPerTenantAuthentication(opt =>
+    {
+        opt.SkipChallengeIfTenantNotResolved = true;
+    });
+
+builder.Services.ConfigurePerTenant<OpenIdConnectOptions, AppTenantInfo>((options, tenantInfo) =>
+{
+    options.Authority = tenantInfo.OpenIdConnectAuthority ?? string.Empty;
+    options.ClientId = tenantInfo.OpenIdConnectClientId ?? string.Empty;
+    options.ClientSecret = tenantInfo.OpenIdConnectClientSecret ?? string.Empty;
+});
+
+builder.Services.AddLogging();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 
 var app = builder.Build();
 
@@ -98,12 +117,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseHttpsRedirection();
 app.MapControllers();
-// app.MapIdentityApi<User>();
 app.UseMultiTenant();
+
+app.UseCors();
 
 app.Run();
