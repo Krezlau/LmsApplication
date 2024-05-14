@@ -1,3 +1,4 @@
+using Finbuckle.MultiTenant;
 using Finbuckle.MultiTenant.Abstractions;
 using LmsApplication.Core.ApplicationServices.Auth;
 using LmsApplication.Core.Config.ConfigModels;
@@ -11,13 +12,12 @@ namespace LmsApplication.Api.AuthService.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthAppService _authAppService;
-    private readonly IMultiTenantContextAccessor<AppTenantInfo> _tenantInfo;
     private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IAuthAppService authAppService, IMultiTenantContextAccessor<AppTenantInfo> tenantInfo, ILogger<AuthController> logger)
+    public AuthController(IAuthAppService authAppService,
+        ILogger<AuthController> logger)
     {
         _authAppService = authAppService;
-        _tenantInfo = tenantInfo;
         _logger = logger;
     }
 
@@ -25,11 +25,9 @@ public class AuthController : ControllerBase
     [Authorize]
     public async Task<IActionResult> LoginUserAsync()
     {
-        foreach (var tenant in _tenantInfo.MultiTenantContext.StoreInfo.Store.GetAllAsync().Result)
-        {
-            _logger.LogInformation($"Tenant: {tenant.Identifier}");
-        }
+        Console.WriteLine("LoginUserAsync");
         _logger.LogInformation(Request.Headers["X-Tenant-Id"]);
-        return Ok(_tenantInfo.MultiTenantContext.TenantInfo);
+        _logger.LogCritical("Tenant Info:");
+        return Ok("lmaooo");
     }
 }

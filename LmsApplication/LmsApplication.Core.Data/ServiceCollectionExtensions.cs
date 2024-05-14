@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
     public static WebApplicationBuilder AddAuthDatabase(this WebApplicationBuilder builder)
     {
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddScoped<ITenantProviderService, TenantProviderService>();
+        builder.Services.AddSingleton<ITenantProviderService, TenantProviderService>();
         builder.Services.AddDbContext<AuthDbContext>();
         return builder;
     }

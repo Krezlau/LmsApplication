@@ -1,8 +1,8 @@
-using Finbuckle.MultiTenant.Abstractions;
+using Finbuckle.MultiTenant;
 
 namespace LmsApplication.Core.Config.ConfigModels;
 
-public class AppTenantInfo : ITenantInfo
+public class AppTenantInfo : TenantInfo
 {
     public string? Id { get; set; }
     public string? Identifier { get; set; }

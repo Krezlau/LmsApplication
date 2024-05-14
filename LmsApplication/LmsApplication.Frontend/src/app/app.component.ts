@@ -26,8 +26,8 @@ export class AppComponent {
 
   sendrequest() {
     this.oidcSecurityService.getIdToken().subscribe((token) => {
-      const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "1");
-      this.http.get("http://localhost:5120/api/auth", {headers}).subscribe((data) => {
+      const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
+      this.http.get("http://localhost:8080/api/Auth", {headers}).subscribe((data) => {
         console.log("data: ", data);
       });
     });
