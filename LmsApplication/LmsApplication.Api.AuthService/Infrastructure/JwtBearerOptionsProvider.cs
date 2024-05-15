@@ -5,17 +5,17 @@ using Microsoft.Extensions.Options;
 
 namespace LmsApplication.Api.AuthService.Infrastructure;
 
-public class OpenIdConnectOptionsProvider : IOptionsMonitor<JwtBearerOptions>
+public class JwtBearerOptionsProvider : IOptionsMonitor<JwtBearerOptions>
 {
     private readonly ConcurrentDictionary<(string name, string tenant), Lazy<JwtBearerOptions>> _cache;
     private readonly IOptionsFactory<JwtBearerOptions> _optionsFactory;
     private readonly ITenantProviderService _tenantProvider;
-    private readonly ILogger<OpenIdConnectOptionsProvider> _logger;
+    private readonly ILogger<JwtBearerOptionsProvider> _logger;
 
-    public OpenIdConnectOptionsProvider(
+    public JwtBearerOptionsProvider(
         IOptionsFactory<JwtBearerOptions> optionsFactory,
         ITenantProviderService tenantProvider,
-        ILogger<OpenIdConnectOptionsProvider> logger)
+        ILogger<JwtBearerOptionsProvider> logger)
     {
         _cache = new ConcurrentDictionary<(string, string), Lazy<JwtBearerOptions>>();
         _optionsFactory = optionsFactory;

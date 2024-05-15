@@ -7,6 +7,8 @@ namespace LmsApplication.Core.Data.Tenants;
 public interface ITenantProviderService
 {
     string GetTenantId();
+    
+    AppTenantInfo GetTenantInfo();
 }
 
 public class TenantProviderService : ITenantProviderService
@@ -14,9 +16,9 @@ public class TenantProviderService : ITenantProviderService
     private const string TenantIdHeader = "X-Tenant-Id";
     
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly TenantsModel _tenantsModel;
+    private readonly AppTenantsModel _tenantsModel;
 
-    public TenantProviderService(IHttpContextAccessor httpContextAccessor, IOptions<TenantsModel> tenantsModel)
+    public TenantProviderService(IHttpContextAccessor httpContextAccessor, IOptions<AppTenantsModel> tenantsModel)
     {
         _httpContextAccessor = httpContextAccessor;
         _tenantsModel = tenantsModel.Value;
@@ -37,6 +39,12 @@ public class TenantProviderService : ITenantProviderService
             throw new ArgumentException("Invalid TenantId header value");
         
         return tenantId;
+    }
+    
+    public AppTenantInfo GetTenantInfo()
+    {
+        var tenantId = GetTenantId();
+        return _tenantsModel.Tenants.FirstOrDefault(x => x.Identifier == tenantId)!;
     }
     
 }

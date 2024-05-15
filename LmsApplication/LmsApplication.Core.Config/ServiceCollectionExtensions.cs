@@ -8,7 +8,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection ConfigureModels(this IServiceCollection services, IConfiguration config)
     {
-        services.Configure<TenantsModel>(config.GetSection(TenantsModel.Key));
         services.Configure<AppTenantsModel>(config.GetSection(AppTenantsModel.Key));
         
         return services;

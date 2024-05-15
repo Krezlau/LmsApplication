@@ -1,14 +1,22 @@
-using Finbuckle.MultiTenant;
-
 namespace LmsApplication.Core.Config.ConfigModels;
 
-public class AppTenantInfo : TenantInfo
+public class AppTenantInfo
 {
-    public string? Id { get; set; }
-    public string? Identifier { get; set; }
-    public string? Name { get; set; }
-    public string? OpenIdConnectAuthority { get; set; }
-    public string? OpenIdConnectClientId { get; set; }
-    public string? OpenIdConnectClientSecret { get; set; }
-    public string? OpenIdConnectAudience { get; set; }
+    public required string Id { get; set; }
+    
+    public required string Identifier { get; set; }
+    
+    public required string Name { get; set; }
+    
+    public required string OpenIdConnectAuthority { get; set; }
+    
+    public required string OpenIdConnectClientId { get; set; }
+    
+    public required string OpenIdConnectAudience { get; set; }
+
+    public string? OpenIdTenantId { get; set; } = "common";
+    
+    public required string OpenIdClaimsIssuer { get; set; }
+    
+    public required string OpenIdSignUpSignInPolicyId { get; set; }
 }

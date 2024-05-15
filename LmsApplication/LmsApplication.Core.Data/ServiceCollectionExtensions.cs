@@ -6,7 +6,6 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using User = LmsApplication.Core.Data.Entities.User;
 
 namespace LmsApplication.Core.Data;
 
@@ -22,7 +21,7 @@ public static class ServiceCollectionExtensions
     
     public static void CreateContainers(this HostApplicationBuilder builder)
     {
-        var tenants = builder.Configuration.GetSection(TenantsModel.Key).Get<TenantsModel>();
+        var tenants = builder.Configuration.GetSection(AppTenantsModel.Key).Get<AppTenantsModel>();
         Console.WriteLine("Creating containers...");
         
         foreach (var tenant in tenants!.Tenants)

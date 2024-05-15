@@ -88,8 +88,8 @@ builder.Services.AddAuthorization(opt =>
 builder.Services.AddSingleton<IOptionsMonitor<MicrosoftIdentityOptions>, MicrosoftIdentityOptionsProvider>();
 builder.Services.AddSingleton<IConfigureOptions<MicrosoftIdentityOptions>, MicrosoftIdentityOptionsInitializer>();
 
-builder.Services.AddSingleton<IOptionsMonitor<JwtBearerOptions>, OpenIdConnectOptionsProvider>();
-builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, OpenIdConnectOptionsInitializer>();
+builder.Services.AddSingleton<IOptionsMonitor<JwtBearerOptions>, JwtBearerOptionsProvider>();
+builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, JwtBearerOptionsInitializer>();
 
 builder.Services.AddLogging();
 

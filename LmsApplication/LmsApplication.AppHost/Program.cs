@@ -26,7 +26,7 @@ var dbInitializer = builder.AddProject<LmsApplication_Core_DbInitializer>("dbIni
 // Create database for each tenant and reference it to the services
 List<IResourceBuilder<IResourceWithConnectionString>> dbs = new();
 
-var tenants = builder.Configuration.GetSection(TenantsModel.Key).Get<TenantsModel>();
+var tenants = builder.Configuration.GetSection(AppTenantsModel.Key).Get<AppTenantsModel>();
 foreach (var tenant in tenants!.Tenants)
 {
     var db = publish || builder.ExecutionContext.IsPublishMode
