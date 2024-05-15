@@ -17,6 +17,9 @@ export class AppComponent {
   constructor(public oidcSecurityService: OidcSecurityService, private http: HttpClient) {
     this.oidcSecurityService.checkAuth().subscribe((isAuthenticated) => {
       console.log("isAuthenticated: ", isAuthenticated);
+      this.oidcSecurityService.checkAuth().subscribe((isAuthenticated) => {
+        console.log("isAuthenticated: ", isAuthenticated);
+      });
     });
   }
 
@@ -25,7 +28,7 @@ export class AppComponent {
   }
 
   sendrequest() {
-    this.oidcSecurityService.getIdToken().subscribe((token) => {
+    this.oidcSecurityService.getAccessToken().subscribe((token) => {
       const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
       this.http.get("http://localhost:8080/api/Auth", {headers}).subscribe((data) => {
         console.log("data: ", data);
