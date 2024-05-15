@@ -78,6 +78,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
     });
 
+builder.Services.AddMicrosoftGraph(opt => { });
+
 builder.Services.AddAuthorization(opt =>
 {
     opt.DefaultPolicy = new AuthorizationPolicyBuilder()
