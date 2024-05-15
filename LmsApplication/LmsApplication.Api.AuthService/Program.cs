@@ -76,7 +76,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     }, 
         options =>
     {
-        
     });
 
 builder.Services.AddAuthorization(opt =>
@@ -105,10 +104,11 @@ if (app.Environment.IsDevelopment())
     IdentityModelEventSource.LogCompleteSecurityArtifact = true;
 }
 
+app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
 
 app.MapControllers();
 app.Run();

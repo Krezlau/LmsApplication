@@ -42,13 +42,13 @@ public class OpenIdConnectOptionsInitializer : IConfigureNamedOptions<JwtBearerO
         _logger.LogInformation($"Tenant Info: {tenantInfo.OpenIdConnectAuthority}");
 
         // Other tenant-specific options like options.Authority can be registered here.
-        options.Authority = tenantInfo.OpenIdConnectAuthority;
-        options.Audience = tenantInfo.OpenIdConnectClientId;
-        options.TokenValidationParameters.ValidateIssuerSigningKey = false;
-        options.TokenValidationParameters.ValidateIssuer = false;
-        options.TokenValidationParameters.ValidateActor = false;
-        options.TokenValidationParameters.ValidateAudience = false;
-        options.TokenValidationParameters.ValidateLifetime = false;
+        // options.Authority = tenantInfo.OpenIdConnectAuthority;
+        options.Audience = tenantInfo.OpenIdConnectAudience;
+        // options.TokenValidationParameters.ValidateIssuerSigningKey = false;
+        // options.TokenValidationParameters.ValidateIssuer = false;
+        // options.TokenValidationParameters.ValidateActor = false;
+        // options.TokenValidationParameters.ValidateAudience = false;
+        // options.TokenValidationParameters.ValidateLifetime = false;
     }
 
     public void Configure(JwtBearerOptions options)

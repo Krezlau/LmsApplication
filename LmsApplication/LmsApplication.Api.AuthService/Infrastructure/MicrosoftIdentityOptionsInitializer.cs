@@ -39,11 +39,14 @@ public class MicrosoftIdentityOptionsInitializer : IConfigureNamedOptions<Micros
         // Other tenant-specific options like options.Authority can be registered here.
         options.Authority = tenantInfo.OpenIdConnectAuthority;
         options.ClientId = tenantInfo.OpenIdConnectClientId;
-        options.ClientSecret = tenantInfo.OpenIdConnectClientSecret;
-        options.Instance = "https://login.microsoftonline.com/";
+        options.TokenValidationParameters.ValidAudience = "api://lms-api";
+        // options.ClientSecret = tenantInfo.OpenIdConnectClientSecret;
+        // options.Instance = "https://login.microsoftonline.com/";
         options.TenantId = "common";
+        options.ClaimsIssuer = $"https://login.microsoftonline.com/40dcee2a-c051-4a80-acba-953dac9a3942/v2.0";
         options.Scope.Clear();
-        options.Scope.Add("User.Read");
+        options.Scope.Add("tasks.read");
+        options.SignUpSignInPolicyId = "b2x_susi";
         // options.TokenValidationParameters.ValidateIssuerSigningKey = false;
     }
 
