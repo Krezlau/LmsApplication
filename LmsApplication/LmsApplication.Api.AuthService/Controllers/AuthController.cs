@@ -1,6 +1,7 @@
+using System.Security.Claims;
+using LmsApplication.Core.Services.Graph;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Graph;
 
 namespace LmsApplication.Api.AuthService.Controllers;
 
@@ -9,19 +10,28 @@ namespace LmsApplication.Api.AuthService.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly ILogger<AuthController> _logger;
-    private readonly GraphServiceClient _graphServiceClient;
+    private readonly IMicrosoftGraphServiceProvider _graphServiceClientProvider;
 
-    public AuthController(ILogger<AuthController> logger, GraphServiceClient graphServiceClient)
+    public AuthController(ILogger<AuthController> logger, IMicrosoftGraphServiceProvider graphServiceClientProvider)
     {
         _logger = logger;
-        _graphServiceClient = graphServiceClient;
+        _graphServiceClientProvider = graphServiceClientProvider;
     }
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> LoginUserAsync()
+    public async Task<IActionResult> GetCurrentUser()
     {
-        var response = await _graphServiceClient.Me.GetAsync();
-        return Ok(response);
+        var graphClient = _graphServiceClientProvider.GetGraphServiceClient();
+        var currentUser = await graphClient.Users[GetUserEmail()].GetAsync();
+        if (currentUser is null) 
+            throw new KeyNotFoundException($"{nameof(User)} not found.");
+        return Ok(currentUser);
+    }
+    
+    private string GetUserEmail()
+    {
+        var email = User.FindFirstValue(ClaimTypes.Name);
+        return email;
     }
 }

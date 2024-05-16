@@ -19,4 +19,10 @@ public class AppTenantInfo
     public required string OpenIdClaimsIssuer { get; set; }
     
     public required string OpenIdSignUpSignInPolicyId { get; set; }
+    
+    public required string ApiClientId { get; set; }
+    
+    public required string ApiClientSecret { get; set; }
+    
+    public required string ApiTenantId { get; set; }
 }

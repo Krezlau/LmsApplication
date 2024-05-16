@@ -78,8 +78,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
     });
 
-builder.Services.AddMicrosoftGraph(opt => { });
-
 builder.Services.AddAuthorization(opt =>
 {
     opt.DefaultPolicy = new AuthorizationPolicyBuilder()
@@ -92,6 +90,9 @@ builder.Services.AddSingleton<IConfigureOptions<MicrosoftIdentityOptions>, Micro
 
 builder.Services.AddSingleton<IOptionsMonitor<JwtBearerOptions>, JwtBearerOptionsProvider>();
 builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, JwtBearerOptionsInitializer>();
+
+// builder.Services.AddSingleton<IOptionsMonitor<MicrosoftGraphOptions>, MicrosoftGraphOptionsProvider>();
+// builder.Services.AddSingleton<IConfigureOptions<MicrosoftGraphOptions>, MicrosoftGraphOptionsInitializer>();
 
 builder.Services.AddLogging();
 
