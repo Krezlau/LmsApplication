@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using LmsApplication.Api.Shared.Controllers;
 using LmsApplication.Core.ApplicationServices.Users;
 using LmsApplication.Core.Config;
 using Microsoft.AspNetCore.Authorization;
@@ -6,17 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LmsApplication.Api.AuthService.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-[Authorize]
-public class AuthController : ControllerBase
+public class AuthController : CoreController
 {
-    private readonly ILogger<AuthController> _logger;
     private readonly IUserAppService _userAppService;
 
-    public AuthController(ILogger<AuthController> logger, IUserAppService userAppService)
+    public AuthController(ILogger<AuthController> logger, IUserAppService userAppService) : base(logger)
     {
-        _logger = logger;
         _userAppService = userAppService;
     }
 
@@ -36,13 +31,5 @@ public class AuthController : ControllerBase
         var users = await _userAppService.GetUsersAsync();
         
         return Ok(users);
-    }
-    
-    private string GetUserEmail()
-    {
-        var email = User.FindFirstValue(ClaimTypes.Name);
-        if (email is null) 
-            throw new KeyNotFoundException("User email not found.");
-        return email;
     }
 }
