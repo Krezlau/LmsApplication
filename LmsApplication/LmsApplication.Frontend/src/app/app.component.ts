@@ -27,10 +27,42 @@ export class AppComponent {
     this.oidcSecurityService.authorize();
   }
 
-  sendrequest() {
+  logout() {
+    console.log("logout");
+    this.oidcSecurityService.logoff();
+  }
+
+  getStudent() {
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
       const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
       this.http.get("http://localhost:8080/api/Auth", {headers}).subscribe((data) => {
+        console.log("data: ", data);
+      });
+    });
+  }
+
+  getTeacher() {
+    this.oidcSecurityService.getAccessToken().subscribe((token) => {
+      const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
+      this.http.get("http://localhost:8080/api/Auth/teacher", {headers}).subscribe((data) => {
+        console.log("data: ", data);
+      });
+    });
+  }
+
+  getAdmin() {
+    this.oidcSecurityService.getAccessToken().subscribe((token) => {
+      const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
+      this.http.get("http://localhost:8080/api/Auth/admin", {headers}).subscribe((data) => {
+        console.log("data: ", data);
+      });
+    });
+  }
+
+  getAnonymous() {
+    this.oidcSecurityService.getAccessToken().subscribe((token) => {
+      const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
+      this.http.get("http://localhost:8080/api/Auth/anonymous", {headers}).subscribe((data) => {
         console.log("data: ", data);
       });
     });

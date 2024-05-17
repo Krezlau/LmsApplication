@@ -83,6 +83,16 @@ builder.Services.AddAuthorization(opt =>
     opt.DefaultPolicy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
+
+    opt.AddPolicy("Teacher", new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .RequireRole("Teacher", "Admin")
+        .Build());
+
+    opt.AddPolicy("Admin", new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .RequireRole("Admin")
+        .Build());
 });
 
 builder.Services.AddSingleton<IOptionsMonitor<MicrosoftIdentityOptions>, MicrosoftIdentityOptionsProvider>();
