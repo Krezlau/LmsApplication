@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import {OidcSecurityService} from "angular-auth-oidc-client";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { OidcSecurityService } from "angular-auth-oidc-client";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -32,7 +32,7 @@ export class AppComponent {
     this.oidcSecurityService.logoff();
   }
 
-  getStudent() {
+  getMe() {
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
       const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
       this.http.get("http://localhost:8080/api/Auth", {headers}).subscribe((data) => {
@@ -41,28 +41,10 @@ export class AppComponent {
     });
   }
 
-  getTeacher() {
+  getUsers() {
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
       const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
-      this.http.get("http://localhost:8080/api/Auth/teacher", {headers}).subscribe((data) => {
-        console.log("data: ", data);
-      });
-    });
-  }
-
-  getAdmin() {
-    this.oidcSecurityService.getAccessToken().subscribe((token) => {
-      const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
-      this.http.get("http://localhost:8080/api/Auth/admin", {headers}).subscribe((data) => {
-        console.log("data: ", data);
-      });
-    });
-  }
-
-  getAnonymous() {
-    this.oidcSecurityService.getAccessToken().subscribe((token) => {
-      const headers = new HttpHeaders().set("Authorization", "Bearer " + token).set("X-Tenant-Id", "tenant1");
-      this.http.get("http://localhost:8080/api/Auth/anonymous", {headers}).subscribe((data) => {
+      this.http.get("http://localhost:8080/api/Auth/users", {headers}).subscribe((data) => {
         console.log("data: ", data);
       });
     });

@@ -84,14 +84,14 @@ builder.Services.AddAuthorization(opt =>
         .RequireAuthenticatedUser()
         .Build();
 
-    opt.AddPolicy("Teacher", new AuthorizationPolicyBuilder()
+    opt.AddPolicy(AuthPolicies.TeacherPolicy, new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
-        .RequireRole("Teacher", "Admin")
+        .RequireRole(UserConstants.AdminRole, UserConstants.TeacherRole)
         .Build());
 
-    opt.AddPolicy("Admin", new AuthorizationPolicyBuilder()
+    opt.AddPolicy(AuthPolicies.AdminPolicy, new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
-        .RequireRole("Admin")
+        .RequireRole(UserConstants.AdminRole)
         .Build());
 });
 

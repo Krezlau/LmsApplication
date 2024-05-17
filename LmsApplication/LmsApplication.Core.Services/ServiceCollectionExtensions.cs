@@ -10,6 +10,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IMicrosoftGraphServiceProvider, MicrosoftGraphServiceProvider>();
+        services.AddScoped<IGraphService, GraphService>();
         
         return services;
     }
