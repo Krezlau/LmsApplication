@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using LmsApplication.Core.Data.Tenants;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 
-namespace LmsApplication.Api.AuthService.Infrastructure;
+namespace LmsApplication.Api.Shared.Options;
 
 public class MicrosoftIdentityOptionsInitializer : IConfigureNamedOptions<MicrosoftIdentityOptions>
 {

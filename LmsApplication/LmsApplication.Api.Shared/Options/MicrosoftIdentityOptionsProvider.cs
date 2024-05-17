@@ -1,9 +1,10 @@
 using System.Collections.Concurrent;
 using LmsApplication.Core.Data.Tenants;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 
-namespace LmsApplication.Api.AuthService.Infrastructure;
+namespace LmsApplication.Api.Shared.Options;
 
 public class MicrosoftIdentityOptionsProvider : IOptionsMonitor<MicrosoftIdentityOptions>
 {
@@ -23,7 +24,7 @@ public class MicrosoftIdentityOptionsProvider : IOptionsMonitor<MicrosoftIdentit
             _logger = logger;
         }
     
-        public MicrosoftIdentityOptions CurrentValue => Get(Options.DefaultName);
+        public MicrosoftIdentityOptions CurrentValue => Get(Microsoft.Extensions.Options.Options.DefaultName);
     
         public MicrosoftIdentityOptions Get(string name)
         {

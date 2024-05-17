@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using LmsApplication.Core.Data.Tenants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace LmsApplication.Api.AuthService.Infrastructure;
+namespace LmsApplication.Api.Shared.Options;
 
 public class JwtBearerOptionsInitializer : IConfigureNamedOptions<JwtBearerOptions>
 {

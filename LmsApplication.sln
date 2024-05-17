@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Config"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.ApplicationServices", "LmsApplication\LmsApplication.Core.ApplicationServices\LmsApplication.Core.ApplicationServices.csproj", "{F2284116-F599-4761-99DF-AB540BB74238}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Api.Shared", "LmsApplication\LmsApplication.Api.Shared\LmsApplication.Api.Shared.csproj", "{2871FDFA-9923-42D0-BA40-FD79CCE74D58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{F2284116-F599-4761-99DF-AB540BB74238}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2284116-F599-4761-99DF-AB540BB74238}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2284116-F599-4761-99DF-AB540BB74238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2871FDFA-9923-42D0-BA40-FD79CCE74D58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2871FDFA-9923-42D0-BA40-FD79CCE74D58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2871FDFA-9923-42D0-BA40-FD79CCE74D58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2871FDFA-9923-42D0-BA40-FD79CCE74D58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

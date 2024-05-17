@@ -1,9 +1,10 @@
 using System.Collections.Concurrent;
 using LmsApplication.Core.Data.Tenants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace LmsApplication.Api.AuthService.Infrastructure;
+namespace LmsApplication.Api.Shared.Options;
 
 public class JwtBearerOptionsProvider : IOptionsMonitor<JwtBearerOptions>
 {
@@ -23,7 +24,7 @@ public class JwtBearerOptionsProvider : IOptionsMonitor<JwtBearerOptions>
         _logger = logger;
     }
 
-    public JwtBearerOptions CurrentValue => Get(Options.DefaultName);
+    public JwtBearerOptions CurrentValue => Get(Microsoft.Extensions.Options.Options.DefaultName);
 
     public JwtBearerOptions Get(string name)
     {
