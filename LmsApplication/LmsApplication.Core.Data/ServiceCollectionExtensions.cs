@@ -32,8 +32,8 @@ public static class ServiceCollectionExtensions
                 var database = cosmosClient.CreateDatabaseIfNotExistsAsync("course", 400).Result;
                 Console.WriteLine($"Created database: {database.Database.Id}");
                 
-                database.Database.CreateContainerIfNotExistsAsync(new ContainerProperties("Courses", "/id")).Wait();
-                database.Database.CreateContainerIfNotExistsAsync(new ContainerProperties("CourseEditions", "/id")).Wait();
+                database.Database.CreateContainerIfNotExistsAsync(new ContainerProperties("Courses", "/PartitionKey")).Wait();
+                database.Database.CreateContainerIfNotExistsAsync(new ContainerProperties("CourseEditions", "/PartitionKey")).Wait();
             }
         }
     }

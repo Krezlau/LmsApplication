@@ -19,9 +19,9 @@ public class CourseEdition : IAuditable
     
     public int StudentLimit { get; set; }
     
-    public List<string> TeacherIds { get; set; } = new();
+    public List<string> TeacherEmails { get; set; } = new();
     
-    public List<string> StudentIds { get; set; } = new();
+    public List<string> StudentEmails { get; set; } = new();
 
     public Audit Audit { get; set; } = new();
     

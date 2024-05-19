@@ -10,6 +10,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IUserAppService, UserAppService>();
         services.AddScoped<ICourseAppService, CourseAppService>();
+        services.AddScoped<ICourseEditionAppService, CourseEditionAppService>();
         
         return services;
     }

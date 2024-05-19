@@ -16,4 +16,19 @@ public static class CourseMappingExtensions
             Duration = course.Duration,
         };
     }
+    
+    public static CourseEditionModel ToModel(this CourseEdition courseEdition)
+    {
+        return new CourseEditionModel
+        {
+            Id = courseEdition.Id,
+            CourseId = courseEdition.CourseId,
+            Duration = courseEdition.Duration,
+            StartDateUtc = courseEdition.StartDateUtc,
+            StudentLimit = courseEdition.StudentLimit,
+            TeacherIds = courseEdition.TeacherEmails.ToList(),
+            StudentIds = courseEdition.StudentEmails.ToList(),
+            EndDateUtc = courseEdition.EndDateUtc,
+        };
+    }
 }
