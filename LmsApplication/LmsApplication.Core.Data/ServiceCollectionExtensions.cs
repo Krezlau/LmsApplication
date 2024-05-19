@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
     {
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSingleton<ITenantProviderService, TenantProviderService>();
-        builder.Services.AddDbContext<CoursesDbContext>();
+        builder.Services.AddDbContext<CourseDbContext>();
         return builder;
     }
     

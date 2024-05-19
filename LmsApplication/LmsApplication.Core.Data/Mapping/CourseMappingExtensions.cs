@@ -1,0 +1,19 @@
+using LmsApplication.Core.Data.Entities;
+using LmsApplication.Core.Data.Models;
+
+namespace LmsApplication.Core.Data.Mapping;
+
+public static class CourseMappingExtensions
+{
+    public static CourseModel ToModel(this Course course)
+    {
+        return new CourseModel
+        {
+            Id = course.Id,
+            Title = course.Title,
+            Description = course.Description,
+            Categories = course.Categories.ToList(),
+            Duration = course.Duration,
+        };
+    }
+}

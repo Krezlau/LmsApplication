@@ -5,11 +5,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace LmsApplication.Core.Data.Database;
 
-public class CoursesDbContext : BaseDbContext
+public class CourseDbContext : BaseDbContext
 {
     public override string DatabaseName { get; } = "course";
 
-    public CoursesDbContext(
+    public CourseDbContext(
         IConfiguration config,
         ITenantProviderService tenantProviderService) : base(config, tenantProviderService)
     {

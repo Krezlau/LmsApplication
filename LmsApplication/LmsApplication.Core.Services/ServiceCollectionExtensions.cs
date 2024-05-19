@@ -1,3 +1,4 @@
+using LmsApplication.Core.Services.Courses;
 using LmsApplication.Core.Services.Graph;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IMicrosoftGraphServiceProvider, MicrosoftGraphServiceProvider>();
         services.AddScoped<IGraphService, GraphService>();
+        services.AddScoped<ICourseService, CourseService>();
         
         return services;
     }
