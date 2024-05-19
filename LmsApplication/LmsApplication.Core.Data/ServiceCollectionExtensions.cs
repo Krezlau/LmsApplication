@@ -11,11 +11,11 @@ namespace LmsApplication.Core.Data;
 
 public static class ServiceCollectionExtensions
 {
-    public static WebApplicationBuilder AddAuthDatabase(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddCoursesDatabase(this WebApplicationBuilder builder)
     {
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSingleton<ITenantProviderService, TenantProviderService>();
-        builder.Services.AddDbContext<AuthDbContext>();
+        builder.Services.AddDbContext<CoursesDbContext>();
         return builder;
     }
     
@@ -29,7 +29,11 @@ public static class ServiceCollectionExtensions
             var connectionString = builder.Configuration.GetConnectionString($"db{tenant.Identifier}");
             using (var cosmosClient = new CosmosClient(connectionString))
             {
-                var database = cosmosClient.CreateDatabaseIfNotExistsAsync("auth", 400).Result;
+                var database = cosmosClient.CreateDatabaseIfNotExistsAsync("course", 400).Result;
+                Console.WriteLine($"Created database: {database.Database.Id}");
+                
+                database.Database.CreateContainerIfNotExistsAsync(new ContainerProperties("Courses", "/id")).Wait();
+                database.Database.CreateContainerIfNotExistsAsync(new ContainerProperties("CourseEditions", "/id")).Wait();
             }
         }
     }

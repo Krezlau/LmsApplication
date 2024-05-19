@@ -8,7 +8,7 @@ namespace LmsApplication.Core.Data.Database;
 
 public abstract class BaseDbContext : DbContext
 {
-    protected abstract string DatabaseName { get; }
+    public abstract string DatabaseName { get; }
     
     private readonly IConfiguration _config;
     private readonly ITenantProviderService _tenantProviderService;

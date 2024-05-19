@@ -28,7 +28,7 @@ builder.Services.AddCoreApplicationServices();
 builder.Services.AddCoreServices();
 builder.Services.ConfigureModels(builder.Configuration);
 
-builder.AddAuthDatabase();
+builder.AddCoursesDatabase();
 
 builder.Services.AddCoreAuth();
 
