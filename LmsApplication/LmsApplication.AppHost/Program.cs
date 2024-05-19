@@ -20,6 +20,9 @@ builder.Configuration.AddAzureAppConfiguration(c =>
 var authService = builder.AddProject<LmsApplication_Api_AuthService>("authService")
     .WithReference(appconfig);
 
+var courseService = builder.AddProject<LmsApplication_Api_CourseService>("courseService")
+    .WithReference(appconfig);
+
 var dbInitializer = builder.AddProject<LmsApplication_Core_DbInitializer>("dbInitializer")
     .WithReference(appconfig);
 
@@ -36,6 +39,7 @@ foreach (var tenant in tenants!.Tenants)
     dbs.Add(db);
     
     authService.WithReference(db);
+    courseService.WithReference(db);
     dbInitializer.WithReference(db);
 }
 
@@ -43,6 +47,7 @@ foreach (var tenant in tenants!.Tenants)
 builder.AddYarp("yarp")
     .WithEndpoint(8080, scheme: "http")
     .WithReference(authService)
+    .WithReference(courseService)
     .LoadFromConfiguration("ReverseProxy");
 
 builder.Build().Run();

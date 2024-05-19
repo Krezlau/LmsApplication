@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LmsApplication.Api.AuthService.Controllers;
 
+[Route("api/[controller]")]
 public class AuthController : CoreController
 {
     private readonly IUserAppService _userAppService;

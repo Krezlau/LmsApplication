@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 namespace LmsApplication.Api.Shared.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
 [Authorize]
 public class CoreController : ControllerBase
 {
