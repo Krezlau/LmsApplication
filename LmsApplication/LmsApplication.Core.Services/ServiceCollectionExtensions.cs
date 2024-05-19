@@ -11,6 +11,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMicrosoftGraphServiceProvider, MicrosoftGraphServiceProvider>();
         services.AddScoped<IGraphService, GraphService>();
         services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped<ICourseEditionService, CourseEditionService>();
         
         return services;
     }

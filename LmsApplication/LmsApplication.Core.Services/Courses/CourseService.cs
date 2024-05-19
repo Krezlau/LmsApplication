@@ -7,6 +7,8 @@ namespace LmsApplication.Core.Services.Courses;
 public interface ICourseService
 {
     Task<List<Course>> GetAllCoursesAsync();
+    
+    Task UpsertAsync(Course course);
 }
 
 public class CourseService : ICourseService
@@ -21,5 +23,11 @@ public class CourseService : ICourseService
     public async Task<List<Course>> GetAllCoursesAsync()
     {
         return await _dbContext.Courses.ToListAsync();
+    }
+
+    public async Task UpsertAsync(Course course)
+    {
+        _dbContext.Courses.Update(course);
+        await _dbContext.SaveChangesAsync();
     }
 }

@@ -7,7 +7,10 @@ public interface ICourseEditionService
     Task<List<CourseEdition>> GetAllCourseEditionsAsync();
 }
 
-public class CourseEditionService
+public class CourseEditionService : ICourseEditionService
 {
-    
+    public async Task<List<CourseEdition>> GetAllCourseEditionsAsync()
+    {
+        throw new NotImplementedException();
+    }
 }
