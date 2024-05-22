@@ -4,7 +4,7 @@ export interface UserModel {
   email: string;
   name: string;
   surname: string;
-  photo: string;
+  photo: string | null;
   userId: string;
   role: UserRole;
 }

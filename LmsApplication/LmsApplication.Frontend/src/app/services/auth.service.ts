@@ -2,7 +2,7 @@ import {Injectable, OnDestroy, signal} from '@angular/core';
 import {LoginResponse, OidcSecurityService} from "angular-auth-oidc-client";
 import {Subscription} from "rxjs";
 import {UserService} from "./user.service";
-import {RouteConfigLoadEnd, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthState} from "../types/users/auth-state";
 
 @Injectable({
@@ -57,7 +57,8 @@ export class AuthService implements OnDestroy {
   }
 
   public logoff() {
-    return this.oidcSecurityService.logoff();
+    this.oidcSecurityService.logoffLocal();
+    this.authState.set(this.initialState);
   }
 
   ngOnDestroy() {

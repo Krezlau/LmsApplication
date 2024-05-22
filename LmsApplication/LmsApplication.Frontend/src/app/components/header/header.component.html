@@ -2,24 +2,22 @@
   <div class="flex-1">
     <a class="btn btn-ghost text-xl">Lms App</a>
   </div>
-  <div class="flex-none gap-2">
+  <div *ngIf="authState().isAuthenticated" class="flex-none gap-2">
     <div tabindex="0" class="dropdown dropdown-end flex flex-row gap-4 btn btn-ghost no-animation">
       <h1>{{authState().userData?.name}}</h1>
-      <div role="button" class="avatar grid ">
-          <div class="w-10 rounded-full">
-            <img alt="Tailwind CSS Navbar component" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+      <div role="button" [ngClass]="{'avatar': true, 'placeholder': !authState().userData?.photo}">
+          <div class="w-10 rounded-full bg-neutral text-neutral-content">
+            <img *ngIf="authState().userData?.photo" alt="Tailwind CSS Navbar component" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            <span *ngIf="!authState().userData?.photo" class="text-lg">{{letterAvatar}}</span>
           </div>
       </div>
       <ul tabindex="0" class="mt-40 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-        <li>
-          <a class="justify-between">
-            Profile
-            <span class="badge">New</span>
-          </a>
-        </li>
+        <li><a class="justify-between">Profile</a></li>
         <li><a>Settings</a></li>
-        <li><a>Logout</a></li>
+        <li (click)="logoff()"><a>Logout</a></li>
       </ul>
     </div>
   </div>
+  <div *ngIf="!authState().isAuthenticated" class="flex-none gap-2">
+    <a class="btn btn-primary" (click)="login()">Login</a>
 </div>
