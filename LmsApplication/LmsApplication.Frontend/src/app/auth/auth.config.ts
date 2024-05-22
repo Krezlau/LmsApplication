@@ -9,7 +9,7 @@ export const authConfig: PassedInitialConfig = {
         clientId: '9029144a-5bb5-4a29-875c-81d66249d483',
         scope: 'openid profile offline_access email api://lms-api/tasks.read', // 'openid profile offline_access ' + your scopes
         responseType: 'code',
-        silentRenew: false,
+        silentRenew: true,
         useRefreshToken: true,
         ignoreNonceAfterRefresh: false,
         maxIdTokenIatOffsetAllowedInSeconds: 600,
@@ -18,6 +18,6 @@ export const authConfig: PassedInitialConfig = {
         customParamsAuthRequest: {
           prompt: 'select_account', // login, consent
         },
-        secureRoutes: ['http://localhost:8080/']
+        secureRoutes: ['http://localhost:8080/'],
     }
 }
