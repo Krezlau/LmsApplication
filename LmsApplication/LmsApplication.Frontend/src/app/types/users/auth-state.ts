@@ -5,5 +5,6 @@ export interface AuthState {
   accessToken: string;
   refreshToken: string;
   userData: UserModel | null;
+  tenantId: string;
 }
 

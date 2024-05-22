@@ -11,9 +11,12 @@ export abstract class BaseService implements OnDestroy, OnInit {
   protected constructor(protected router: Router) { }
 
   protected headers() {
-    let tenantId = this.router.url.toString().split('/')[1];
-    console.log(tenantId);
+    const tenantId = this.getTenantId();
     return new HttpHeaders().set("X-Tenant-Id", tenantId || "");
+  }
+
+  public getTenantId() {
+    return this.router.url.toString().split('/')[1];
   }
 
   ngOnInit(): void {

@@ -1,13 +1,16 @@
 import {Component, effect} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {NgClass, NgIf} from "@angular/common";
+import {UserRole} from "../../types/users/user-role";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
     NgClass,
-    NgIf
+    NgIf,
+    RouterLink
   ],
   templateUrl: './header.component.html'
 })
@@ -30,4 +33,6 @@ export class HeaderComponent {
   login() {
     this.authService.authorize();
   }
+
+  protected readonly UserRole = UserRole;
 }

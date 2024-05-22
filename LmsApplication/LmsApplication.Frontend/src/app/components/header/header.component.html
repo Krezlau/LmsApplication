@@ -12,6 +12,10 @@
           </div>
       </div>
       <ul tabindex="0" class="mt-40 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+        <li *ngIf="authState().userData?.role === UserRole.Admin" [routerLink]="[authState().tenantId, 'admin']"><a>
+          Admin Panel
+          <span class="badge badge-primary">Admin</span>
+        </a></li>
         <li><a class="justify-between">Profile</a></li>
         <li><a>Settings</a></li>
         <li (click)="logoff()"><a>Logout</a></li>

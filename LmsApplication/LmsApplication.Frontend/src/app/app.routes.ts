@@ -12,8 +12,11 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: ':tenantId/admin',
+    component: HomePageComponent
+  },
+  {
     path: '**',
-    redirectTo: 'tenant1/home',
-    pathMatch: 'full'
+    component: HomePageComponent
   }
 ];

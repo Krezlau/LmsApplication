@@ -15,7 +15,8 @@ export class AuthService implements OnDestroy {
     isAuthenticated: false,
     accessToken: '',
     refreshToken: '',
-    userData: null
+    userData: null,
+    tenantId: '',
   }
 
   public authState = signal(this.initialState);
@@ -37,6 +38,7 @@ export class AuthService implements OnDestroy {
           isAuthenticated: response.isAuthenticated,
           accessToken: response.accessToken,
           refreshToken: response.idToken,
+          tenantId: this.userService.getTenantId(),
           userData: {
             email: userData.email,
             name: userData.name,
