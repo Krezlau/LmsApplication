@@ -1,6 +1,7 @@
 using LmsApplication.Api.Shared.Controllers;
 using LmsApplication.Core.ApplicationServices.Users;
 using LmsApplication.Core.Config;
+using LmsApplication.Core.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,13 @@ public class AuthController : CoreController
     {
         var userEmail = GetUserEmail();
         var user = await _userAppService.GetCurrentUserInfoAsync(userEmail);
+        
+        var roles = GetUserRoles();
+        
+        if (roles.Contains(AuthPolicies.TeacherPolicy))
+            user.Role = UserRole.Teacher;
+        if (roles.Contains(AuthPolicies.AdminPolicy))
+            user.Role = UserRole.Admin;
         
         return Ok(user);
     }

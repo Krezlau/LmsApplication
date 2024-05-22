@@ -23,4 +23,10 @@ public class CoreController : ControllerBase
             throw new KeyNotFoundException("User email not found.");
         return email;
     }
+    
+    protected List<string> GetUserRoles()
+    {
+        var roles = User.FindAll(ClaimTypes.Role).Select(x => x.Value).ToList();
+        return roles;
+    }
 }

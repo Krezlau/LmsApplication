@@ -1,35 +1,25 @@
 import { Component } from '@angular/core';
 import {AuthService} from "../../services/auth.service";
-import {UserService} from "../../services/user.service";
+import {CourseEditionListComponent} from "../course-edition-list/course-edition-list.component";
+import {CourseEditionService} from "../../services/course-edition.service";
+import {AsyncPipe} from "@angular/common";
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [],
+  imports: [
+    CourseEditionListComponent,
+    AsyncPipe
+  ],
   templateUrl: './home-page.component.html'
 })
 export class HomePageComponent {
 
-  constructor(private authService: AuthService, private userService: UserService) {
+  authState = this.authService.authState;
+
+  courseEditions$ = this.courseEditionService.getCourseEditions();
+
+  constructor(private authService: AuthService, private courseEditionService: CourseEditionService) {
   }
 
-  login() {
-    this.authService.authorize();
-  }
-
-  logout() {
-    this.authService.logoff();
-  }
-
-  getMe() {
-    this.userService.getMe().subscribe((data) => {
-      console.log("data: ", data);
-    });
-  }
-
-  getUsers() {
-    this.userService.getUsers().subscribe((data) => {
-      console.log("data: ", data);
-    });
-  }
 }
