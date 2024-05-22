@@ -1,31 +1,41 @@
-﻿using LmsApplication.Core.Services.Graph;
-using Microsoft.Graph.Models;
+﻿using LmsApplication.Core.Data.Mapping;
+using LmsApplication.Core.Data.Models.Users;
+using LmsApplication.Core.Services.Graph;
+using Microsoft.Extensions.Logging;
 
 namespace LmsApplication.Core.ApplicationServices.Users;
 
 public interface IUserAppService
 {
-    Task<User> GetCurrentUserInfoAsync(string userEmail);
+    Task<UserModel> GetCurrentUserInfoAsync(string userEmail);
     
-    Task<List<User>> GetUsersAsync();
+    Task<List<UserModel>> GetUsersAsync();
 }
 
 public class UserAppService : IUserAppService
 {
     private readonly IGraphService _graphService;
+    private readonly ILogger<UserAppService> _logger;
 
-    public UserAppService(IGraphService graphService)
+    public UserAppService(IGraphService graphService, ILogger<UserAppService> logger)
     {
         _graphService = graphService;
+        _logger = logger;
     }
 
-    public async Task<User> GetCurrentUserInfoAsync(string userEmail)
+    public async Task<UserModel> GetCurrentUserInfoAsync(string userEmail)
     {
-        return await _graphService.GetCurrentUserInfoAsync(userEmail);
+        var user = await _graphService.GetCurrentUserInfoAsync(userEmail);
+        var userGroups = await _graphService.GetUserGroupsAsync(userEmail);
+        foreach(var usergroup in userGroups)
+        {
+            _logger.LogInformation(usergroup.DisplayName);
+        }
+        return user.ToModel(userGroups);
     }
 
-    public async Task<List<User>> GetUsersAsync()
+    public async Task<List<UserModel>> GetUsersAsync()
     {
-        return await _graphService.GetUsersAsync();
+        return (await _graphService.GetUsersAsync()).Select(x => x.ToModel(null)).ToList();
     }
 }

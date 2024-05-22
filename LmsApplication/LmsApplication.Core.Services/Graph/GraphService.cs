@@ -7,6 +7,8 @@ public interface IGraphService
 {
     Task<User> GetCurrentUserInfoAsync(string userEmail);
     
+    Task<List<Group>> GetUserGroupsAsync(string userEmail);
+    
     Task<List<User>> GetUsersAsync();
 }
 
@@ -28,6 +30,22 @@ public class GraphService : IGraphService
             throw new KeyNotFoundException($"{nameof(User)} not found.");
         
         return currentUser;
+    }
+
+    public async Task<List<Group>> GetUserGroupsAsync(string userEmail)
+    {
+        var graphClient = _graphServiceProvider.GetGraphServiceClient();
+        
+        var userGroups = await graphClient.Users[userEmail].MemberOf.GetAsync();
+        if (userGroups?.Value is null || userGroups.Value.Count == 0)
+            return new List<Group>();
+        
+        List<Group> groups = userGroups.Value
+            .Select(x => x as Group)
+            .Where(x => x is not null)
+            .ToList()!;
+        
+        return groups;
     }
 
     public async Task<List<User>> GetUsersAsync()

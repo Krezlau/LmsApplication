@@ -1,6 +1,7 @@
 using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Data.Mapping;
 using LmsApplication.Core.Data.Models;
+using LmsApplication.Core.Data.Models.Courses;
 using LmsApplication.Core.Services.Courses;
 
 namespace LmsApplication.Core.ApplicationServices.Courses;

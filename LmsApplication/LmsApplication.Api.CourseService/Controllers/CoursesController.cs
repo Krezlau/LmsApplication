@@ -2,6 +2,7 @@ using LmsApplication.Api.Shared.Controllers;
 using LmsApplication.Core.ApplicationServices.Courses;
 using LmsApplication.Core.Config;
 using LmsApplication.Core.Data.Models;
+using LmsApplication.Core.Data.Models.Courses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

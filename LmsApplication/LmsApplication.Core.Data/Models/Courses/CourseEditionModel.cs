@@ -1,7 +1,7 @@
 using LmsApplication.Core.Data.Enums;
 using LmsApplication.Core.Data.Extensions;
 
-namespace LmsApplication.Core.Data.Models;
+namespace LmsApplication.Core.Data.Models.Courses;
 
 public class CourseEditionModel
 {
