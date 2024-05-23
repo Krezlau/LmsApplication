@@ -1,14 +1,14 @@
 import {ActivatedRoute, Router} from "@angular/router";
 import {Injectable, OnDestroy, OnInit} from "@angular/core";
 import {Subscription} from "rxjs";
-import {HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable()
 export abstract class BaseService implements OnDestroy, OnInit {
 
   sub = new Subscription();
 
-  protected constructor(protected router: Router) { }
+  protected constructor(protected router: Router, protected http: HttpClient) { }
 
   protected headers() {
     const tenantId = this.getTenantId();

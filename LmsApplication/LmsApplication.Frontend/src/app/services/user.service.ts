@@ -9,8 +9,8 @@ import {UserModel} from "../types/users/user-model";
 })
 export class UserService extends BaseService{
 
-  constructor(private http: HttpClient, route: Router) {
-    super(route);
+  constructor(http: HttpClient, route: Router) {
+    super(route, http);
   }
 
   public getMe() {
@@ -18,6 +18,6 @@ export class UserService extends BaseService{
   }
 
   public getUsers() {
-    return this.http.get<UserModel>("http://localhost:8080/api/Auth/users", { headers: this.headers() });
+    return this.http.get<UserModel[]>("http://localhost:8080/api/Auth/users", { headers: this.headers() });
   }
 }

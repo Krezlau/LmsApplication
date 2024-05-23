@@ -1,0 +1,11 @@
+<ul *ngIf="users" class="mt-2">
+  <div class="grid grid-cols-3 border-b-2">
+    <h2 class="font-semibold">Full Name</h2>
+    <h2 class="font-semibold">Email</h2>
+    <h2 class="font-semibold">Role</h2>
+  </div>
+  <li *ngFor="let user of users" class="">
+    <app-user-card [user]="user"></app-user-card>
+  </li>
+</ul>
+<p *ngIf="!users"></p>

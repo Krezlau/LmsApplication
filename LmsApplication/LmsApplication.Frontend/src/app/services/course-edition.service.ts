@@ -9,8 +9,8 @@ import {CourseEditionModel} from "../types/courses/course-edition-model";
 })
 export class CourseEditionService extends BaseService{
 
-  constructor(router: Router, private http: HttpClient) {
-    super(router);
+  constructor(router: Router, http: HttpClient) {
+    super(router, http);
   }
 
   getCourseEditions() {

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import {HomePageComponent} from "./components/home-page/home-page.component";
+import {AdminPanelPageComponent} from "./components/admin-panel-page/admin-panel-page.component";
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
   },
   {
     path: ':tenantId/admin',
-    component: HomePageComponent
+    component: AdminPanelPageComponent
   },
   {
     path: '**',
