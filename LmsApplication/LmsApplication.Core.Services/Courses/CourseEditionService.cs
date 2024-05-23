@@ -38,7 +38,11 @@ public class CourseEditionService : ICourseEditionService
 
     public async Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userEmail)
     {
-        return await _context.CourseEditions.Where(x => x.TeacherEmails.Contains(userEmail)).ToListAsync();
+        var courseEditions = await _context.CourseEditions
+            .Where(x => x.EndDateUtc < DateTime.UtcNow)
+            .ToListAsync();
+        
+        return courseEditions.Where(x => x.StudentEmails.Contains(userEmail) || x.TeacherEmails.Contains(userEmail)).ToList();
     }
 
     public async Task<CourseEdition?> GetCourseEditionByIdAsync(Guid id)

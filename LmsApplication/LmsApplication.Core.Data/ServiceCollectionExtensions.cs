@@ -1,5 +1,6 @@
 using LmsApplication.Core.Config.ConfigModels;
 using LmsApplication.Core.Data.Database;
+using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Data.Tenants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.Cosmos;
