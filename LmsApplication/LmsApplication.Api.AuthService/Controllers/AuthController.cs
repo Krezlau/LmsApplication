@@ -33,6 +33,14 @@ public class AuthController : CoreController
         return Ok(user);
     }
     
+    [HttpGet("{userEmail}")]
+    public async Task<IActionResult> GetUser(string userEmail)
+    {
+        var user = await _userAppService.GetUserInfoAsync(userEmail);
+        
+        return Ok(user);
+    }
+    
     [HttpGet("users")]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetUsers()

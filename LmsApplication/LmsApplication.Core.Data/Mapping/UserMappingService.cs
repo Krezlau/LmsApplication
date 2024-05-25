@@ -6,25 +6,27 @@ namespace LmsApplication.Core.Data.Mapping;
 
 public static class UserMappingService
 {
-    public static UserModel ToModel(this User user, List<Group>? userGroups)
+    public static UserModel ToModel(this User user, AppRoleAssignmentCollectionResponse? userGroups, string adminRoleId,
+        string teacherRoleId)
     {
         return new UserModel
         {
             Id = user.Id ?? "",
-            Email = user.DisplayName ?? "",
+            Email = user.UserPrincipalName ?? "",
             Name = user.GivenName ?? "",
             Surname = user.Surname ?? "",
             Photo = user.Photo?.Id ?? null,
-            Role = userGroups is not null ? DetermineUserRole(userGroups) : null,
+            Role = userGroups is not null ? DetermineUserRole(userGroups, adminRoleId, teacherRoleId) : null,
         };
     }
     
-    private static UserRole? DetermineUserRole(List<Group> userGroups)
+    private static UserRole? DetermineUserRole(AppRoleAssignmentCollectionResponse userGroups, string adminRoleId,
+        string teacherRoleId)
     {
-        if (userGroups.Any(x => x.DisplayName == "Admin"))
+        if (userGroups.Value?.Any(x => x.AppRoleId.ToString() == adminRoleId) ?? false)
             return UserRole.Admin;
         
-        if (userGroups.Any(x => x.DisplayName == "Teacher"))
+        if (userGroups.Value?.Any(x => x.AppRoleId.ToString() == teacherRoleId) ?? false)
             return UserRole.Teacher;
         
         return UserRole.Student;

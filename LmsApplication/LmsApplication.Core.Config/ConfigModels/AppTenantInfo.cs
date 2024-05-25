@@ -25,4 +25,8 @@ public class AppTenantInfo
     public required string ApiClientSecret { get; set; }
     
     public required string ApiTenantId { get; set; }
+    
+    public required string AdminRoleId { get; set; }
+    
+    public required string TeacherRoleId { get; set; }
 }
