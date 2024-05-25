@@ -2,7 +2,7 @@
   <div class="flex-1" [routerLink]="[authState().tenantId, 'home']">
     <a class="btn btn-ghost text-xl">Lms App</a>
   </div>
-  <div *ngIf="authState().isAuthenticated" class="flex-none gap-2">
+  <div *ngIf="authState().isAuthenticated" class="">
     <div tabindex="0" class="dropdown dropdown-end flex flex-row gap-4 btn btn-ghost no-animation">
       <h1>{{authState().userData?.name}}</h1>
       <div role="button" [ngClass]="{'avatar': true, 'placeholder': !authState().userData?.photo}">
@@ -11,12 +11,15 @@
             <span *ngIf="!authState().userData?.photo" class="text-lg">{{letterAvatar}}</span>
           </div>
       </div>
-      <ul tabindex="0" class="mt-48 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+      <ul tabindex="0" class="z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 fixed top-[60px]">
         <li *ngIf="authState().userData?.role === UserRole.Admin" [routerLink]="[authState().tenantId, 'admin']"><a>
           Admin Panel
           <span class="badge badge-primary">Admin</span>
         </a></li>
-        <li><a class="justify-between">Profile</a></li>
+        <li><a class="justify-between"
+         [routerLink]="[authState().tenantId, 'users', authState().userData?.email]">
+          Profile
+        </a></li>
         <li><a>Settings</a></li>
         <li (click)="logoff()"><a>Logout</a></li>
       </ul>

@@ -1,4 +1,7 @@
-<div *ngIf="user" class="grid grid-cols-3 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 cursor-pointer">
+<div *ngIf="user"
+  class="grid grid-cols-3 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 cursor-pointer"
+  (click)="onUserClick()"
+>
   <div role="button" [ngClass]="{'avatar': true, 'placeholder': !user.photo}">
     <div class="w-8 h-8 my-auto rounded-full bg-neutral text-neutral-content mr-2">
       <img *ngIf="user.photo" alt="Tailwind CSS Navbar component" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />

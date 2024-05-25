@@ -17,6 +17,9 @@ export class UserService extends BaseService{
     return this.http.get<UserModel>("http://localhost:8080/api/Auth", { headers: this.headers() });
   }
 
+  public getUser(email: string) {
+    return this.http.get<UserModel>(`http://localhost:8080/api/Auth/${email}`, { headers: this.headers() });
+  }
   public getUsers() {
     return this.http.get<UserModel[]>("http://localhost:8080/api/Auth/users", { headers: this.headers() });
   }
