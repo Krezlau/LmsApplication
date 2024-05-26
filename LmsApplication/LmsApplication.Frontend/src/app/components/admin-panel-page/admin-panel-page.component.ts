@@ -5,6 +5,7 @@ import {UserListComponent} from "../user-list/user-list.component";
 import {UserService} from "../../services/user.service";
 import {CourseService} from "../../services/course.service";
 import {AsyncPipe} from "@angular/common";
+import {CourseAddFormComponent} from "../course-add-form/course-add-form.component";
 
 @Component({
   selector: 'app-admin-panel-page',
@@ -13,7 +14,8 @@ import {AsyncPipe} from "@angular/common";
     CourseEditionListComponent,
     CourseListComponent,
     UserListComponent,
-    AsyncPipe
+    AsyncPipe,
+    CourseAddFormComponent
   ],
   templateUrl: './admin-panel-page.component.html'
 })

@@ -1,0 +1,16 @@
+<div class="grid grid-cols-2">
+  <button class="btn btn-sm ml-[calc(100%-32*4px)] btn-primary w-32 col-start-2" onclick="my_modal_2.showModal()">New Course</button>
+</div>
+  <dialog id="my_modal_2" class="modal">
+    <form class="modal-box flex flex-col justify-center" (ngSubmit)="onSubmit()">
+      <h3 class="font-bold text-xl">Create New Course</h3>
+      <label class="block mt-2 text-lg">Title</label>
+      <input class="input input-bordered block" [formControl]="titleFormControl"/>
+      <label class="block mt-2 text-lg">Description</label>
+      <textarea class="textarea textarea-bordered block" [formControl]="descriptionFormControl"></textarea>
+      <button class="btn btn-primary mt-4">Create</button>
+    </form>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
