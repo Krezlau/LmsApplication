@@ -32,7 +32,7 @@ public class MicrosoftIdentityOptionsInitializer : IConfigureNamedOptions<Micros
         options.SignUpSignInPolicyId = tenant.OpenIdSignUpSignInPolicyId;
         
         options.Scope.Clear();
-        options.Scope.Add("tasks.read");
+        options.Scope.Add(tenant.Scope);
     }
 
     public void Configure(MicrosoftIdentityOptions options)

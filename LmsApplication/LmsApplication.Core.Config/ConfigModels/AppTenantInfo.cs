@@ -29,4 +29,6 @@ public class AppTenantInfo
     public required string AdminRoleId { get; set; }
     
     public required string TeacherRoleId { get; set; }
+    
+    public required string Scope { get; set; }
 }
