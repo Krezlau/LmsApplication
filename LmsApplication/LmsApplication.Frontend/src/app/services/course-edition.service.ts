@@ -15,6 +15,9 @@ export class CourseEditionService extends BaseService{
 
   getCourseEditions() {
     return this.http.get<CourseEditionModel[]>('http://localhost:8080/api/courses/editions/my-courses', {headers: this.headers()});
-    // return this.http.get<CourseEditionModel[]>('http://localhost:8080/api/courses/editions/all', {headers: this.headers()});
+  }
+
+  getCourseEditionsByCourseId(courseId: string) {
+    return this.http.get<CourseEditionModel[]>(`http://localhost:8080/api/courses/editions/by-course/${courseId}`, {headers: this.headers()});
   }
 }

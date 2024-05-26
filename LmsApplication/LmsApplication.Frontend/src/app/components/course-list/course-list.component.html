@@ -1,2 +1,12 @@
-<p>course-list works!</p>
+<ul class="grid grid-cols-4 gap-4 mt-2">
+  <li *ngFor="let course of courses">
+    <div class="card card-compact bg-base-100 shadow-xl transition hover:scale-105 cursor-pointer" (click)="redirectToDetails(course.id)">
+      <figure><img src="https://maths.mrpitts.co.uk/wp-content/uploads/2018/09/cropped-iStock-484064126.jpg" alt="Shoes" /></figure>
+      <div class="card-body">
+        <h2 class="card-title">{{course.title}}</h2>
+        <p class="h-[52px] overflow-clip">{{course.description}}</p>
+      </div>
+    </div>
+  </li>
+</ul>
 <app-course-add-form ></app-course-add-form>

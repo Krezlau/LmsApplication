@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import {HomePageComponent} from "./components/home-page/home-page.component";
 import {AdminPanelPageComponent} from "./components/admin-panel-page/admin-panel-page.component";
 import {ProfilePageComponent} from "./components/profile-page/profile-page.component";
+import {CourseDetailsPageComponent} from "./components/course-details-page/course-details-page.component";
 
 export const routes: Routes = [
   {
@@ -15,6 +16,10 @@ export const routes: Routes = [
   {
     path: ':tenantId/users/:email',
     component: ProfilePageComponent
+  },
+  {
+    path: ':tenantId/courses/:courseId',
+    component: CourseDetailsPageComponent
   },
   {
     path: '',

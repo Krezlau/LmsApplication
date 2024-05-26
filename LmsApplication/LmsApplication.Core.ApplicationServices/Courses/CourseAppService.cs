@@ -1,6 +1,5 @@
 using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Data.Mapping;
-using LmsApplication.Core.Data.Models;
 using LmsApplication.Core.Data.Models.Courses;
 using LmsApplication.Core.Services.Courses;
 
@@ -10,7 +9,9 @@ public interface ICourseAppService
 {
     Task<List<CourseModel>> GetAllCoursesAsync();
     
-    Task<Guid> CreateCourseAsync(CoursePostModel courseModel);
+    Task<CourseModel> GetCourseByIdAsync(Guid id);
+    
+    Task<CourseModel> CreateCourseAsync(CoursePostModel courseModel);
 }
 
 public class CourseAppService : ICourseAppService
@@ -29,7 +30,16 @@ public class CourseAppService : ICourseAppService
         return courses.Select(x => x.ToModel()).ToList();
     }
 
-    public async Task<Guid> CreateCourseAsync(CoursePostModel courseModel)
+    public async Task<CourseModel> GetCourseByIdAsync(Guid id)
+    {
+        var course = await _courseService.GetCourseByIdAsync(id);
+        if (course is null)
+            throw new KeyNotFoundException($"{nameof(Course)} not found.");
+
+        return course.ToModel();
+    }
+
+    public async Task<CourseModel> CreateCourseAsync(CoursePostModel courseModel)
     {
         var course = new Course
         {
@@ -41,6 +51,6 @@ public class CourseAppService : ICourseAppService
 
         await _courseService.UpsertAsync(course);
         
-        return course.Id;
+        return course.ToModel();
     }
 }

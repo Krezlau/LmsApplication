@@ -10,6 +10,8 @@ public interface ICourseService
     
     Task<Course?> GetCourseByIdAsync(Guid id);
     
+    Task<List<Course>> GetCoursesByIdsAsync(List<Guid> ids);
+    
     Task UpsertAsync(Course course);
 }
 
@@ -30,6 +32,11 @@ public class CourseService : ICourseService
     public async Task<Course?> GetCourseByIdAsync(Guid id)
     {
         return await _dbContext.Courses.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<Course>> GetCoursesByIdsAsync(List<Guid> ids)
+    {
+        return await _dbContext.Courses.Where(x => ids.Contains(x.Id)).ToListAsync();
     }
 
     public async Task UpsertAsync(Course course)

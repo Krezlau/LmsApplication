@@ -1,6 +1,5 @@
 using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Data.Mapping;
-using LmsApplication.Core.Data.Models;
 using LmsApplication.Core.Data.Models.Courses;
 using LmsApplication.Core.Services.Courses;
 
@@ -14,7 +13,7 @@ public interface ICourseEditionAppService
     
     Task<CourseEditionModel> GetCourseEditionByIdAsync(Guid id);
     
-    Task<Guid> CreateCourseEditionAsync(CourseEditionPostModel model);
+    Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model);
     
     Task AddTeacherToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model);
     
@@ -37,8 +36,8 @@ public class CourseEditionAppService : ICourseEditionAppService
     public async Task<List<CourseEditionModel>> GetAllCourseEditionsAsync()
     {
         var courseEditions = await _courseEditionService.GetAllCourseEditionsAsync();
-        
-        return courseEditions.Select(x => x.ToModel()).ToList();
+
+        return await MapToModelAsync(courseEditions);
     }
 
     public async Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId)
@@ -53,11 +52,11 @@ public class CourseEditionAppService : ICourseEditionAppService
         var courseEdition = await _courseEditionService.GetCourseEditionByIdAsync(id);
         if (courseEdition is null)
             throw new KeyNotFoundException("Course edition not found");
-        
-        return courseEdition.ToModel();
+
+        return await MapToModelAsync(courseEdition);
     }
 
-    public async Task<Guid> CreateCourseEditionAsync(CourseEditionPostModel model)
+    public async Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model)
     {
         // todo validation
         var course = await _courseService.GetCourseByIdAsync(model.CourseId);
@@ -74,7 +73,7 @@ public class CourseEditionAppService : ICourseEditionAppService
         
         await _courseEditionService.UpsertAsync(courseEdition);
         
-        return courseEdition.Id;
+        return await MapToModelAsync(courseEdition);
     }
 
     public async Task AddTeacherToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
@@ -108,5 +107,34 @@ public class CourseEditionAppService : ICourseEditionAppService
         var courseEditions = await _courseEditionService.GetUserCourseEditionsAsync(userEmail);
         
         return courseEditions.Select(x => x.ToModel()).ToList();
+    }
+
+    private async Task<CourseEditionModel> MapToModelAsync(CourseEdition entity)
+    {
+        var course = await _courseService.GetCourseByIdAsync(entity.CourseId);
+        if (course is null)
+            throw new KeyNotFoundException("Course not found");
+
+        var ret = entity.ToModel();
+        ret.Course = course.ToModel();
+        
+        return ret;
+    }
+    
+    private async Task<List<CourseEditionModel>> MapToModelAsync(List<CourseEdition> entities)
+    {
+        var courses = await _courseService.GetCoursesByIdsAsync(entities.Select(x => x.CourseId).ToList());
+        
+        return entities.Select(x =>
+        {
+            var course = courses.FirstOrDefault(c => c.Id == x.CourseId);
+            if (course is null)
+                throw new KeyNotFoundException("Course not found");
+            
+            var ret = x.ToModel();
+            ret.Course = course.ToModel();
+            
+            return ret;
+        }).ToList();
     }
 }

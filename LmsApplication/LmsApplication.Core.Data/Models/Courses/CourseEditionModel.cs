@@ -6,8 +6,8 @@ namespace LmsApplication.Core.Data.Models.Courses;
 public class CourseEditionModel
 {
     public Guid Id { get; set; }
-    
-    public Guid CourseId { get; set; }
+
+    public CourseModel Course { get; set; } = new();
     
     public CourseDuration Duration { get; set; }
     

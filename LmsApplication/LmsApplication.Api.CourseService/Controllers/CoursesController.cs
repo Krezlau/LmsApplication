@@ -1,7 +1,6 @@
 using LmsApplication.Api.Shared.Controllers;
 using LmsApplication.Core.ApplicationServices.Courses;
 using LmsApplication.Core.Config;
-using LmsApplication.Core.Data.Models;
 using LmsApplication.Core.Data.Models.Courses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +22,12 @@ public class CoursesController : CoreController
     public async Task<IActionResult> GetAllCourses()
     {
         return Ok(await _courseAppService.GetAllCoursesAsync());
+    }
+    
+    [HttpGet("{courseId}")]
+    public async Task<IActionResult> GetCourse(Guid courseId)
+    {
+        return Ok(await _courseAppService.GetCourseByIdAsync(courseId));
     }
 
     [HttpPost]

@@ -18,6 +18,10 @@ export class CourseService extends BaseService {
     return this.http.get<CourseModel[]>('http://localhost:8080/api/courses', { headers: this.headers() });
   }
 
+  public getCoursebyId(courseId: string) {
+    return this.http.get<CourseModel>(`http://localhost:8080/api/courses/${courseId}`, { headers: this.headers() });
+  }
+
   public createCourse(course: CoursePostModel) {
     return this.http.post<CourseModel>('http://localhost:8080/api/courses', course, { headers: this.headers() });
   }

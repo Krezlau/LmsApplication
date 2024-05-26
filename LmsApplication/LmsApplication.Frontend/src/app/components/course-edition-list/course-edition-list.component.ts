@@ -12,4 +12,6 @@ export class CourseEditionListComponent {
 
   constructor() {
   }
+
+  redirectToDetails(courseEditionId: string) {}
 }
