@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {ROUTER_CONFIGURATION, RouterConfigOptions, RouterConfigurationFeature, Routes} from '@angular/router';
 import {HomePageComponent} from "./components/home-page/home-page.component";
 import {AdminPanelPageComponent} from "./components/admin-panel-page/admin-panel-page.component";
 import {ProfilePageComponent} from "./components/profile-page/profile-page.component";
@@ -23,7 +23,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'tenant1/home',
+    redirectTo: 'tenant2/home',
     pathMatch: 'full'
   },
   {
@@ -31,3 +31,7 @@ export const routes: Routes = [
     component: HomePageComponent
   }
 ];
+
+export const routerConfig: RouterConfigOptions = {
+  urlUpdateStrategy: 'eager',
+};

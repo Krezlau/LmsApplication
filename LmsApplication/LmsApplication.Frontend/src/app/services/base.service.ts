@@ -2,21 +2,26 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Injectable, OnDestroy, OnInit} from "@angular/core";
 import {Subscription} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Location} from "@angular/common";
 
 @Injectable()
 export abstract class BaseService implements OnDestroy, OnInit {
 
   protected sub = new Subscription();
 
-  protected constructor(protected router: Router, protected http: HttpClient) { }
+  protected constructor(protected location: Location, protected http: HttpClient) { }
 
-  protected headers() {
+  protected headers(token?: string) {
     const tenantId = this.getTenantId();
-    return new HttpHeaders().set("X-Tenant-Id", tenantId || "");
+    const headers = new HttpHeaders().set("X-Tenant-Id", tenantId || "");
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+    return headers;
   }
 
   public getTenantId() {
-    return this.router.url.toString().split('/')[1];
+    return this.location.path().toString().split('/')[1];
   }
 
   ngOnInit(): void {

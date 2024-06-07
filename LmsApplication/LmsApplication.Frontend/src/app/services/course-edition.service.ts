@@ -3,14 +3,15 @@ import {BaseService} from "./base.service";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {CourseEditionModel} from "../types/courses/course-edition-model";
+import {Location} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseEditionService extends BaseService{
 
-  constructor(router: Router, http: HttpClient) {
-    super(router, http);
+  constructor(location: Location, http: HttpClient) {
+    super(location, http);
   }
 
   getCourseEditions() {

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, effect} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {ActivatedRoute, RouterOutlet} from '@angular/router';
 import {AuthService} from "./services/auth.service";
 import {HeaderComponent} from "./components/header/header.component";
 
@@ -14,7 +14,16 @@ import {HeaderComponent} from "./components/header/header.component";
 export class AppComponent {
   title = 'LmsApplication.Frontend';
 
-  constructor(private authService: AuthService) {
-    this.authService.checkAuth();
+  isLoading = this.authService.isLoading;
+
+  constructor(private authService: AuthService, private route: ActivatedRoute) {
+    // this.authService.checkLoading();
+    // effect(() => {
+    //   if (!this.isLoading()) {
+    //     this.authService.checkAuth();
+    //   }
+    //   console.log('lmao')
+    // })
+    this.authService.checkAuth()
   }
 }

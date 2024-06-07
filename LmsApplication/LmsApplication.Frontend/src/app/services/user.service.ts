@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BaseService} from "./base.service";
-import {Router} from "@angular/router";
 import {UserModel} from "../types/users/user-model";
+import {Location} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService extends BaseService{
 
-  constructor(http: HttpClient, route: Router) {
-    super(route, http);
+  constructor(http: HttpClient, location: Location) {
+    super(location, http);
   }
 
-  public getMe() {
-    return this.http.get<UserModel>("http://localhost:8080/api/Auth", { headers: this.headers() });
+  public getMe(token?: string) {
+    return this.http.get<UserModel>("http://localhost:8080/api/Auth", { headers: this.headers(token) });
   }
 
   public getUser(email: string) {
