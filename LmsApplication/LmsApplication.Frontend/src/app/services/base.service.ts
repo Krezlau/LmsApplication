@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 @Injectable()
 export abstract class BaseService implements OnDestroy, OnInit {
 
-  sub = new Subscription();
+  protected sub = new Subscription();
 
   protected constructor(protected router: Router, protected http: HttpClient) { }
 

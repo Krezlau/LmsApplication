@@ -1,16 +1,15 @@
 import {Injectable, OnDestroy, signal} from '@angular/core';
 import {LoginResponse, OidcSecurityService} from "angular-auth-oidc-client";
-import {Subscription} from "rxjs";
 import {UserService} from "./user.service";
 import {Router} from "@angular/router";
 import {AuthState} from "../types/users/auth-state";
+import {BaseService} from "./base.service";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnDestroy {
-  private sub = new Subscription();
-
+export class AuthService extends BaseService implements OnDestroy {
   private initialState: AuthState = {
     isAuthenticated: false,
     accessToken: '',
@@ -21,7 +20,18 @@ export class AuthService implements OnDestroy {
 
   public authState = signal(this.initialState);
 
-  constructor(private oidcSecurityService: OidcSecurityService, private userService: UserService, private router: Router) { }
+  private configDict = new Map([
+    ['tenant1', 'tenant1'],
+    ['tenant2', 'tenant2']
+  ]);
+
+  constructor(private oidcSecurityService: OidcSecurityService, private userService: UserService, router: Router, http: HttpClient) {
+    super(router, http);
+  }
+
+  private getConfigId() {
+    return this.configDict.get(this.getTenantId());
+  }
 
   public checkAuth() {
     // this isnt the best
@@ -32,7 +42,10 @@ export class AuthService implements OnDestroy {
       }, 500);
     }
 
-    this.sub.add(this.oidcSecurityService.checkAuth().subscribe((response : LoginResponse) => {
+    const configId = this.getConfigId();
+    console.log(configId)
+    if (!configId) return;
+    this.sub.add(this.oidcSecurityService.checkAuth(undefined, configId).subscribe((response : LoginResponse) => {
       this.sub.add(this.userService.getMe().subscribe((userData) => {
         this.authState.set({
           isAuthenticated: response.isAuthenticated,
@@ -55,16 +68,12 @@ export class AuthService implements OnDestroy {
   }
 
   public authorize() {
-    this.oidcSecurityService.authorize();
+    console.log(this.getConfigId());
+    this.oidcSecurityService.authorize(this.getConfigId());
   }
 
   public logoff() {
-    this.oidcSecurityService.logoffLocal();
+    this.oidcSecurityService.logoffLocal(this.getConfigId());
     this.authState.set(this.initialState);
   }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
 }
