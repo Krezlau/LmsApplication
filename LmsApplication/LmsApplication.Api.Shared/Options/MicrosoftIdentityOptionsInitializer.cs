@@ -3,6 +3,8 @@ using LmsApplication.Core.Data.Tenants;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Newtonsoft.Json;
 
 namespace LmsApplication.Api.Shared.Options;
 
@@ -24,12 +26,17 @@ public class MicrosoftIdentityOptionsInitializer : IConfigureNamedOptions<Micros
         var tenant = _tenantProvider.GetTenantInfo();
         _logger.LogInformation($"Configuring MicrosoftIdentityOptions for tenant '{tenant}'.");
 
+        // options = new MicrosoftIdentityOptions();
         // Other tenant-specific options like options.Authority can be registered here.
         options.Authority = tenant.OpenIdConnectAuthority;
         options.ClientId = tenant.OpenIdConnectClientId;
         options.TenantId = tenant.OpenIdTenantId;
         options.ClaimsIssuer = tenant.OpenIdClaimsIssuer;
         options.SignUpSignInPolicyId = tenant.OpenIdSignUpSignInPolicyId;
+        
+        options.TokenValidationParameters.ValidIssuers = new[] { tenant.OpenIdConnectAuthority, "https://sts.windows.net/93ba8a8c-bd33-4b98-af36-dcc63dc2f84e/", "https://sts.windows.net/40dcee2a-c051-4a80-acba-953dac9a3942/" };
+        // write every parameter in options to the log without using json serializer
+        _logger.LogInformation($"Options: {options}");
         
         options.Scope.Clear();
         options.Scope.Add(tenant.Scope);

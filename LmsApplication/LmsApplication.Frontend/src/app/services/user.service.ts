@@ -14,6 +14,7 @@ export class UserService extends BaseService{
   }
 
   public getMe(token?: string) {
+    console.log(token);
     return this.http.get<UserModel>("http://localhost:8080/api/Auth", { headers: this.headers(token) });
   }
 

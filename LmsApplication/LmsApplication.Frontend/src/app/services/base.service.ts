@@ -13,9 +13,12 @@ export abstract class BaseService implements OnDestroy, OnInit {
 
   protected headers(token?: string) {
     const tenantId = this.getTenantId();
-    const headers = new HttpHeaders().set("X-Tenant-Id", tenantId || "");
+    let headers;
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+      headers = new HttpHeaders().set("X-Tenant-Id", tenantId || "").set("Authorization", `Bearer ${token}`);
+    }
+    else {
+      headers = new HttpHeaders().set("X-Tenant-Id", tenantId || "");
     }
     return headers;
   }
