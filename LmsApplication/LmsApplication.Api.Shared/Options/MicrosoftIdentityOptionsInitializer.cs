@@ -26,7 +26,6 @@ public class MicrosoftIdentityOptionsInitializer : IConfigureNamedOptions<Micros
         var tenant = _tenantProvider.GetTenantInfo();
         _logger.LogInformation($"Configuring MicrosoftIdentityOptions for tenant '{tenant}'.");
 
-        // options = new MicrosoftIdentityOptions();
         // Other tenant-specific options like options.Authority can be registered here.
         options.Authority = tenant.OpenIdConnectAuthority;
         options.ClientId = tenant.OpenIdConnectClientId;
@@ -34,9 +33,7 @@ public class MicrosoftIdentityOptionsInitializer : IConfigureNamedOptions<Micros
         options.ClaimsIssuer = tenant.OpenIdClaimsIssuer;
         options.SignUpSignInPolicyId = tenant.OpenIdSignUpSignInPolicyId;
         
-        options.TokenValidationParameters.ValidIssuers = new[] { tenant.OpenIdConnectAuthority, "https://sts.windows.net/93ba8a8c-bd33-4b98-af36-dcc63dc2f84e/", "https://sts.windows.net/40dcee2a-c051-4a80-acba-953dac9a3942/" };
-        // write every parameter in options to the log without using json serializer
-        _logger.LogInformation($"Options: {options}");
+        options.TokenValidationParameters.ValidIssuers = new[] { tenant.OpenIdConnectAuthority, tenant.SecondIssuer };
         
         options.Scope.Clear();
         options.Scope.Add(tenant.Scope);

@@ -31,7 +31,7 @@ public class JwtBearerOptionsInitializer : IConfigureNamedOptions<JwtBearerOptio
         options.TokenValidationParameters.ValidIssuer = tenant.OpenIdConnectAuthority;
         options.TokenValidationParameters.ValidAudience = tenant.OpenIdConnectAudience;
         options.TokenValidationParameters.ValidateIssuer = false;
-        options.TokenValidationParameters.ValidIssuers = new[] { tenant.OpenIdConnectAuthority, "https://sts.windows.net/93ba8a8c-bd33-4b98-af36-dcc63dc2f84e/", "https://sts.windows.net/40dcee2a-c051-4a80-acba-953dac9a3942/" };
+        options.TokenValidationParameters.ValidIssuers = new[] { tenant.OpenIdConnectAuthority, tenant.SecondIssuer };
     }
 
     public void Configure(JwtBearerOptions options)

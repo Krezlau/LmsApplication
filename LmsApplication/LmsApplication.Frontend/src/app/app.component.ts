@@ -14,16 +14,7 @@ import {HeaderComponent} from "./components/header/header.component";
 export class AppComponent {
   title = 'LmsApplication.Frontend';
 
-  isLoading = this.authService.isLoading;
-
-  constructor(private authService: AuthService, private route: ActivatedRoute) {
-    // this.authService.checkLoading();
-    // effect(() => {
-    //   if (!this.isLoading()) {
-    //     this.authService.checkAuth();
-    //   }
-    //   console.log('lmao')
-    // })
+  constructor(private authService: AuthService) {
     this.authService.checkAuth()
   }
 }

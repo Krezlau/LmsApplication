@@ -4,8 +4,9 @@ import {CourseListComponent} from "../course-list/course-list.component";
 import {UserListComponent} from "../user-list/user-list.component";
 import {UserService} from "../../services/user.service";
 import {CourseService} from "../../services/course.service";
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, NgIf} from "@angular/common";
 import {CourseAddFormComponent} from "../course-add-form/course-add-form.component";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-admin-panel-page',
@@ -15,14 +16,14 @@ import {CourseAddFormComponent} from "../course-add-form/course-add-form.compone
     CourseListComponent,
     UserListComponent,
     AsyncPipe,
-    CourseAddFormComponent
+    CourseAddFormComponent,
+    NgIf
   ],
   templateUrl: './admin-panel-page.component.html'
 })
 export class AdminPanelPageComponent {
 
-  users$ = this.userService.getUsers();
-  courses$ = this.courseService.getAllCourses();
+  authState = this.authService.authState;
 
-  constructor(private userService: UserService, private courseService: CourseService) { }
+  constructor(private authService: AuthService) { }
 }
