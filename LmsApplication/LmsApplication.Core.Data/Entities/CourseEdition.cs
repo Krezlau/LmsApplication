@@ -24,6 +24,4 @@ public class CourseEdition : IAuditable
     public List<string> StudentEmails { get; set; } = new();
 
     public Audit Audit { get; set; } = new();
-    
-    public string PartitionKey { get => $"{CourseId}"; set { } }
 }

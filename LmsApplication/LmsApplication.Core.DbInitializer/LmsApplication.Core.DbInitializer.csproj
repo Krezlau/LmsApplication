@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Aspire.Hosting.Azure.AppConfiguration" Version="8.0.0-preview.6.24214.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
       <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="7.2.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     </ItemGroup>

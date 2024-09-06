@@ -17,6 +17,4 @@ public class Course : IAuditable
     public CourseDuration Duration { get; set; }
     
     public Audit Audit { get; set; } = new();
-    
-    public string PartitionKey { get => "course"; set { } }
 }

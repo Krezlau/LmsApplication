@@ -3,8 +3,6 @@ using LmsApplication.Core.Data.Tenants;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Newtonsoft.Json;
 
 namespace LmsApplication.Api.Shared.Options;
 

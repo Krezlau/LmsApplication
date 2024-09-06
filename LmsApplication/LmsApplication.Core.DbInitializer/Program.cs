@@ -1,6 +1,10 @@
-﻿using LmsApplication.Core.Data;
+﻿using LmsApplication.Core.Config.ConfigModels;
+using LmsApplication.Core.Data.Database;
+using LmsApplication.Core.DbInitializer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -12,5 +16,16 @@ builder.Configuration.AddAzureAppConfiguration(c =>
         .Select(KeyFilter.Any);
 });
 
-builder.CreateContainers();
+builder.Services.AddDbContext<CourseDbContext>();
 
+builder.Build();
+
+var tenants = builder.Configuration.GetSection(AppTenantsModel.Key).Get<AppTenantsModel>();
+Console.WriteLine("Creating containers...");
+
+foreach (var tenant in tenants!.Tenants)
+{
+    var tenantService = new MockTenantService(tenants, tenant.Id);
+    var db = new CourseDbContext(builder.Configuration, tenantService);
+    db.Database.Migrate();
+}

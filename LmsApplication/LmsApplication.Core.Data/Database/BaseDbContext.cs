@@ -1,6 +1,5 @@
 using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Data.Tenants;
-using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -53,21 +52,8 @@ public abstract class BaseDbContext : DbContext
         var tenantId = _tenantProviderService.GetTenantId();
         
         var connectionString = _config.GetConnectionString($"db{tenantId}");
-        
-        optionsBuilder.UseCosmos(connectionString, DatabaseName, opt =>
-        {
-            opt.HttpClientFactory(() =>
-            {
-                HttpMessageHandler httpMessageHandler = new HttpClientHandler()
-                {
-                    ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true,
-                };
 
-                return new HttpClient(httpMessageHandler);
-            });
-            opt.ConnectionMode(ConnectionMode.Gateway);
-            opt.LimitToEndpoint();
-        });
+        optionsBuilder.UseSqlServer(connectionString);
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
