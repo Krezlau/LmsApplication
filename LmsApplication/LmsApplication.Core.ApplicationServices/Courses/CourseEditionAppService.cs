@@ -1,4 +1,5 @@
 using LmsApplication.Core.Data.Entities;
+using LmsApplication.Core.Data.Enums;
 using LmsApplication.Core.Data.Mapping;
 using LmsApplication.Core.Data.Models.Courses;
 using LmsApplication.Core.Services.Courses;
@@ -37,7 +38,7 @@ public class CourseEditionAppService : ICourseEditionAppService
     {
         var courseEditions = await _courseEditionService.GetAllCourseEditionsAsync();
 
-        return await MapToModelAsync(courseEditions);
+        return courseEditions.Select(x => x.ToModel()).ToList();
     }
 
     public async Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId)
@@ -53,7 +54,7 @@ public class CourseEditionAppService : ICourseEditionAppService
         if (courseEdition is null)
             throw new KeyNotFoundException("Course edition not found");
 
-        return await MapToModelAsync(courseEdition);
+        return courseEdition.ToModel();
     }
 
     public async Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model)
@@ -68,12 +69,13 @@ public class CourseEditionAppService : ICourseEditionAppService
             CourseId = model.CourseId,
             StartDateUtc = model.StartDateUtc,
             StudentLimit = model.StudentLimit,
-            Duration = course.Duration
+            Duration = course.Duration,
+            Course = course,
         };
         
         await _courseEditionService.CreateAsync(courseEdition);
         
-        return await MapToModelAsync(courseEdition);
+        return courseEdition.ToModel();
     }
 
     public async Task AddTeacherToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
@@ -84,9 +86,7 @@ public class CourseEditionAppService : ICourseEditionAppService
         if (courseEdition is null)
             throw new KeyNotFoundException("Course edition not found");
         
-        courseEdition.TeacherEmails.Add(model.UserEmail);
-        
-        await _courseEditionService.UpdateAsync(courseEdition);
+        await _courseEditionService.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Teacher);
     }
 
     public async Task AddStudentToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
@@ -97,9 +97,7 @@ public class CourseEditionAppService : ICourseEditionAppService
         if (courseEdition is null)
             throw new KeyNotFoundException("Course edition not found");
         
-        courseEdition.StudentEmails.Add(model.UserEmail);
-        
-        await _courseEditionService.UpdateAsync(courseEdition);
+        await _courseEditionService.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Student);
     }
 
     public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userEmail)
@@ -107,34 +105,5 @@ public class CourseEditionAppService : ICourseEditionAppService
         var courseEditions = await _courseEditionService.GetUserCourseEditionsAsync(userEmail);
         
         return courseEditions.Select(x => x.ToModel()).ToList();
-    }
-
-    private async Task<CourseEditionModel> MapToModelAsync(CourseEdition entity)
-    {
-        var course = await _courseService.GetCourseByIdAsync(entity.CourseId);
-        if (course is null)
-            throw new KeyNotFoundException("Course not found");
-
-        var ret = entity.ToModel();
-        ret.Course = course.ToModel();
-        
-        return ret;
-    }
-    
-    private async Task<List<CourseEditionModel>> MapToModelAsync(List<CourseEdition> entities)
-    {
-        var courses = await _courseService.GetCoursesByIdsAsync(entities.Select(x => x.CourseId).ToList());
-        
-        return entities.Select(x =>
-        {
-            var course = courses.FirstOrDefault(c => c.Id == x.CourseId);
-            if (course is null)
-                throw new KeyNotFoundException("Course not found");
-            
-            var ret = x.ToModel();
-            ret.Course = course.ToModel();
-            
-            return ret;
-        }).ToList();
     }
 }

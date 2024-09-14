@@ -29,6 +29,7 @@ public static class CourseMappingExtensions
             TeacherIds = courseEdition.TeacherEmails.ToList(),
             StudentIds = courseEdition.StudentEmails.ToList(),
             EndDateUtc = courseEdition.EndDateUtc,
+            Course = courseEdition.Course is not null ? courseEdition.Course.ToModel() : null,
         };
     }
 }

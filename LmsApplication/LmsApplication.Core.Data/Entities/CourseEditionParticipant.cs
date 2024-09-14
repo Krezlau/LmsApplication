@@ -1,9 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using LmsApplication.Core.Data.Enums;
 
 namespace LmsApplication.Core.Data.Entities;
 
 public class CourseEditionParticipant : IAuditable
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     
     public Guid CourseEditionId { get; set; }

@@ -14,7 +14,7 @@ public class CourseEdition : IAuditable
     public Guid CourseId { get; set; }
 
     [ForeignKey(nameof(CourseId))] 
-    public virtual Course Course { get; set; } = new Course();
+    public virtual Course? Course { get; set; }
     
     public CourseDuration Duration { get; set; }
     
@@ -27,7 +27,7 @@ public class CourseEdition : IAuditable
     public List<string> TeacherEmails => Participants.Where(p => p.ParticipantRole == UserRole.Teacher).Select(p => p.ParticipantEmail).ToList(); 
     
     public List<string> StudentEmails => Participants.Where(p => p.ParticipantRole == UserRole.Student).Select(p => p.ParticipantEmail).ToList();
-    
+
     public virtual List<CourseEditionParticipant> Participants { get; set; } = new();
     
     #region Audit
