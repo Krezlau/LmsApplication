@@ -8,6 +8,11 @@
       <input class="input input-bordered block" [formControl]="titleFormControl"/>
       <label class="block mt-2 text-lg">Description</label>
       <textarea class="textarea textarea-bordered block" [formControl]="descriptionFormControl"></textarea>
+      <label class="block mt-2 text-lg">Duration</label>
+      <select class="select select-bordered block" [formControl]="durationFormControl">
+        <option [value]="CourseDuration.OneSemester">One Semester</option>
+        <option [value]="CourseDuration.TwoSemesters">Two Semesters</option>
+      </select>
       <button class="btn btn-primary mt-4">Create</button>
     </form>
     <form method="dialog" class="modal-backdrop">

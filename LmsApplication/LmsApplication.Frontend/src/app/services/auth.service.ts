@@ -1,10 +1,10 @@
 import {Injectable, OnDestroy, signal} from '@angular/core';
 import {LoginResponse, OidcSecurityService} from "angular-auth-oidc-client";
-import {UserService} from "./user.service";
 import {AuthState} from "../types/users/auth-state";
 import {BaseService} from "./base.service";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
+import {UserModel} from "../types/users/user-model";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class AuthService extends BaseService implements OnDestroy {
     ['tenant2', 'tenant2']
   ]);
 
-  constructor(private oidcSecurityService: OidcSecurityService, private userService: UserService, http: HttpClient,  location: Location) {
+  constructor(private oidcSecurityService: OidcSecurityService, http: HttpClient,  location: Location) {
     super(location, http);
   }
 
@@ -38,12 +38,12 @@ export class AuthService extends BaseService implements OnDestroy {
     this.sub.add(this.oidcSecurityService.checkAuth(undefined, configId).subscribe((response : LoginResponse) => {
       this.sub.add(this.oidcSecurityService.getAccessToken(configId).subscribe((idToken) => {
         console.log(idToken)
-        this.sub.add(this.userService.getMe(idToken).subscribe((userData) => {
+        this.sub.add(this.http.get<UserModel>("http://localhost:8080/api/Auth", { headers: this.headers(idToken) }).subscribe((userData) => {
           this.authState.set({
             isAuthenticated: response.isAuthenticated,
             accessToken: response.accessToken,
             refreshToken: response.idToken,
-            tenantId: this.userService.getTenantId(),
+            tenantId: this.getTenantId(),
             userData: {
               email: userData.email,
               name: userData.name,

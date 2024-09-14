@@ -71,7 +71,7 @@ public class CourseEditionAppService : ICourseEditionAppService
             Duration = course.Duration
         };
         
-        await _courseEditionService.UpsertAsync(courseEdition);
+        await _courseEditionService.CreateAsync(courseEdition);
         
         return await MapToModelAsync(courseEdition);
     }
@@ -86,7 +86,7 @@ public class CourseEditionAppService : ICourseEditionAppService
         
         courseEdition.TeacherEmails.Add(model.UserEmail);
         
-        await _courseEditionService.UpsertAsync(courseEdition);
+        await _courseEditionService.UpdateAsync(courseEdition);
     }
 
     public async Task AddStudentToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
@@ -99,7 +99,7 @@ public class CourseEditionAppService : ICourseEditionAppService
         
         courseEdition.StudentEmails.Add(model.UserEmail);
         
-        await _courseEditionService.UpsertAsync(courseEdition);
+        await _courseEditionService.UpdateAsync(courseEdition);
     }
 
     public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userEmail)

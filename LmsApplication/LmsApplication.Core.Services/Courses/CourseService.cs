@@ -12,7 +12,9 @@ public interface ICourseService
     
     Task<List<Course>> GetCoursesByIdsAsync(List<Guid> ids);
     
-    Task UpsertAsync(Course course);
+    Task CreateAsync(Course course);
+    
+    Task UpdateAsync(Course course);
 }
 
 public class CourseService : ICourseService
@@ -26,6 +28,7 @@ public class CourseService : ICourseService
 
     public async Task<List<Course>> GetAllCoursesAsync()
     {
+        // todo pagination
         return await _dbContext.Courses.ToListAsync();
     }
 
@@ -39,7 +42,13 @@ public class CourseService : ICourseService
         return await _dbContext.Courses.Where(x => ids.Contains(x.Id)).ToListAsync();
     }
 
-    public async Task UpsertAsync(Course course)
+    public async Task CreateAsync(Course course)
+    {
+        await _dbContext.Courses.AddAsync(course);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Course course)
     {
         _dbContext.Courses.Update(course);
         await _dbContext.SaveChangesAsync();

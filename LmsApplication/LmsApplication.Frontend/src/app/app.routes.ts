@@ -22,8 +22,8 @@ export const routes: Routes = [
     component: CourseDetailsPageComponent
   },
   {
-    path: '',
-    redirectTo: 'tenant2/home',
+    path: ':tenantId',
+    redirectTo: ':tenantId/home',
     pathMatch: 'full'
   },
   {

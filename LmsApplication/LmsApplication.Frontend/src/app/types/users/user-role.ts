@@ -1,7 +1,7 @@
 export enum UserRole {
-  Admin,
+  Student,
   Teacher,
-  Student
+  Admin,
 }
 
 export function toHumanReadable(userRole: UserRole) {

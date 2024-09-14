@@ -10,7 +10,7 @@ import {AuthService} from "./auth.service";
 })
 export class UserService extends BaseService {
 
-  constructor(http: HttpClient, location: Location) {
+  constructor(private authService: AuthService, http: HttpClient, location: Location) {
     super(location, http);
   }
 

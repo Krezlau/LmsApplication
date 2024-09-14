@@ -49,7 +49,7 @@ public class CourseAppService : ICourseAppService
             Duration = courseModel.Duration,
         };
 
-        await _courseService.UpsertAsync(course);
+        await _courseService.CreateAsync(course);
         
         return course.ToModel();
     }
