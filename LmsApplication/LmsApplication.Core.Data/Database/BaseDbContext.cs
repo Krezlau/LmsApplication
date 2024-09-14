@@ -51,7 +51,7 @@ public abstract class BaseDbContext : DbContext
     {
         var tenantId = _tenantProviderService.GetTenantId();
         
-        var connectionString = _config.GetConnectionString($"db{tenantId}");
+        var connectionString = _config.GetConnectionString($"{DatabaseName}-db-{tenantId}");
 
         optionsBuilder.UseSqlServer(connectionString, opt => opt.UseAzureSqlDefaults());
     }
