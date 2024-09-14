@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace LmsApplication.Api.Shared.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize, AllowAnonymous]
 public class CoreController : ControllerBase
 {
     private readonly ILogger<CoreController> _logger;

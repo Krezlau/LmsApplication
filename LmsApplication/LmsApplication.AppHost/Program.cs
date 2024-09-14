@@ -33,7 +33,7 @@ var tenants = builder.Configuration.GetSection(AppTenantsModel.Key).Get<AppTenan
 foreach (var tenant in tenants!.Tenants)
 {
     var db = publish || builder.ExecutionContext.IsPublishMode
-        ? builder.AddSqlServer($"db{tenant.Identifier}").AddDatabase("course")
+        ? builder.AddSqlServer($"db{tenant.Identifier}")
         : builder.AddConnectionString($"db{tenant.Identifier}");
     
     dbs.Add(db);

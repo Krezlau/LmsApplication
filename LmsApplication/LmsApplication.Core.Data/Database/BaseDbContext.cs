@@ -53,7 +53,7 @@ public abstract class BaseDbContext : DbContext
         
         var connectionString = _config.GetConnectionString($"db{tenantId}");
 
-        optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseSqlServer(connectionString, opt => opt.UseAzureSqlDefaults());
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

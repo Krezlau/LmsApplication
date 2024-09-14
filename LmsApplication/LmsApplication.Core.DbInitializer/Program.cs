@@ -18,7 +18,7 @@ builder.Configuration.AddAzureAppConfiguration(c =>
 
 builder.Services.AddDbContext<CourseDbContext>();
 
-builder.Build();
+var app = builder.Build();
 
 var tenants = builder.Configuration.GetSection(AppTenantsModel.Key).Get<AppTenantsModel>();
 Console.WriteLine("Creating containers...");
@@ -28,4 +28,13 @@ foreach (var tenant in tenants!.Tenants)
     var tenantService = new MockTenantService(tenants, tenant.Id);
     var db = new CourseDbContext(builder.Configuration, tenantService);
     db.Database.Migrate();
+    
+    Console.WriteLine($"Container for {tenant.Id} created.");
 }
+
+Console.WriteLine("All containers created.");
+
+app.Run();
+
+app.StopAsync().Wait();
+app.Dispose();
