@@ -19,6 +19,10 @@ public class CourseDbContext : BaseDbContext
     
     public DbSet<CourseEdition> CourseEditions { get; set; } = null!;
     
+    public DbSet<CourseCategory> CourseCategories { get; set; } = null!;
+    
+    public DbSet<CourseEditionParticipant> CourseEditionParticipants { get; set; } = null!;
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CourseDbContext).Assembly);

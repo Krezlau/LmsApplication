@@ -30,7 +30,7 @@ public abstract class BaseDbContext : DbContext
         
         foreach (var entity in added)
         {
-            entity.Audit.CreatedAt = DateTime.UtcNow;
+            entity.CreatedAtUtc = DateTime.UtcNow;
         }
         
         var modified = ChangeTracker.Entries()
@@ -41,7 +41,7 @@ public abstract class BaseDbContext : DbContext
         
         foreach (var entity in modified)
         {
-            entity.Audit.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAtUtc = DateTime.UtcNow;
         }
         
         return base.SaveChangesAsync(cancellationToken);

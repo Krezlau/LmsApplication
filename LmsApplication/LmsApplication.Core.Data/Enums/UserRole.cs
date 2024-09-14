@@ -2,7 +2,7 @@ namespace LmsApplication.Core.Data.Enums;
 
 public enum UserRole
 {
-    Admin,
-    Teacher,
-    Student
+    Student = 0,
+    Teacher = 1,
+    Admin = 2,
 }

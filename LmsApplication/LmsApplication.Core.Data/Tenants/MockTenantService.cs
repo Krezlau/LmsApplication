@@ -1,7 +1,6 @@
 using LmsApplication.Core.Config.ConfigModels;
-using LmsApplication.Core.Data.Tenants;
 
-namespace LmsApplication.Core.DbInitializer;
+namespace LmsApplication.Core.Data.Tenants;
 
 public class MockTenantService : ITenantProviderService
 { 

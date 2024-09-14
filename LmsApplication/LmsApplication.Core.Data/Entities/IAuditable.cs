@@ -2,12 +2,7 @@ namespace LmsApplication.Core.Data.Entities;
 
 public interface IAuditable
 {
-    public Audit Audit { get; set; }
-}
-
-public class Audit
-{
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
     
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime? UpdatedAtUtc { get; set; }
 }

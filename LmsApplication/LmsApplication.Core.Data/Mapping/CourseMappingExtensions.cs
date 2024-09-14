@@ -13,7 +13,7 @@ public static class CourseMappingExtensions
             Id = course.Id,
             Title = course.Title,
             Description = course.Description,
-            Categories = course.Categories.ToList(),
+            Categories = course.Categories.Select(x => x.Name).ToList(),
             Duration = course.Duration,
         };
     }

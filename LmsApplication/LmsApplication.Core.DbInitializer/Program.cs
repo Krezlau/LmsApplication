@@ -1,6 +1,6 @@
 ﻿using LmsApplication.Core.Config.ConfigModels;
 using LmsApplication.Core.Data.Database;
-using LmsApplication.Core.DbInitializer;
+using LmsApplication.Core.Data.Tenants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;

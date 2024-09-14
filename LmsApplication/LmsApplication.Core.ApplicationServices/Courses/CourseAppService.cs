@@ -45,7 +45,7 @@ public class CourseAppService : ICourseAppService
         {
             Title = courseModel.Title,
             Description = courseModel.Description,
-            Categories = courseModel.Categories,
+            // Categories = courseModel.Categories,
             Duration = courseModel.Duration,
         };
 
