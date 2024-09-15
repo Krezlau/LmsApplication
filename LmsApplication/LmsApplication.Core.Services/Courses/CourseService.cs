@@ -10,13 +10,21 @@ public interface ICourseService
     
     Task<Course?> GetCourseByIdAsync(Guid id);
     
+    Task<Course?> GetCourseWithEditionsByIdAsync(Guid id);
+    
     Task<List<CourseCategory>> GetCategoriesAsync();
     
+    Task<CourseCategory?> GetCategoryByIdAsync(Guid id);
+    
     Task CreateAsync(Course course);
+    
+    Task DeleteAsync(Course course);
     
     Task AttachCategoriesAsync(Course course, List<Guid> categoryIds);
     
     Task CreateCategoryAsync(CourseCategory category);
+    
+    Task DeleteCategoryAsync(CourseCategory category);
 }
 
 public class CourseService : ICourseService
@@ -43,14 +51,33 @@ public class CourseService : ICourseService
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<Course?> GetCourseWithEditionsByIdAsync(Guid id)
+    {
+        return await _dbContext.Courses
+            .Include(x => x.Categories)
+            .Include(x => x.Editions)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<List<CourseCategory>> GetCategoriesAsync()
     {
         return await _dbContext.CourseCategories.ToListAsync();
     }
 
+    public async Task<CourseCategory?> GetCategoryByIdAsync(Guid id)
+    {
+        return await _dbContext.CourseCategories.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task CreateAsync(Course course)
     {
         await _dbContext.Courses.AddAsync(course);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(Course course)
+    {
+        _dbContext.Courses.Remove(course);
         await _dbContext.SaveChangesAsync();
     }
 
@@ -64,6 +91,12 @@ public class CourseService : ICourseService
     public async Task CreateCategoryAsync(CourseCategory category)
     {
         await _dbContext.CourseCategories.AddAsync(category);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteCategoryAsync(CourseCategory category)
+    {
+        _dbContext.CourseCategories.Remove(category);
         await _dbContext.SaveChangesAsync();
     }
 }

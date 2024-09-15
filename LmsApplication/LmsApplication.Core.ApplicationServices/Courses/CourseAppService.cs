@@ -15,7 +15,11 @@ public interface ICourseAppService
     
     Task<CourseModel> CreateCourseAsync(CoursePostModel courseModel);
     
+    Task DeleteCourseAsync(Guid courseId);
+    
     Task<CourseCategoryModel> CreateCategoryAsync(CategoryPostModel categoryModel);
+    
+    Task DeleteCategoryAsync(Guid categoryId);
 }
 
 public class CourseAppService : ICourseAppService
@@ -66,6 +70,19 @@ public class CourseAppService : ICourseAppService
         return course.ToModel();
     }
 
+    public async Task DeleteCourseAsync(Guid courseId)
+    {
+        var course = await _courseService.GetCourseWithEditionsByIdAsync(courseId);
+        
+        if (course is null)
+            throw new KeyNotFoundException($"{nameof(Course)} not found.");
+        
+        if (course.Editions.Any())
+            throw new InvalidOperationException("Cannot delete course with editions.");
+        
+        await _courseService.DeleteAsync(course);
+    }
+
     public async Task<CourseCategoryModel> CreateCategoryAsync(CategoryPostModel categoryModel)
     {
         var category = new CourseCategory
@@ -76,5 +93,15 @@ public class CourseAppService : ICourseAppService
         await _courseService.CreateCategoryAsync(category);
 
         return category.ToModel();
+    }
+
+    public async Task DeleteCategoryAsync(Guid categoryId)
+    {
+        var category = await _courseService.GetCategoryByIdAsync(categoryId);
+        
+        if (category is null)
+            throw new KeyNotFoundException($"{nameof(CourseCategory)} not found.");
+        
+        await _courseService.DeleteCategoryAsync(category);
     }
 }

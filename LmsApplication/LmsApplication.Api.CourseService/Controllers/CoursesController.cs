@@ -53,4 +53,13 @@ public class CoursesController : CoreController
 
         return Ok(category);
     }
+    
+    [HttpDelete("categories/{categoryId}")]
+    [Authorize(AuthPolicies.AdminPolicy)]
+    public async Task<IActionResult> DeleteCategory(Guid categoryId)
+    {
+        await _courseAppService.DeleteCategoryAsync(categoryId);
+        
+        return Ok();
+    }
 }
