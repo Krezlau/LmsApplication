@@ -13,6 +13,14 @@
         <option [value]="CourseDuration.OneSemester">One Semester</option>
         <option [value]="CourseDuration.TwoSemesters">Two Semesters</option>
       </select>
+      <label class="block mt-2 text-lg">Categories</label>
+      <select class="select select-bordered block" (change)="onSelect($event)">
+        <option value="" disabled selected>Select </option>
+        <option *ngFor="let category of categories" [value]="category.id" [disabled]="chosenCategories.includes(category)">{{category.name}}</option>
+      </select>
+      <div class="flex flex-wrap mt-2">
+        <span *ngFor="let category of chosenCategories" class="badge badge-secondary mx-1">{{category.name}} <button class="pl-2" (click)="removeCategory(category)">x</button></span>
+      </div>
       <button class="btn btn-primary mt-4">Create</button>
     </form>
     <form method="dialog" class="modal-backdrop">

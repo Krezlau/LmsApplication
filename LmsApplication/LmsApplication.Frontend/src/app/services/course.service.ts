@@ -6,6 +6,7 @@ import {CourseModel} from "../types/courses/course-model";
 import {CoursePostModel} from "../types/courses/course-post-model";
 import {Location} from "@angular/common";
 import {AuthService} from "./auth.service";
+import {CourseCategory} from "../types/courses/course-category";
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,11 @@ export class CourseService extends BaseService {
 
   public createCourse(course: CoursePostModel) {
     return this.http.post<CourseModel>('http://localhost:8080/api/courses', course,
+      { headers: this.headers(this.authService.authState().accessToken) });
+  }
+
+  public getCategories() {
+    return this.http.get<CourseCategory[]>('http://localhost:8080/api/courses/categories',
       { headers: this.headers(this.authService.authState().accessToken) });
   }
 }
