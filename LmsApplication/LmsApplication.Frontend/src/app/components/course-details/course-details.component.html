@@ -1,5 +1,6 @@
-<div>
+<div *ngIf="course">
   <figure class="h-[250px] contain-content rounded-t-xl"><img class="absolute bottom-0" src="https://maths.mrpitts.co.uk/wp-content/uploads/2018/09/cropped-iStock-484064126.jpg" alt="Shoes" /></figure>
   <h1 class="text-4xl font-bold mb-4">{{course?.title}}</h1>
   <p>{{course?.description}}</p>
 </div>
+<span *ngIf="!course" class="loading loading-spinner loading-lg mx-auto mt-20">Loading...</span>

@@ -19,6 +19,8 @@ export class AuthService extends BaseService implements OnDestroy {
   }
   public authState = signal(this.initialState);
 
+  public authStateLoading = signal(false);
+
   private configDict = new Map([
     ['tenant1', 'tenant1'],
     ['tenant2', 'tenant2']
@@ -33,6 +35,7 @@ export class AuthService extends BaseService implements OnDestroy {
   }
 
   public checkAuth() {
+    this.authStateLoading.set(true);
     const configId = this.getConfigId();
     if (!configId) return;
     this.sub.add(this.oidcSecurityService.checkAuth(undefined, configId).subscribe((response : LoginResponse) => {
@@ -54,6 +57,7 @@ export class AuthService extends BaseService implements OnDestroy {
             }
           });
           console.log(userData);
+          this.authStateLoading.set(false);
         }));
       }));
       console.log(response.userData);

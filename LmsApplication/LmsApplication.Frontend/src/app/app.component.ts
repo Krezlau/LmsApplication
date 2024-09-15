@@ -14,6 +14,8 @@ import {HeaderComponent} from "./components/header/header.component";
 export class AppComponent {
   title = 'LmsApplication.Frontend';
 
+  authStateLoading = this.authService.authStateLoading;
+
   constructor(private authService: AuthService) {
     this.authService.checkAuth()
   }

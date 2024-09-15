@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CourseService} from "../../services/course.service";
 import {CourseDuration} from "../../types/courses/course-duration";
 import {CourseCategory} from "../../types/courses/course-category";
 import {Subscription} from "rxjs";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-course-add-form',
@@ -12,7 +12,8 @@ import {NgForOf} from "@angular/common";
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './course-add-form.component.html'
 })
@@ -25,13 +26,19 @@ export class CourseAddFormComponent implements OnInit, OnDestroy {
   categories: CourseCategory[] = [];
 
   sub: Subscription = new Subscription();
+  createCourseLoading = false;
+  categoriesLoading = false;
+
+  @ViewChild('dialogElement') dialogElement: ElementRef | undefined;
 
   constructor(private courseService: CourseService) {
   }
 
   ngOnInit(): void {
+    this.categoriesLoading = true;
     this.sub.add(this.courseService.getCategories().subscribe(categories => {
       this.categories = categories;
+      this.categoriesLoading = false;
     }));
   }
 
@@ -49,14 +56,20 @@ export class CourseAddFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.createCourseLoading = true;
+
     this.courseService.createCourse({
         title: this.titleFormControl.value!,
         description: this.descriptionFormControl.value!,
         duration: +this.durationFormControl.value!,
         categories: this.chosenCategories.map(c => c.id)
       }).subscribe(() => {
-      this.titleFormControl.setValue('');
-      this.descriptionFormControl.setValue('');
+        this.titleFormControl.setValue('');
+        this.descriptionFormControl.setValue('');
+        this.durationFormControl.setValue(CourseDuration.OneSemester);
+        this.chosenCategories = [];
+        this.createCourseLoading = false;
+        this.dialogElement?.nativeElement.close();
     });
   }
 
