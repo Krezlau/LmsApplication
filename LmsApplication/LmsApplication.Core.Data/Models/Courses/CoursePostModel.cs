@@ -8,7 +8,7 @@ public class CoursePostModel
     
     public string Description { get; set; } = string.Empty;
     
-    public List<string> Categories { get; set; } = new();
+    public List<Guid> Categories { get; set; } = new();
     
     public CourseDuration Duration { get; set; }
 }

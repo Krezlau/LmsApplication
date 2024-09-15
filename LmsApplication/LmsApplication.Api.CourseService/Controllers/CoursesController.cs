@@ -38,4 +38,19 @@ public class CoursesController : CoreController
 
         return Ok(courseId);
     }
+    
+    [HttpGet("categories")]
+    public async Task<IActionResult> GetCategories()
+    {
+        return Ok(await _courseAppService.GetCategoriesAsync());
+    }
+    
+    [HttpPost("categories")]
+    [Authorize(AuthPolicies.AdminPolicy)]
+    public async Task<IActionResult> CreateCategory([FromBody] CategoryPostModel model)
+    {
+        var category = await _courseAppService.CreateCategoryAsync(model);
+
+        return Ok(category);
+    }
 }

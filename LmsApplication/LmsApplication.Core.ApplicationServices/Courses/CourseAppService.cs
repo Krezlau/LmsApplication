@@ -11,7 +11,11 @@ public interface ICourseAppService
     
     Task<CourseModel> GetCourseByIdAsync(Guid id);
     
+    Task<List<CourseCategoryModel>> GetCategoriesAsync();
+    
     Task<CourseModel> CreateCourseAsync(CoursePostModel courseModel);
+    
+    Task<CourseCategoryModel> CreateCategoryAsync(CategoryPostModel categoryModel);
 }
 
 public class CourseAppService : ICourseAppService
@@ -39,18 +43,38 @@ public class CourseAppService : ICourseAppService
         return course.ToModel();
     }
 
+    public async Task<List<CourseCategoryModel>> GetCategoriesAsync()
+    {
+        var categories = await _courseService.GetCategoriesAsync();
+        
+        return categories.Select(x => x.ToModel()).ToList();
+    }
+
     public async Task<CourseModel> CreateCourseAsync(CoursePostModel courseModel)
     {
         var course = new Course
         {
             Title = courseModel.Title,
             Description = courseModel.Description,
-            // Categories = courseModel.Categories,
             Duration = courseModel.Duration,
         };
 
         await _courseService.CreateAsync(course);
         
+        await _courseService.AttachCategoriesAsync(course, courseModel.Categories);
+        
         return course.ToModel();
+    }
+
+    public async Task<CourseCategoryModel> CreateCategoryAsync(CategoryPostModel categoryModel)
+    {
+        var category = new CourseCategory
+        {
+            Name = categoryModel.Name,
+        };
+
+        await _courseService.CreateCategoryAsync(category);
+
+        return category.ToModel();
     }
 }

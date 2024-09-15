@@ -10,7 +10,7 @@ public class CourseModel
     
     public string Description { get; set; } = string.Empty;
     
-    public List<string> Categories { get; set; } = new();
+    public List<CourseCategoryModel> Categories { get; set; } = new();
     
     public CourseDuration Duration { get; set; }
 }

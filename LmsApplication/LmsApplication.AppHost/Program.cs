@@ -32,8 +32,12 @@ List<IResourceBuilder<IResourceWithConnectionString>> dbs = new();
 var tenants = builder.Configuration.GetSection(AppTenantsModel.Key).Get<AppTenantsModel>();
 foreach (var tenant in tenants!.Tenants)
 {
+    var password = builder.AddParameter($"{tenant.Identifier}-password", secret: true);
+    
     var db = publish || builder.ExecutionContext.IsPublishMode
-        ? builder.AddSqlServer($"course-db-{tenant.Identifier}")
+        ? builder.AddSqlServer($"sql-db-{tenant.Identifier}", password)
+            .WithDataVolume($"sql-db-{tenant.Identifier}")
+            .AddDatabase($"course-db-{tenant.Identifier}")
         : builder.AddConnectionString($"course-db-{tenant.Identifier}");
     
     dbs.Add(db);

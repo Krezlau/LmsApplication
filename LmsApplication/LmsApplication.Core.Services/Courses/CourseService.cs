@@ -10,11 +10,13 @@ public interface ICourseService
     
     Task<Course?> GetCourseByIdAsync(Guid id);
     
-    Task<List<Course>> GetCoursesByIdsAsync(List<Guid> ids);
+    Task<List<CourseCategory>> GetCategoriesAsync();
     
     Task CreateAsync(Course course);
     
-    Task UpdateAsync(Course course);
+    Task AttachCategoriesAsync(Course course, List<Guid> categoryIds);
+    
+    Task CreateCategoryAsync(CourseCategory category);
 }
 
 public class CourseService : ICourseService
@@ -29,17 +31,21 @@ public class CourseService : ICourseService
     public async Task<List<Course>> GetAllCoursesAsync()
     {
         // todo pagination
-        return await _dbContext.Courses.ToListAsync();
+        return await _dbContext.Courses
+            .Include(x => x.Categories)
+            .ToListAsync();
     }
 
     public async Task<Course?> GetCourseByIdAsync(Guid id)
     {
-        return await _dbContext.Courses.FirstOrDefaultAsync(x => x.Id == id);
+        return await _dbContext.Courses
+            .Include(x => x.Categories)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<Course>> GetCoursesByIdsAsync(List<Guid> ids)
+    public async Task<List<CourseCategory>> GetCategoriesAsync()
     {
-        return await _dbContext.Courses.Where(x => ids.Contains(x.Id)).ToListAsync();
+        return await _dbContext.CourseCategories.ToListAsync();
     }
 
     public async Task CreateAsync(Course course)
@@ -48,9 +54,16 @@ public class CourseService : ICourseService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Course course)
+    public async Task AttachCategoriesAsync(Course course, List<Guid> categoryIds)
     {
-        _dbContext.Courses.Update(course);
+        var categories = await _dbContext.CourseCategories.Where(x => categoryIds.Contains(x.Id)).ToListAsync();
+        course.Categories = categories;
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task CreateCategoryAsync(CourseCategory category)
+    {
+        await _dbContext.CourseCategories.AddAsync(category);
         await _dbContext.SaveChangesAsync();
     }
 }

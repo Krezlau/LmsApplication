@@ -7,7 +7,7 @@ public class CourseEditionModel
 {
     public Guid Id { get; set; }
 
-    public CourseModel Course { get; set; } = new();
+    public CourseModel? Course { get; set; } = new();
     
     public CourseDuration Duration { get; set; }
     

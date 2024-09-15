@@ -1,5 +1,4 @@
 using LmsApplication.Core.Data.Entities;
-using LmsApplication.Core.Data.Models;
 using LmsApplication.Core.Data.Models.Courses;
 
 namespace LmsApplication.Core.Data.Mapping;
@@ -13,7 +12,7 @@ public static class CourseMappingExtensions
             Id = course.Id,
             Title = course.Title,
             Description = course.Description,
-            Categories = course.Categories.Select(x => x.Name).ToList(),
+            Categories = course.Categories.Select(x => x.ToModel()).ToList(),
             Duration = course.Duration,
         };
     }
@@ -29,7 +28,16 @@ public static class CourseMappingExtensions
             TeacherIds = courseEdition.TeacherEmails.ToList(),
             StudentIds = courseEdition.StudentEmails.ToList(),
             EndDateUtc = courseEdition.EndDateUtc,
-            Course = courseEdition.Course is not null ? courseEdition.Course.ToModel() : null,
+            Course = courseEdition.Course?.ToModel(),
+        };
+    }
+    
+    public static CourseCategoryModel ToModel(this CourseCategory courseCategory)
+    {
+        return new CourseCategoryModel
+        {
+            Id = courseCategory.Id,
+            Name = courseCategory.Name,
         };
     }
 }
