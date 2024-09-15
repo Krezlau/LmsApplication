@@ -33,7 +33,7 @@ export class CourseDetailsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.course$ = this.courseService.getCoursebyId(params['courseId']);
+      this.course$ = this.courseService.getCourseById(params['courseId']);
       this.courseEditions$ = this.courseEditionService.getCourseEditionsByCourseId(params['courseId']);
     });
   }

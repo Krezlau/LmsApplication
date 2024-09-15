@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {BaseService} from "./base.service";
-import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {CourseModel} from "../types/courses/course-model";
 import {CoursePostModel} from "../types/courses/course-post-model";
@@ -22,7 +21,7 @@ export class CourseService extends BaseService {
       { headers: this.headers(this.authService.authState().accessToken) });
   }
 
-  public getCoursebyId(courseId: string) {
+  public getCourseById(courseId: string) {
     return this.http.get<CourseModel>(`http://localhost:8080/api/courses/${courseId}`,
       { headers: this.headers(this.authService.authState().accessToken) });
   }

@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CourseModel} from "../../types/courses/course-model";
 import {CourseAddFormComponent} from "../course-add-form/course-add-form.component";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {CourseService} from "../../services/course.service";
@@ -12,7 +12,8 @@ import {Subscription} from "rxjs";
   standalone: true,
   imports: [
     CourseAddFormComponent,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './course-list.component.html'
 })
@@ -23,6 +24,8 @@ export class CourseListComponent implements OnInit, OnDestroy{
 
   sub = new Subscription();
 
+  coursesLoading = false;
+
   constructor(private authService: AuthService, private router: Router, private courseService: CourseService) {
   }
 
@@ -31,8 +34,10 @@ export class CourseListComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit() {
+    this.coursesLoading = true;
     this.sub.add(this.courseService.getAllCourses().subscribe(courses => {
       this.courses = courses;
+      this.coursesLoading = false;
     }));
   }
 
