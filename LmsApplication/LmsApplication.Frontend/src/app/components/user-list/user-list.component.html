@@ -1,4 +1,4 @@
-<ul *ngIf="users" class="mt-2">
+<ul *ngIf="!usersLoading && users" class="mt-2">
   <div class="grid grid-cols-3 border-b-2">
     <h2 class="font-semibold">Full Name</h2>
     <h2 class="font-semibold">Email</h2>
@@ -8,4 +8,6 @@
     <app-user-card [user]="user"></app-user-card>
   </li>
 </ul>
-<p *ngIf="!users"></p>
+<div *ngIf="usersLoading" class="flex flex-row justify-center">
+  <span class="loading loading-spinner loading-lg mt-10 mx-auto">Loading...</span>
+</div>
