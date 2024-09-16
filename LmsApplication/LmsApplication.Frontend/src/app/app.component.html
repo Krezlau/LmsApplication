@@ -7,3 +7,17 @@
 <div *ngIf="authStateLoading()" class="flex items-center justify-center h-screen bg-gray-500 opacity-50">
   <span class="loading loading-spinner loading-lg"></span>
 </div>
+<div
+  [ngClass]="{
+    'alert text-white fixed w-[30rem] left-[calc(50%-15rem)] z-30 transform duration-200 ease-in': true,
+    '-bottom-20': alert()?.isVisible === false,
+    'bottom-4': alert()?.isVisible,
+    'bg-green-500': alert()?.type === 'success',
+    'bg-yellow-500': alert()?.type === 'warning',
+    'bg-sky-500': alert()?.type === 'info',
+    'bg-red-500': alert()?.type === 'error'
+  }"
+  (click)="hideAlert()"
+>
+  <span>{{ alert()?.message }}</span>
+</div>

@@ -1,8 +1,9 @@
-import {Component, effect} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {ActivatedRoute, RouterOutlet} from '@angular/router';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterOutlet} from '@angular/router';
 import {AuthService} from "./services/auth.service";
 import {HeaderComponent} from "./components/header/header.component";
+import {AlertService} from "./services/alert.service";
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,14 @@ export class AppComponent {
   title = 'LmsApplication.Frontend';
 
   authStateLoading = this.authService.authStateLoading;
+  alert = this.alertService.alert
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private alertService: AlertService) {
     this.authService.checkAuth()
+    this.alertService.show("Hello World", "success")
+  }
+
+  hideAlert() {
+    this.alertService.hide();
   }
 }
