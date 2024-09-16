@@ -8,5 +8,6 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
 {
     public void Configure(EntityTypeBuilder<Course> builder)
     {
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

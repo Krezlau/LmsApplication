@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LmsApplication.Core.Data.Configuration;
 
-public class CourseEditionConfiguration : IEntityTypeConfiguration<CourseEdition>
+public class CourseCategoryConfiguration : IEntityTypeConfiguration<CourseCategory>
 {
-    public void Configure(EntityTypeBuilder<CourseEdition> builder)
+    public void Configure(EntityTypeBuilder<CourseCategory> builder)
     {
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

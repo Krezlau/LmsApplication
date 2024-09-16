@@ -77,7 +77,9 @@ public class CourseService : ICourseService
 
     public async Task DeleteAsync(Course course)
     {
-        _dbContext.Courses.Remove(course);
+        course.IsDeleted = true;
+        course.DeletedAtUtc = DateTime.UtcNow;
+        _dbContext.Courses.Update(course);
         await _dbContext.SaveChangesAsync();
     }
 
@@ -96,7 +98,9 @@ public class CourseService : ICourseService
 
     public async Task DeleteCategoryAsync(CourseCategory category)
     {
-        _dbContext.CourseCategories.Remove(category);
+        category.IsDeleted = true;
+        category.DeletedAtUtc = DateTime.UtcNow;
+        _dbContext.CourseCategories.Update(category);
         await _dbContext.SaveChangesAsync();
     }
 }

@@ -39,6 +39,15 @@ public class CoursesController : CoreController
         return Ok(courseId);
     }
     
+    [HttpDelete("{courseId}")]
+    [Authorize(AuthPolicies.AdminPolicy)]
+    public async Task<IActionResult> DeleteCourse(Guid courseId)
+    {
+        await _courseAppService.DeleteCourseAsync(courseId);
+        
+        return Ok();
+    }
+    
     [HttpGet("categories")]
     public async Task<IActionResult> GetCategories()
     {

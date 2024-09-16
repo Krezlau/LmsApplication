@@ -19,5 +19,9 @@ public class CourseCategory : IAuditable
     
     public DateTime? UpdatedAtUtc { get; set; }
     
+    public bool IsDeleted { get; set; }
+    
+    public DateTime? DeletedAtUtc { get; set; }
+
     #endregion
 }
