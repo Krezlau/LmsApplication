@@ -1,4 +1,5 @@
-﻿using LmsApplication.Api.Shared.Options;
+﻿using FluentValidation;
+using LmsApplication.Api.Shared.Options;
 using LmsApplication.Core.Config;
 using LmsApplication.Core.Config.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -80,6 +81,8 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IOptionsMonitor<JwtBearerOptions>, JwtBearerOptionsProvider>();
         services.AddSingleton<IConfigureOptions<JwtBearerOptions>, JwtBearerOptionsInitializer>();
+        
+        services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
         
         return services;
     }

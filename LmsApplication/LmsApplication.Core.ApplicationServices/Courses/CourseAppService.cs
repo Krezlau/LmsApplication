@@ -1,3 +1,4 @@
+using FluentValidation;
 using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Data.Mapping;
 using LmsApplication.Core.Data.Models.Courses;
@@ -25,10 +26,12 @@ public interface ICourseAppService
 public class CourseAppService : ICourseAppService
 {
     private readonly ICourseService _courseService;
+    private readonly IValidator<CoursePostModel> _coursePostModelValidator;
 
-    public CourseAppService(ICourseService courseService)
+    public CourseAppService(ICourseService courseService, IValidator<CoursePostModel> coursePostModelValidator)
     {
         _courseService = courseService;
+        _coursePostModelValidator = coursePostModelValidator;
     }
 
     public async Task<List<CourseModel>> GetAllCoursesAsync()
@@ -56,6 +59,8 @@ public class CourseAppService : ICourseAppService
 
     public async Task<CourseModel> CreateCourseAsync(CoursePostModel courseModel)
     {
+        await _coursePostModelValidator.ValidateAndThrowAsync(courseModel);
+        
         var course = new Course
         {
             Title = courseModel.Title,

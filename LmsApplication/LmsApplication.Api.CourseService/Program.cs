@@ -1,4 +1,5 @@
 using LmsApplication.Api.Shared;
+using LmsApplication.Api.Shared.Middleware;
 using LmsApplication.Core.ApplicationServices;
 using LmsApplication.Core.Config;
 using LmsApplication.Core.Data;
@@ -49,6 +50,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandler>();
 
 app.MapControllers();
 app.Run();

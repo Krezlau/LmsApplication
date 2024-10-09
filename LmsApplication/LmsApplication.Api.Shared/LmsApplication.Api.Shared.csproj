@@ -7,14 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Middleware\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="11.10.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
       <PackageReference Include="Microsoft.Identity.Web" Version="2.18.1" />
     </ItemGroup>
