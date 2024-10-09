@@ -1,4 +1,4 @@
-using FluentValidation;
+using LmsApplication.Api.Shared.Validation;
 using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Data.Mapping;
 using LmsApplication.Core.Data.Models.Courses;
@@ -26,12 +26,16 @@ public interface ICourseAppService
 public class CourseAppService : ICourseAppService
 {
     private readonly ICourseService _courseService;
-    private readonly IValidator<CoursePostModel> _coursePostModelValidator;
+    private readonly IValidationService<CoursePostModel> _coursePostModelValidationService;
+    private readonly IValidationService<CategoryPostModel> _categoryPostModelValidationService;
 
-    public CourseAppService(ICourseService courseService, IValidator<CoursePostModel> coursePostModelValidator)
+    public CourseAppService(ICourseService courseService,
+        IValidationService<CategoryPostModel> categoryPostModelValidationService,
+        IValidationService<CoursePostModel> coursePostModelValidationService)
     {
         _courseService = courseService;
-        _coursePostModelValidator = coursePostModelValidator;
+        _categoryPostModelValidationService = categoryPostModelValidationService;
+        _coursePostModelValidationService = coursePostModelValidationService;
     }
 
     public async Task<List<CourseModel>> GetAllCoursesAsync()
@@ -59,7 +63,7 @@ public class CourseAppService : ICourseAppService
 
     public async Task<CourseModel> CreateCourseAsync(CoursePostModel courseModel)
     {
-        await _coursePostModelValidator.ValidateAndThrowAsync(courseModel);
+        await _coursePostModelValidationService.ValidateAndThrowAsync(courseModel);
         
         var course = new Course
         {
@@ -82,7 +86,7 @@ public class CourseAppService : ICourseAppService
         if (course is null)
             throw new KeyNotFoundException($"{nameof(Course)} not found.");
         
-        if (course.Editions.Any())
+        if (course.Editions.Count != 0)
             throw new InvalidOperationException("Cannot delete course with editions.");
         
         await _courseService.DeleteAsync(course);
@@ -90,6 +94,8 @@ public class CourseAppService : ICourseAppService
 
     public async Task<CourseCategoryModel> CreateCategoryAsync(CategoryPostModel categoryModel)
     {
+        await _categoryPostModelValidationService.ValidateAndThrowAsync(categoryModel);
+        
         var category = new CourseCategory
         {
             Name = categoryModel.Name,

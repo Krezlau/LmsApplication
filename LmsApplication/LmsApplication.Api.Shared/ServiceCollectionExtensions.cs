@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using LmsApplication.Api.Shared.Options;
+using LmsApplication.Api.Shared.Validation;
 using LmsApplication.Core.Config;
 using LmsApplication.Core.Config.Swagger;
+using LmsApplication.Core.Data.Models.Courses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -83,6 +85,11 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IConfigureOptions<JwtBearerOptions>, JwtBearerOptionsInitializer>();
         
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
+
+        services.AddScoped<IValidationService<CategoryPostModel>, ValidationService<CategoryPostModel>>();
+        services.AddScoped<IValidationService<CoursePostModel>, ValidationService<CoursePostModel>>();
+        services.AddScoped<IValidationService<CourseEditionPostModel>, ValidationService<CourseEditionPostModel>>();
+        services.AddScoped<IValidationService<CourseEditionAddUserModel>, ValidationService<CourseEditionAddUserModel>>();
         
         return services;
     }

@@ -1,3 +1,5 @@
+using FluentValidation;
+using LmsApplication.Api.Shared.Validation;
 using LmsApplication.Core.Data.Entities;
 using LmsApplication.Core.Data.Enums;
 using LmsApplication.Core.Data.Mapping;
@@ -27,11 +29,18 @@ public class CourseEditionAppService : ICourseEditionAppService
 {
     private readonly ICourseEditionService _courseEditionService;
     private readonly ICourseService _courseService;
+    private readonly IValidationService<CourseEditionPostModel> _courseEditionPostModelValidationService;
+    private readonly IValidationService<CourseEditionAddUserModel> _courseEditionAddUserModelValidationService;
 
-    public CourseEditionAppService(ICourseEditionService courseEditionService, ICourseService courseService)
+    public CourseEditionAppService(ICourseEditionService courseEditionService,
+        ICourseService courseService,
+        IValidationService<CourseEditionPostModel> courseEditionPostModelValidationService,
+        IValidationService<CourseEditionAddUserModel> courseEditionAddUserModelValidationService)
     {
         _courseEditionService = courseEditionService;
         _courseService = courseService;
+        _courseEditionPostModelValidationService = courseEditionPostModelValidationService;
+        _courseEditionAddUserModelValidationService = courseEditionAddUserModelValidationService;
     }
 
     public async Task<List<CourseEditionModel>> GetAllCourseEditionsAsync()
@@ -59,17 +68,23 @@ public class CourseEditionAppService : ICourseEditionAppService
 
     public async Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model)
     {
-        // todo validation
         var course = await _courseService.GetCourseByIdAsync(model.CourseId);
-        if (course is null)
-            throw new KeyNotFoundException("Course not found");
+        
+        var context = new ValidationContext<CourseEditionPostModel>(model)
+        {
+            RootContextData =
+            {
+                [nameof(Course)] = course
+            }
+        };
+        await _courseEditionPostModelValidationService.ValidateAndThrowAsync(context);
         
         var courseEdition = new CourseEdition
         {
             CourseId = model.CourseId,
             StartDateUtc = model.StartDateUtc,
             StudentLimit = model.StudentLimit,
-            Duration = course.Duration,
+            Duration = course!.Duration,
             Course = course,
         };
         
@@ -80,22 +95,30 @@ public class CourseEditionAppService : ICourseEditionAppService
 
     public async Task AddTeacherToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
     {
-        // todo validation
-        
-        var courseEdition = await _courseEditionService.GetCourseEditionByIdAsync(courseId);
-        if (courseEdition is null)
-            throw new KeyNotFoundException("Course edition not found");
+        var context = new ValidationContext<CourseEditionAddUserModel>(model)
+        {
+            RootContextData =
+            {
+                [nameof(courseId)] = courseId,
+                [nameof(UserRole)] = UserRole.Teacher
+            }
+        };
+        await _courseEditionAddUserModelValidationService.ValidateAndThrowAsync(context);
         
         await _courseEditionService.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Teacher);
     }
 
     public async Task AddStudentToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
     {
-        // todo validation
-        
-        var courseEdition = await _courseEditionService.GetCourseEditionByIdAsync(courseId);
-        if (courseEdition is null)
-            throw new KeyNotFoundException("Course edition not found");
+        var context = new ValidationContext<CourseEditionAddUserModel>(model)
+        {
+            RootContextData =
+            {
+                [nameof(courseId)] = courseId,
+                [nameof(UserRole)] = UserRole.Student
+            }
+        };
+        await _courseEditionAddUserModelValidationService.ValidateAndThrowAsync(context);
         
         await _courseEditionService.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Student);
     }
