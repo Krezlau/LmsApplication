@@ -1,5 +1,6 @@
 using System.Net;
 using FluentValidation;
+using LmsApplication.Core.Data.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -57,6 +58,6 @@ public class ExceptionHandler
                 break;
         }
         
-        return context.Response.WriteAsJsonAsync(message);
+        return context.Response.WriteAsJsonAsync(ApiResponseHelper.Error(message));
     }
 }

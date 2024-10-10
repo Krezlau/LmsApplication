@@ -20,7 +20,7 @@ export class AppComponent {
 
   constructor(private authService: AuthService, private alertService: AlertService) {
     this.authService.checkAuth()
-    this.alertService.show("Hello World", "success")
+    // this.alertService.show("Hello World", "success")
   }
 
   hideAlert() {
