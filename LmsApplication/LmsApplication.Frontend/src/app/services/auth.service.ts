@@ -5,6 +5,7 @@ import {BaseService} from "./base.service";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 import {UserModel} from "../types/users/user-model";
+import {ApiResponse} from "../types/api-response";
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,8 @@ export class AuthService extends BaseService implements OnDestroy {
     this.sub.add(this.oidcSecurityService.checkAuth(undefined, configId).subscribe((response : LoginResponse) => {
       this.sub.add(this.oidcSecurityService.getAccessToken(configId).subscribe((idToken) => {
         console.log(idToken)
-        this.sub.add(this.http.get<UserModel>("http://localhost:8080/api/Auth", { headers: this.headers(idToken) }).subscribe((userData) => {
+        this.sub.add(this.http.get<ApiResponse<UserModel>>("http://localhost:8080/api/Auth", { headers: this.headers(idToken) }).subscribe((userDataResponse) => {
+          const userData = userDataResponse.data!;
           this.authState.set({
             isAuthenticated: response.isAuthenticated,
             accessToken: response.accessToken,

@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {CourseEditionModel} from "../types/courses/course-edition-model";
 import {Location} from "@angular/common";
 import {AuthService} from "./auth.service";
+import {ApiResponse} from "../types/api-response";
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,12 @@ export class CourseEditionService extends BaseService{
   }
 
   getCourseEditions() {
-    return this.http.get<CourseEditionModel[]>('http://localhost:8080/api/courses/editions/my-courses',
+    return this.http.get<ApiResponse<CourseEditionModel[]>>('http://localhost:8080/api/courses/editions/my-courses',
       { headers: this.headers(this.authService.authState().accessToken) });
   }
 
   getCourseEditionsByCourseId(courseId: string) {
-    return this.http.get<CourseEditionModel[]>(`http://localhost:8080/api/courses/editions/by-course/${courseId}`,
+    return this.http.get<ApiResponse<CourseEditionModel[]>>(`http://localhost:8080/api/courses/editions/by-course/${courseId}`,
       { headers: this.headers(this.authService.authState().accessToken) });
   }
 }

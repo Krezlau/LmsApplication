@@ -21,7 +21,7 @@ export class CourseEditionListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub.add(this.courseEditionService.getCourseEditions().subscribe(
-      courseEditions => this.courseEditions = courseEditions
+      courseEditions => this.courseEditions = courseEditions.data!
     ));
   }
 

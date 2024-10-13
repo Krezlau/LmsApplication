@@ -6,6 +6,7 @@ import {CoursePostModel} from "../types/courses/course-post-model";
 import {Location} from "@angular/common";
 import {AuthService} from "./auth.service";
 import {CourseCategory} from "../types/courses/course-category";
+import {ApiResponse} from "../types/api-response";
 
 @Injectable({
   providedIn: 'root'
@@ -17,22 +18,22 @@ export class CourseService extends BaseService {
   }
 
   public getAllCourses() {
-    return this.http.get<CourseModel[]>('http://localhost:8080/api/courses',
+    return this.http.get<ApiResponse<CourseModel[]>>('http://localhost:8080/api/courses',
       { headers: this.headers(this.authService.authState().accessToken) });
   }
 
   public getCourseById(courseId: string) {
-    return this.http.get<CourseModel>(`http://localhost:8080/api/courses/${courseId}`,
+    return this.http.get<ApiResponse<CourseModel>>(`http://localhost:8080/api/courses/${courseId}`,
       { headers: this.headers(this.authService.authState().accessToken) });
   }
 
   public createCourse(course: CoursePostModel) {
-    return this.http.post<CourseModel>('http://localhost:8080/api/courses', course,
+    return this.http.post<ApiResponse<CourseModel>>('http://localhost:8080/api/courses', course,
       { headers: this.headers(this.authService.authState().accessToken) });
   }
 
   public getCategories() {
-    return this.http.get<CourseCategory[]>('http://localhost:8080/api/courses/categories',
+    return this.http.get<ApiResponse<CourseCategory[]>>('http://localhost:8080/api/courses/categories',
       { headers: this.headers(this.authService.authState().accessToken) });
   }
 }

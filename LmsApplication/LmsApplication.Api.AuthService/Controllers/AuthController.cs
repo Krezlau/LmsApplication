@@ -2,6 +2,7 @@ using LmsApplication.Api.Shared.Controllers;
 using LmsApplication.Core.ApplicationServices.Users;
 using LmsApplication.Core.Config;
 using LmsApplication.Core.Data.Enums;
+using LmsApplication.Core.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ public class AuthController : CoreController
         if (roles.Contains(AuthPolicies.AdminPolicy))
             user.Role = UserRole.Admin;
         
-        return Ok(user);
+        return Ok(ApiResponseHelper.Success(user));
     }
     
     [HttpGet("{userEmail}")]
@@ -38,7 +39,7 @@ public class AuthController : CoreController
     {
         var user = await _userAppService.GetUserInfoAsync(userEmail);
         
-        return Ok(user);
+        return Ok(ApiResponseHelper.Success(user));
     }
     
     [HttpGet("users")]
@@ -47,6 +48,6 @@ public class AuthController : CoreController
     {
         var users = await _userAppService.GetUsersAsync();
         
-        return Ok(users);
+        return Ok(ApiResponseHelper.Success(users));
     }
 }

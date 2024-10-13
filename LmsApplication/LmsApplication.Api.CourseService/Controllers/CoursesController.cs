@@ -1,6 +1,7 @@
 using LmsApplication.Api.Shared.Controllers;
 using LmsApplication.Core.ApplicationServices.Courses;
 using LmsApplication.Core.Config;
+using LmsApplication.Core.Data.Models;
 using LmsApplication.Core.Data.Models.Courses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,13 +22,13 @@ public class CoursesController : CoreController
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetAllCourses()
     {
-        return Ok(await _courseAppService.GetAllCoursesAsync());
+        return Ok(ApiResponseHelper.Success(await _courseAppService.GetAllCoursesAsync()));
     }
     
     [HttpGet("{courseId}")]
     public async Task<IActionResult> GetCourse(Guid courseId)
     {
-        return Ok(await _courseAppService.GetCourseByIdAsync(courseId));
+        return Ok(ApiResponseHelper.Success(await _courseAppService.GetCourseByIdAsync(courseId)));
     }
 
     [HttpPost]
@@ -36,7 +37,7 @@ public class CoursesController : CoreController
     {
         var courseId = await _courseAppService.CreateCourseAsync(model);
 
-        return Ok(courseId);
+        return Ok(ApiResponseHelper.Success(courseId));
     }
     
     [HttpDelete("{courseId}")]
@@ -45,13 +46,13 @@ public class CoursesController : CoreController
     {
         await _courseAppService.DeleteCourseAsync(courseId);
         
-        return Ok();
+        return Ok(ApiResponseHelper.Success());
     }
     
     [HttpGet("categories")]
     public async Task<IActionResult> GetCategories()
     {
-        return Ok(await _courseAppService.GetCategoriesAsync());
+        return Ok(ApiResponseHelper.Success(await _courseAppService.GetCategoriesAsync()));
     }
     
     [HttpPost("categories")]
@@ -60,7 +61,7 @@ public class CoursesController : CoreController
     {
         var category = await _courseAppService.CreateCategoryAsync(model);
 
-        return Ok(category);
+        return Ok(ApiResponseHelper.Success(category));
     }
     
     [HttpDelete("categories/{categoryId}")]
@@ -69,6 +70,6 @@ public class CoursesController : CoreController
     {
         await _courseAppService.DeleteCategoryAsync(categoryId);
         
-        return Ok();
+        return Ok(ApiResponseHelper.Success());
     }
 }

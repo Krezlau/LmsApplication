@@ -8,6 +8,7 @@ import {CourseEditionModel} from "../../types/courses/course-edition-model";
 import {CourseDetailsComponent} from "../course-details/course-details.component";
 import {CourseEditionListComponent} from "../course-edition-list/course-edition-list.component";
 import {AsyncPipe} from "@angular/common";
+import {ApiResponse} from "../../types/api-response";
 
 @Component({
   selector: 'app-course-details-page',
@@ -21,8 +22,8 @@ import {AsyncPipe} from "@angular/common";
 })
 export class CourseDetailsPageComponent implements OnInit, OnDestroy {
 
-  course$: Observable<CourseModel> | null = null;
-  courseEditions$: Observable<CourseEditionModel[]> | null = null;
+  course$: Observable<ApiResponse<CourseModel>> | null = null;
+  courseEditions$: Observable<ApiResponse<CourseEditionModel[]>> | null = null;
 
   sub = new Subscription();
   constructor(

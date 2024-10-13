@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {UserModel} from "../../types/users/user-model";
 import {UserProfileComponent} from "../user-profile/user-profile.component";
 import {AsyncPipe} from "@angular/common";
+import {ApiResponse} from "../../types/api-response";
 
 @Component({
   selector: 'app-profile-page',
@@ -18,7 +19,7 @@ import {AsyncPipe} from "@angular/common";
 export class ProfilePageComponent implements OnInit, OnDestroy {
 
   sub = new Subscription();
-  user$: Observable<UserModel> | null  = null;
+  user$: Observable<ApiResponse<UserModel>> | null  = null;
 
   constructor(private userService: UserService, private route: ActivatedRoute) { }
 

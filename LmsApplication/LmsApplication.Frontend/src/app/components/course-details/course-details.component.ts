@@ -4,6 +4,7 @@ import {NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 import {UserRole} from "../../types/users/user-role";
 import {CourseService} from "../../services/course.service";
+import {ApiResponse} from "../../types/api-response";
 
 @Component({
   selector: 'app-course-details',
@@ -14,7 +15,7 @@ import {CourseService} from "../../services/course.service";
   templateUrl: './course-details.component.html'
 })
 export class CourseDetailsComponent {
-  @Input() course: CourseModel | null = null;
+  @Input() course: ApiResponse<CourseModel> | null = null;
 
   authState = this.authService.authState;
   constructor(private authService: AuthService, private courseService: CourseService) {

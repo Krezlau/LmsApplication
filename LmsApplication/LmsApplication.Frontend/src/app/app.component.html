@@ -9,8 +9,8 @@
 </div>
 <div
   [ngClass]="{
-    'alert text-white fixed w-[30rem] left-[calc(50%-15rem)] z-30 transform duration-200 ease-in': true,
-    '-bottom-20': alert()?.isVisible === false,
+    'alert text-white fixed w-[30rem] max-h-[7rem] left-[calc(50%-15rem)] z-99 transform duration-200 ease-in': true,
+    '-bottom-28': alert()?.isVisible === false,
     'bottom-4': alert()?.isVisible,
     'bg-green-500': alert()?.type === 'success',
     'bg-yellow-500': alert()?.type === 'warning',
