@@ -1,5 +1,4 @@
 using LmsApplication.Core.Data.Entities;
-using LmsApplication.Core.Data.Tenants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -10,12 +9,10 @@ public abstract class BaseDbContext : DbContext
     public abstract string DatabaseName { get; }
     
     private readonly IConfiguration _config;
-    private readonly ITenantProviderService _tenantProviderService;
 
-    protected BaseDbContext(IConfiguration config, ITenantProviderService tenantProviderService)
+    protected BaseDbContext(IConfiguration config)
     {
         _config = config;
-        _tenantProviderService = tenantProviderService;
     }
     
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
@@ -49,9 +46,7 @@ public abstract class BaseDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var tenantId = _tenantProviderService.GetTenantId();
-        
-        var connectionString = _config.GetConnectionString($"{DatabaseName}-db-{tenantId}");
+        var connectionString = _config.GetConnectionString($"{DatabaseName}-db");
 
         optionsBuilder.UseSqlServer(connectionString, opt => opt.UseAzureSqlDefaults());
     }

@@ -1,10 +1,6 @@
-using LmsApplication.Core.Config.ConfigModels;
-using LmsApplication.Resources.Yarp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Projects;
-
-var publish = Environment.GetEnvironmentVariable("PUBLISH") == "true";
 
 var builder = DistributedApplication.CreateBuilder(args);
 
@@ -17,41 +13,17 @@ builder.Configuration.AddAzureAppConfiguration(c =>
 });
 
 // Services
-var authService = builder.AddProject<LmsApplication_Api_AuthService>("authService")
+var app = builder.AddProject<LmsApplication_Core_Api>("api")
     .WithReference(appconfig);
 
-var courseService = builder.AddProject<LmsApplication_Api_CourseService>("courseService")
-    .WithReference(appconfig);
+var password = builder.AddParameter("db-password", secret: true);
 
-var dbInitializer = builder.AddProject<LmsApplication_Core_DbInitializer>("dbInitializer")
-    .WithReference(appconfig);
+var sqlServer = builder.AddSqlServer("sql-db", password).WithDataVolume("sql-db");
 
-// Create database for each tenant and reference it to the services
-List<IResourceBuilder<IResourceWithConnectionString>> dbs = new();
+var courseDb = sqlServer.AddDatabase("course-db");
+var userDb = sqlServer.AddDatabase("user-db");
 
-var tenants = builder.Configuration.GetSection(AppTenantsModel.Key).Get<AppTenantsModel>();
-foreach (var tenant in tenants!.Tenants)
-{
-    var password = builder.AddParameter($"{tenant.Identifier}-password", secret: true);
-    
-    var db = publish || builder.ExecutionContext.IsPublishMode
-        ? builder.AddSqlServer($"sql-db-{tenant.Identifier}", password)
-            .WithDataVolume($"sql-db-{tenant.Identifier}")
-            .AddDatabase($"course-db-{tenant.Identifier}")
-        : builder.AddConnectionString($"course-db-{tenant.Identifier}");
-    
-    dbs.Add(db);
-    
-    authService.WithReference(db);
-    courseService.WithReference(db);
-    dbInitializer.WithReference(db);
-}
-
-// Add YARP reverse proxy
-builder.AddYarp("yarp")
-    .WithEndpoint(8080, scheme: "http")
-    .WithReference(authService)
-    .WithReference(courseService)
-    .LoadFromConfiguration("ReverseProxy");
+app.WithReference(userDb);
+app.WithReference(courseDb);
 
 builder.Build().Run();
