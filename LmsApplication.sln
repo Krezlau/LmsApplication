@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.CourseModule
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.CourseModule.Services", "LmsApplication.CourseModule.Services\LmsApplication.CourseModule.Services.csproj", "{66C97B54-46BE-4381-9721-C2E4E808ACC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.UserModule.Data", "LmsApplication.UserModule.Data\LmsApplication.UserModule.Data.csproj", "{154DB848-C537-4E98-B2A4-1D2A696105DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.UserModule.Api", "LmsApplication.UserModule.Api\LmsApplication.UserModule.Api.csproj", "{616BA6B0-3792-4D98-AED4-3C03DB3738D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,10 +50,20 @@ Global
 		{66C97B54-46BE-4381-9721-C2E4E808ACC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66C97B54-46BE-4381-9721-C2E4E808ACC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66C97B54-46BE-4381-9721-C2E4E808ACC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{154DB848-C537-4E98-B2A4-1D2A696105DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{154DB848-C537-4E98-B2A4-1D2A696105DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{154DB848-C537-4E98-B2A4-1D2A696105DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{154DB848-C537-4E98-B2A4-1D2A696105DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{616BA6B0-3792-4D98-AED4-3C03DB3738D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616BA6B0-3792-4D98-AED4-3C03DB3738D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616BA6B0-3792-4D98-AED4-3C03DB3738D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616BA6B0-3792-4D98-AED4-3C03DB3738D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FF65ADF2-0726-4FC5-ADD5-7E1623E497CB} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}
 		{D31BE95A-7B6F-4369-B26B-16F5A84A48AE} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}
 		{66C97B54-46BE-4381-9721-C2E4E808ACC5} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}
+		{154DB848-C537-4E98-B2A4-1D2A696105DF} = {AA9C221C-4908-41EC-8E19-3D1D11E552C4}
+		{616BA6B0-3792-4D98-AED4-3C03DB3738D0} = {AA9C221C-4908-41EC-8E19-3D1D11E552C4}
 	EndGlobalSection
 EndGlobal

@@ -2,8 +2,10 @@ using LmsApplication.Core.Api.Middleware;
 using LmsApplication.Core.Data.Config;
 using LmsApplication.CourseModule.Api;
 using LmsApplication.CourseModule.Data.Database;
+using LmsApplication.UserModule.Api;
+using LmsApplication.UserModule.Data.Database;
+using LmsApplication.UserModule.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.OpenApi.Models;
@@ -29,6 +31,17 @@ builder.Services.AddHttpLogging(o => { });
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCourseModuleApi(builder.Configuration);
+builder.Services.AddUserModuleApi(builder.Configuration);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy(AuthPolicies.AdminPolicy, policy => policy.RequireRole("Admin"));
+    opt.AddPolicy(AuthPolicies.TeacherPolicy, policy => policy.RequireRole("Teacher"));
+    opt.AddPolicy(AuthPolicies.StudentPolicy, policy => policy.RequireAuthenticatedUser());
+    
+    opt.DefaultPolicy = opt.GetPolicy(AuthPolicies.StudentPolicy)!;
+});
 
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -63,30 +76,6 @@ builder.Services.AddSwaggerGen(opt =>
     opt.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 });
 
-// TODO
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-    {
-        options.Authority = "";
-        options.Audience = "";
-    });
-
-builder.Services.AddAuthorization(opt =>
-{
-    opt.DefaultPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-
-    opt.AddPolicy(AuthPolicies.TeacherPolicy, new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .RequireRole(UserConstants.AdminRole, UserConstants.TeacherRole)
-        .Build());
-
-    opt.AddPolicy(AuthPolicies.AdminPolicy, new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .RequireRole(UserConstants.AdminRole)
-        .Build());
-});
 
 builder.Services.AddLogging();
 
@@ -108,12 +97,15 @@ app.UseAuthorization();
 app.UseMiddleware<ExceptionHandler>();
 
 app.MapControllers();
+app.MapIdentityApi<User>();
 
 // Apply migrations
 using (var scope = app.Services.CreateScope())
 {
     var courseContext = scope.ServiceProvider.GetRequiredService<CourseDbContext>();
     courseContext.Database.Migrate();
+    var userContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+    userContext.Database.Migrate();
     Console.WriteLine("Migrations applied successfully.");
 }
 
