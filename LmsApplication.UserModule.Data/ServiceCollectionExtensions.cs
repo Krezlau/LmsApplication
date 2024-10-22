@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddIdentityApiEndpoints<User>(opt =>
             {
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<UserDbContext>()
             .AddDefaultTokenProviders()
             .AddApiEndpoints();

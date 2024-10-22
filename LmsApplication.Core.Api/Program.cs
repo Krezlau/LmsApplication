@@ -6,6 +6,7 @@ using LmsApplication.UserModule.Api;
 using LmsApplication.UserModule.Data.Database;
 using LmsApplication.UserModule.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.OpenApi.Models;
@@ -33,15 +34,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCourseModuleApi(builder.Configuration);
 builder.Services.AddUserModuleApi(builder.Configuration);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-builder.Services.AddAuthorization(opt =>
-{
-    opt.AddPolicy(AuthPolicies.AdminPolicy, policy => policy.RequireRole("Admin"));
-    opt.AddPolicy(AuthPolicies.TeacherPolicy, policy => policy.RequireRole("Teacher"));
-    opt.AddPolicy(AuthPolicies.StudentPolicy, policy => policy.RequireAuthenticatedUser());
-    
-    opt.DefaultPolicy = opt.GetPolicy(AuthPolicies.StudentPolicy)!;
-});
 
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -106,6 +98,23 @@ using (var scope = app.Services.CreateScope())
     courseContext.Database.Migrate();
     var userContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
     userContext.Database.Migrate();
+    
+    // seed roles like this for now 
+    // should be changed later
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var adminRole = new IdentityRole("Admin");
+    var teacherRole = new IdentityRole("Teacher");
+    if (!await roleManager.RoleExistsAsync("Admin"))
+        await roleManager.CreateAsync(adminRole);
+    if (!await roleManager.RoleExistsAsync("Teacher"))
+        await roleManager.CreateAsync(teacherRole);
+
+    var admin = userContext.Users.FirstOrDefault(u => u.Email == "krez@gmail.com");
+    if (admin is not null)
+    {
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+        await userManager.AddToRolesAsync(admin, new[] { "Admin", "Teacher" });
+    }
     Console.WriteLine("Migrations applied successfully.");
 }
 

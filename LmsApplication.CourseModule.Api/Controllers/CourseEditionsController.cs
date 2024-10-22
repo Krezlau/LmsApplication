@@ -20,7 +20,6 @@ public class CourseEditionsController : ControllerBase
     }
     
     [HttpGet("all")]
-    [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetAllCourseEditions()
     {
         return Ok(ApiResponseHelper.Success(await _courseEditionAppService.GetAllCourseEditionsAsync()));
