@@ -11,4 +11,6 @@ public class User : IdentityUser
     public virtual ICollection<IdentityUserToken<string>> Tokens { get; set; } = default!;
 
     public virtual ICollection<IdentityUserRole<string>> UserRoles { get; set; } = default!;
+    
+    public virtual ICollection<IdentityRole> Roles { get; set; } = default!;
 }

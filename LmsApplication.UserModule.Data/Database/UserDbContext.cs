@@ -1,4 +1,5 @@
 using LmsApplication.UserModule.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +44,10 @@ public class UserDbContext : IdentityDbContext<User>
                 .WithOne()
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
+
+            b.HasMany(e => e.Roles)
+                .WithMany()
+                .UsingEntity<IdentityUserRole<string>>();
         });
     }
     
