@@ -91,6 +91,8 @@ app.UseMiddleware<ExceptionHandler>();
 app.MapControllers();
 app.MapIdentityApi<User>();
 
+app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
 // Apply migrations
 using (var scope = app.Services.CreateScope())
 {

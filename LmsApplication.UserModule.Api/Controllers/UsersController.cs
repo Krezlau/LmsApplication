@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace LmsApplication.UserModule.Api.Controllers;
 
 [ApiController]
-[Microsoft.AspNetCore.Components.Route("api/[controller]")]
+[Route("api/[controller]")]
 [Authorize]
 public class UsersController : ControllerBase
 {

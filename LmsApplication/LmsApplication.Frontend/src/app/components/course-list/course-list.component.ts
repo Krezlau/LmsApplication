@@ -31,7 +31,7 @@ export class CourseListComponent implements OnInit, OnDestroy{
   }
 
   async redirectToDetails(courseId: string) {
-    await this.router.navigate([this.authState().tenantId, 'courses', courseId]);
+    await this.router.navigate(['courses', courseId]);
   }
 
   ngOnInit() {

@@ -1,35 +1,45 @@
-import {ROUTER_CONFIGURATION, RouterConfigOptions, RouterConfigurationFeature, Routes} from '@angular/router';
-import {HomePageComponent} from "./components/home-page/home-page.component";
-import {AdminPanelPageComponent} from "./components/admin-panel-page/admin-panel-page.component";
-import {ProfilePageComponent} from "./components/profile-page/profile-page.component";
-import {CourseDetailsPageComponent} from "./components/course-details-page/course-details-page.component";
+import { RouterConfigOptions, Routes } from '@angular/router';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { AdminPanelPageComponent } from './components/admin-panel-page/admin-panel-page.component';
+import { ProfilePageComponent } from './components/profile-page/profile-page.component';
+import { CourseDetailsPageComponent } from './components/course-details-page/course-details-page.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
+import { RegisterPageComponent } from './components/register-page/register-page.component';
 
 export const routes: Routes = [
   {
-    path: ':tenantId/home',
+    path: 'home',
     component: HomePageComponent,
   },
   {
-    path: ':tenantId/admin',
-    component: AdminPanelPageComponent
+    path: 'admin',
+    component: AdminPanelPageComponent,
   },
   {
-    path: ':tenantId/users/:email',
-    component: ProfilePageComponent
+    path: 'login',
+    component: LoginPageComponent,
   },
   {
-    path: ':tenantId/courses/:courseId',
-    component: CourseDetailsPageComponent
+    path: 'register',
+    component: RegisterPageComponent,
   },
   {
-    path: ':tenantId',
-    redirectTo: ':tenantId/home',
-    pathMatch: 'full'
+    path: 'users/:email',
+    component: ProfilePageComponent,
+  },
+  {
+    path: 'courses/:courseId',
+    component: CourseDetailsPageComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
   {
     path: '**',
-    component: HomePageComponent
-  }
+    component: HomePageComponent,
+  },
 ];
 
 export const routerConfig: RouterConfigOptions = {

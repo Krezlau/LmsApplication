@@ -1,7 +1,7 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Location} from "@angular/common";
-import {OidcSecurityService} from "angular-auth-oidc-client";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Location } from "@angular/common";
+import { OidcSecurityService } from "angular-auth-oidc-client";
 
 export class TenantAuthInterceptor implements HttpInterceptor {
   constructor(private location: Location, private oidcSecurityService: OidcSecurityService) {

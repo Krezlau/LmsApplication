@@ -1,11 +1,10 @@
-import {UserRole} from "./user-role";
+import { UserRole } from './user-role';
 
 export interface UserModel {
+  id: string;
   email: string;
   name: string;
   surname: string;
   photo: string | null;
-  userId: string;
   role: UserRole;
 }
-
