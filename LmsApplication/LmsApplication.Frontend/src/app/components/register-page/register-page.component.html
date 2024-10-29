@@ -1,1 +1,54 @@
-<p>register-page works!</p>
+<h1 class="text-3xl text-center mt-10">Register</h1>
+<form class="flex flex-col gap-4 mt-10" (submit)="login($event)">
+  <div class="mx-auto">
+    <label class="label" for="email">Email</label>
+    <input
+      class="input input-primary w-[24rem]"
+      type="email"
+      id="email"
+      name="email"
+      [formControl]="emailControl"
+    />
+    <label class="label" for="name">First Name</label>
+    <input
+      class="input input-primary w-[24rem]"
+      type="text"
+      id="name"
+      name="name"
+      [formControl]="nameControl"
+    />
+    <label class="label" for="surname">Surname</label>
+    <input
+      class="input input-primary w-[24rem]"
+      type="text"
+      id="surname"
+      name="surname"
+      [formControl]="surnameControl"
+    />
+    <label class="label" for="password">Password</label>
+    <input
+      class="input input-primary w-[24rem]"
+      type="password"
+      id="password"
+      name="password"
+      [formControl]="passwordControl"
+    />
+    <label class="label" for="repeat-password">Repeat Password</label>
+    <input
+      class="input input-primary w-[24rem]"
+      type="password"
+      id="repeat-password"
+      name="repeat-password"
+      [formControl]="repeatPasswordControl"
+    />
+  </div>
+
+  <div class="pt-4 mt-4 flex flex-row justify-center">
+    <button *ngIf="!loading" class="btn btn-primary mx-auto min-w-24" type="submit">Register</button>
+    <button *ngIf="loading" class="btn btn-primary btn-disabled mx-auto min-w-24" type="submit">
+      <span class="loading loading-spinner">Loading...</span>
+    </button>
+  </div>
+    <p class="text-center">
+      Already have an account? <a class="link link-secondary link-hover" routerLink="/register">Log in</a>
+</form>

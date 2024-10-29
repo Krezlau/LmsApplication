@@ -1,12 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import {
-  FormControl,
-  NgControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertService } from '../../services/alert.service';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -14,11 +9,12 @@ import { UserService } from '../../services/user.service';
 import { ApiResponse } from '../../types/api-response';
 import { UserModel } from '../../types/users/user-model';
 import { LoginResponse } from '../../types/users/login-response';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, NgIf],
   templateUrl: './login-page.component.html',
 })
 export class LoginPageComponent implements OnDestroy {

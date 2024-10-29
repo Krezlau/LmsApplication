@@ -14,6 +14,20 @@ export class UserService {
     private http: HttpClient,
   ) {}
 
+  public register(
+    email: string,
+    firstName: string,
+    surname: string,
+    password: string,
+  ) {
+    return this.http.post<any>(`${env.apiUrl}/register`, {
+      email,
+      name: firstName,
+      surname,
+      password,
+    });
+  }
+
   public getMe(token?: string) {
     return this.http.get<ApiResponse<UserModel>>(
       `${env.apiUrl}/api/users/current`,

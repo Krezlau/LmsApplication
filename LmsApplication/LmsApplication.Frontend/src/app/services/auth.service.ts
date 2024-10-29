@@ -1,4 +1,4 @@
-import { Injectable, signal, OnDestroy } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { AuthState } from '../types/users/auth-state';
 import { HttpClient } from '@angular/common/http';
 import { env } from '../../env';
