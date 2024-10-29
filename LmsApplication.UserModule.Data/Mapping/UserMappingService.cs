@@ -14,6 +14,9 @@ public static class UserMappingService
         {
             Id = user.Id,
             Email = user.Email,
+            Name = user.Name,
+            Surname = user.Surname,
+            Username = user.UserName,
             Roles = user.Roles.Select(r => new RoleModel
             {
                 Id = r.Id,

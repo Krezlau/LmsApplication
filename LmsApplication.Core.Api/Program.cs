@@ -89,7 +89,7 @@ app.UseAuthorization();
 app.UseMiddleware<ExceptionHandler>();
 
 app.MapControllers();
-app.MapIdentityApi<User>();
+app.MapCustomIdentityApi<User>();
 
 app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
