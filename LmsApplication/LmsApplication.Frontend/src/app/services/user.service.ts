@@ -52,7 +52,7 @@ export class UserService {
 
   public getUsers() {
     return this.http.get<UserModel[]>(
-      `${env.apiUrl}/api/users/`,
+      `${env.apiUrl}/api/users`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,

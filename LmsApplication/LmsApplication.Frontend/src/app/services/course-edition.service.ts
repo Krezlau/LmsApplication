@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CourseEditionModel } from '../types/courses/course-edition-model';
 import { AuthService } from './auth.service';
 import { ApiResponse } from '../types/api-response';
+import { env } from '../../env';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +16,10 @@ export class CourseEditionService {
 
   getCourseEditions() {
     return this.http.get<ApiResponse<CourseEditionModel[]>>(
-      'http://localhost:8080/api/courses/editions/my-courses',
+      `${env.apiUrl}/api/courses/editions/my-courses`,
       {
         headers: {
-          Authorization: this.authService.authState().accessToken,
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );
@@ -26,10 +27,10 @@ export class CourseEditionService {
 
   getCourseEditionsByCourseId(courseId: string) {
     return this.http.get<ApiResponse<CourseEditionModel[]>>(
-      `http://localhost:8080/api/courses/editions/by-course/${courseId}`,
+      `${env.apiUrl}/api/courses/editions/by-course/${courseId}`,
       {
         headers: {
-          Authorization: this.authService.authState().accessToken,
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );

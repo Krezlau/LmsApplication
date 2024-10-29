@@ -5,6 +5,7 @@ import { CoursePostModel } from '../types/courses/course-post-model';
 import { AuthService } from './auth.service';
 import { CourseCategory } from '../types/courses/course-category';
 import { ApiResponse } from '../types/api-response';
+import { env } from '../../env';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +18,10 @@ export class CourseService {
 
   public getAllCourses() {
     return this.http.get<ApiResponse<CourseModel[]>>(
-      'http://localhost:8080/api/courses',
+      `${env.apiUrl}/api/courses`,
       {
         headers: {
-          Authorization: this.authService.authState().accessToken,
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );
@@ -28,10 +29,10 @@ export class CourseService {
 
   public getCourseById(courseId: string) {
     return this.http.get<ApiResponse<CourseModel>>(
-      `http://localhost:8080/api/courses/${courseId}`,
+      `${env.apiUrl}/api/courses/${courseId}`,
       {
         headers: {
-          Authorization: this.authService.authState().accessToken,
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );
@@ -39,11 +40,11 @@ export class CourseService {
 
   public createCourse(course: CoursePostModel) {
     return this.http.post<ApiResponse<CourseModel>>(
-      'http://localhost:8080/api/courses',
+      `${env.apiUrl}/api/courses`,
       course,
       {
         headers: {
-          Authorization: this.authService.authState().accessToken,
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );
@@ -51,10 +52,10 @@ export class CourseService {
 
   public getCategories() {
     return this.http.get<ApiResponse<CourseCategory[]>>(
-      'http://localhost:8080/api/courses/categories',
+      `${env.apiUrl}/api/courses/categories`,
       {
         headers: {
-          Authorization: this.authService.authState().accessToken,
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );
