@@ -43,7 +43,6 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{userEmail}")]
-    [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetUserByEmail(string userEmail)
     {
         var user = await _userDbContext.Users
@@ -63,6 +62,6 @@ public class UsersController : ControllerBase
             .Include(x => x.Roles)
             .ToListAsync();
         
-        return Ok(users.Select(x => x.ToModel()));
+        return Ok(users.Select(x => x.ToModel()).OrderByDescending(x => x.Role));
     }
 }

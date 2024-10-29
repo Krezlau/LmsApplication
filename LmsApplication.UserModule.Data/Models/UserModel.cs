@@ -1,3 +1,5 @@
+using LmsApplication.Core.Data.Enums;
+
 namespace LmsApplication.UserModule.Data.Models;
 
 public class UserModel
@@ -13,6 +15,6 @@ public class UserModel
     public string? Surname { get; set; } = string.Empty;
     
     public string? Photo { get; set; }
-    
-    public List<RoleModel> Roles { get; set; } = new ();
+
+    public UserRole Role { get; set; } = UserRole.Student;
 }

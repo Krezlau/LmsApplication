@@ -45,7 +45,7 @@ export class AuthService {
 
   public loadState(accessToken: string, refreshToken: string, userData: UserModel) {
     const validUntil = new Date();
-    validUntil.setSeconds(validUntil.getSeconds() + 3600);
+    validUntil.setSeconds(validUntil.getSeconds() + (3600 * 60) - 360);
 
     const authState: AuthState = {
       isAuthenticated: true,
@@ -65,8 +65,10 @@ export class AuthService {
   }
 
   private checkAuthState(): AuthState | null {
+    console.log("checking auth state");
     const stateInStorage = localStorage.getItem('authState');
     if (!stateInStorage) {
+      console.log("no state in storage");
       return null;
     }
 
@@ -77,6 +79,8 @@ export class AuthService {
       authState.validUntil < new Date() ||
       !authState.userData
     ) {
+      console.log(authState)
+      console.log("state is invalid");
       return null;
     }
 

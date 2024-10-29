@@ -59,11 +59,11 @@ export class LoginPageComponent implements OnDestroy {
                   .getMe(response.accessToken)
                   .pipe(
                     tap({
-                      next: (userData: ApiResponse<UserModel>) => {
+                      next: (userData: UserModel) => {
                         this.authService.loadState(
                           response.accessToken,
                           response.refreshToken,
-                          userData.data!,
+                          userData!,
                         );
                         this.loading = false;
                         this.alertService.show('Logged in', 'success');

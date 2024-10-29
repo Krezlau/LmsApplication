@@ -29,7 +29,7 @@ export class UserService {
   }
 
   public getMe(token?: string) {
-    return this.http.get<ApiResponse<UserModel>>(
+    return this.http.get<UserModel>(
       `${env.apiUrl}/api/users/current`,
       {
         headers: {
@@ -40,22 +40,22 @@ export class UserService {
   }
 
   public getUser(email: string) {
-    return this.http.get<ApiResponse<UserModel>>(
-      `http://localhost:8080/api/Auth/${email}`,
+    return this.http.get<UserModel>(
+      `${env.apiUrl}/api/users/${email}`,
       {
         headers: {
-          Authorization: this.authService.authState().accessToken,
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );
   }
 
   public getUsers() {
-    return this.http.get<ApiResponse<UserModel[]>>(
-      'http://localhost:8080/api/Auth/users',
+    return this.http.get<UserModel[]>(
+      `${env.apiUrl}/api/users/`,
       {
         headers: {
-          Authorization: this.authService.authState().accessToken,
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );
