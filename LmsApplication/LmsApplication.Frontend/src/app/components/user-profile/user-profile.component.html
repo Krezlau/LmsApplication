@@ -1,1 +1,39 @@
-<p>user-profile works!</p>
+<div class="" *ngIf="user">
+  <div class="avatar placeholder">
+    <div class="bg-neutral text-neutral-content w-32 rounded-full">
+      <span class="text-6xl">{{ user.name[0] }}</span>
+    </div>
+  </div>
+  <div class="flex flex-row justify-between">
+    <h1 class="text-4xl font-semibold">{{ user.name + " " + user.surname }}</h1>
+    <div class="flex flex-row gap-4">
+      <button *ngIf="isLoggedInUser()" class="btn btn-secondary">
+        Settings
+      </button>
+      <button *ngIf="isLoggedInUser()" class="btn btn-secondary">
+        Edit Profile
+      </button>
+    </div>
+  </div>
+  <p class="mt-1">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean urna eros,
+    ullamcorper sit amet consequat vitae, rhoncus in est. Fusce pretium, risus
+    non dignissim tempus, enim quam dictum tellus, dapibus placerat purus justo
+    eget lectus. Proin ut laoreet enim. Sed tempus leo velit, vel pharetra risus
+    iaculis sit amet. Curabitur eleifend, augue et venenatis venenatis, arcu
+    dolor porttitor lorem, a dignissim leo enim sit amet lorem. Lorem ipsum
+    dolor sit amet, consectetur adipiscing elit.
+  </p>
+  <h2 class="mt-6 text-2xl">User Info</h2>
+  <div class="mt-3 px-2">
+    <p class="badge badge-primary mr-2">Role</p>
+    <p class="inline-block">{{ toHumanReadable(user.role) }}</p>
+    <br />
+    <p class="badge badge-primary mr-2">Email</p>
+    <p class="inline-block">{{ user.email }}</p>
+  </div>
+  <div *ngIf="!isLoggedInUser()">
+    <h2 class="mt-6 text-2xl">Mutual courses</h2>
+    <div>TODO</div>
+  </div>
+</div>
