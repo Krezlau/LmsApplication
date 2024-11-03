@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LmsApplication\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj" />
+      <ProjectReference Include="..\LmsApplication\LmsApplication.Core.Shared\LmsApplication.Core.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>

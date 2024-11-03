@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LmsApplication.Core.Data.Entities;
-using LmsApplication.Core.Data.Enums;
-using LmsApplication.Core.Data.Extensions;
+using LmsApplication.Core.Shared.Entities;
+using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.Extensions;
 
 namespace LmsApplication.CourseModule.Data.Entities;
 

@@ -1,6 +1,6 @@
 using FluentValidation;
-using LmsApplication.Core.Data.Entities;
-using LmsApplication.Core.Data.Models.Courses;
+using LmsApplication.Core.Shared.Entities;
+using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 
 namespace LmsApplication.CourseModule.Services.Validation;

@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.AppHost", "LmsApplication\LmsApplication.AppHost\LmsApplication.AppHost.csproj", "{824C6495-F9B3-4E25-89FB-634616F9A722}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Data", "LmsApplication\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj", "{9E1D5341-2978-48E3-8ECE-182EA75EDECC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Shared", "LmsApplication\LmsApplication.Core.Shared\LmsApplication.Core.Shared.csproj", "{9E1D5341-2978-48E3-8ECE-182EA75EDECC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LmsApplication.UserModule", "LmsApplication.UserModule", "{AA9C221C-4908-41EC-8E19-3D1D11E552C4}"
 EndProject
@@ -19,6 +19,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.UserModule.Data", "LmsApplication.UserModule.Data\LmsApplication.UserModule.Data.csproj", "{154DB848-C537-4E98-B2A4-1D2A696105DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.UserModule.Api", "LmsApplication.UserModule.Api\LmsApplication.UserModule.Api.csproj", "{616BA6B0-3792-4D98-AED4-3C03DB3738D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.UserModule.Services", "LmsApplication.UserModule.Services\LmsApplication.UserModule.Services.csproj", "{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +60,10 @@ Global
 		{616BA6B0-3792-4D98-AED4-3C03DB3738D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{616BA6B0-3792-4D98-AED4-3C03DB3738D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{616BA6B0-3792-4D98-AED4-3C03DB3738D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FF65ADF2-0726-4FC5-ADD5-7E1623E497CB} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}
@@ -65,5 +71,6 @@ Global
 		{66C97B54-46BE-4381-9721-C2E4E808ACC5} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}
 		{154DB848-C537-4E98-B2A4-1D2A696105DF} = {AA9C221C-4908-41EC-8E19-3D1D11E552C4}
 		{616BA6B0-3792-4D98-AED4-3C03DB3738D0} = {AA9C221C-4908-41EC-8E19-3D1D11E552C4}
+		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061} = {AA9C221C-4908-41EC-8E19-3D1D11E552C4}
 	EndGlobalSection
 EndGlobal

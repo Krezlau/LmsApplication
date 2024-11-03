@@ -1,6 +1,6 @@
 using FluentValidation;
-using LmsApplication.Core.Data.Enums;
-using LmsApplication.Core.Data.Models.Courses;
+using LmsApplication.Core.Shared.Enums;
+using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Repositories;
 
 namespace LmsApplication.CourseModule.Services.Validation;

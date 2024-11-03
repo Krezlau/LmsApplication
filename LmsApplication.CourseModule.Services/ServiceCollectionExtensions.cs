@@ -1,5 +1,6 @@
 using FluentValidation;
-using LmsApplication.Core.Data.Models.Courses;
+using LmsApplication.Core.Shared.Services;
+using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Services.Courses;
 using LmsApplication.CourseModule.Services.Validation;
 using Microsoft.Extensions.DependencyInjection;

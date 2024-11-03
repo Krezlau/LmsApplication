@@ -1,5 +1,5 @@
 using LmsApplication.Core.Api.Middleware;
-using LmsApplication.Core.Data.Config;
+using LmsApplication.Core.Shared.Config;
 using LmsApplication.CourseModule.Api;
 using LmsApplication.CourseModule.Data.Database;
 using LmsApplication.UserModule.Api;

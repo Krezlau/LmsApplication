@@ -1,5 +1,5 @@
 using FluentValidation;
-using LmsApplication.Core.Data.Models.Courses;
+using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Database;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,6 @@
 using System.Net;
 using FluentValidation;
-using LmsApplication.Core.Data.Models;
+using LmsApplication.Core.Shared.Models;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace LmsApplication.Core.Api.Middleware;

@@ -1,4 +1,4 @@
-using LmsApplication.Core.Data.Database;
+using LmsApplication.Core.Shared.Database;
 using LmsApplication.CourseModule.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

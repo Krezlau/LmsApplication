@@ -1,4 +1,4 @@
-using LmsApplication.Core.Data.Models.Courses;
+using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 
 namespace LmsApplication.CourseModule.Data.Mapping;

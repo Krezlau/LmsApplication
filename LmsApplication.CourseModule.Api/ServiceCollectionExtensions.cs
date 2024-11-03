@@ -1,4 +1,4 @@
-using LmsApplication.Core.Data.Config;
+using LmsApplication.Core.Shared.Config;
 using LmsApplication.CourseModule.Data;
 using LmsApplication.CourseModule.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

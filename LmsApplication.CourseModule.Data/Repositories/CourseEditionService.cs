@@ -1,4 +1,4 @@
-using LmsApplication.Core.Data.Enums;
+using LmsApplication.Core.Shared.Enums;
 using LmsApplication.CourseModule.Data.Database;
 using LmsApplication.CourseModule.Data.Entities;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,5 @@
-using LmsApplication.Core.Data.Models.Courses;
+using LmsApplication.Core.Shared.Services;
+using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Data.Mapping;
 using LmsApplication.CourseModule.Data.Repositories;

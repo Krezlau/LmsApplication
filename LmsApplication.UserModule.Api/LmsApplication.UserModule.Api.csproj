@@ -13,7 +13,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LmsApplication.UserModule.Data\LmsApplication.UserModule.Data.csproj" />
-      <ProjectReference Include="..\LmsApplication\LmsApplication.Core.Data\LmsApplication.Core.Data.csproj" />
+      <ProjectReference Include="..\LmsApplication.UserModule.Services\LmsApplication.UserModule.Services.csproj" />
+      <ProjectReference Include="..\LmsApplication\LmsApplication.Core.Shared\LmsApplication.Core.Shared.csproj" />
     </ItemGroup>
 
 </Project>

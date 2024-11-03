@@ -1,12 +1,9 @@
 using System.Security.Claims;
-using LmsApplication.Core.Data.Config;
-using LmsApplication.UserModule.Data.Database;
-using LmsApplication.UserModule.Data.Entities;
-using LmsApplication.UserModule.Data.Mapping;
+using LmsApplication.Core.Shared.Config;
+using LmsApplication.UserModule.Data.Models;
+using LmsApplication.UserModule.Services.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LmsApplication.UserModule.Api.Controllers;
 
@@ -15,13 +12,11 @@ namespace LmsApplication.UserModule.Api.Controllers;
 [Authorize]
 public class UsersController : ControllerBase
 {
-    private readonly UserManager<User> _userManager;
-    private readonly UserDbContext _userDbContext;
+    private readonly IUserService _userService;
 
-    public UsersController(UserManager<User> userManager, UserDbContext userDbContext)
+    public UsersController(IUserService userService)
     {
-        _userManager = userManager;
-        _userDbContext = userDbContext;
+        _userService = userService;
     }
     
     [HttpGet("current")]
@@ -33,35 +28,31 @@ public class UsersController : ControllerBase
             throw new ArgumentException("Invalid user.");
         }
 
-        var user = await _userDbContext.Users
-            .Include(x => x.Roles)
-            .FirstOrDefaultAsync(x => x.Id == userId);
-        if (user is null) 
-            throw new KeyNotFoundException("Couldn't find user with the given id.");
+        return Ok(await _userService.GetUserAsync(userId));
+    }
+    
+    [HttpPut("current")]
+    public async Task<IActionResult> UpdateCurrentUser(UserUpdateModel model)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId is null)
+        {
+            throw new ArgumentException("Invalid user.");
+        }
 
-        return Ok(user.ToModel());
+        return Ok(await _userService.UpdateUserAsync(userId, model));
     }
 
     [HttpGet("{userEmail}")]
     public async Task<IActionResult> GetUserByEmail(string userEmail)
     {
-        var user = await _userDbContext.Users
-            .Include(x => x.Roles)
-            .FirstOrDefaultAsync(x => x.Email == userEmail);
-        if (user is null)
-            throw new KeyNotFoundException("Couldn't find user with the given email.");
-
-        return Ok(user.ToModel());
+        return Ok(await _userService.GetUserByEmailAsync(userEmail));
     }
     
     [HttpGet("")]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _userDbContext.Users
-            .Include(x => x.Roles)
-            .ToListAsync();
-        
-        return Ok(users.Select(x => x.ToModel()).OrderByDescending(x => x.Role));
+        return Ok(await _userService.GetUsersAsync());
     }
 }

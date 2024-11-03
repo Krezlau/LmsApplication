@@ -1,4 +1,4 @@
-using LmsApplication.Core.Data.Enums;
+using LmsApplication.Core.Shared.Enums;
 using LmsApplication.UserModule.Data.Entities;
 using LmsApplication.UserModule.Data.Models;
 
