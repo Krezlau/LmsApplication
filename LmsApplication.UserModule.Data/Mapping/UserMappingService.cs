@@ -20,6 +20,7 @@ public static class UserMappingService
             Id = user.Id,
             Email = user.Email,
             Name = user.Name,
+            Bio = user.Bio,
             Surname = user.Surname,
             Username = user.UserName!,
             Role = userRole,

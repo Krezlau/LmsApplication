@@ -16,7 +16,7 @@ public interface IUserService
     
     Task<List<UserModel>> GetUsersAsync();
     
-    Task<UserModel> UpdateUserAsync(string userId, UserUpdateModel model);
+    Task UpdateUserAsync(string userId, UserUpdateModel model);
 }
 
 public class UserService : IUserService
@@ -66,7 +66,7 @@ public class UserService : IUserService
         return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();
     }
 
-    public async Task<UserModel> UpdateUserAsync(string userId, UserUpdateModel model)
+    public async Task UpdateUserAsync(string userId, UserUpdateModel model)
     {
         await _validationService.ValidateAndThrowAsync(model);
         
@@ -79,7 +79,5 @@ public class UserService : IUserService
         user.Bio = model.Bio;
         
         await _userManager.UpdateAsync(user);
-        
-        return user.ToModel();
     }
 }

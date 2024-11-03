@@ -1,0 +1,53 @@
+<h1 class="text-3xl text-center mt-10">Edit profile</h1>
+<form
+  *ngIf="user && !loading"
+  class="flex flex-col gap-4 mt-10"
+  (submit)="edit($event)"
+>
+  <div class="mx-auto">
+    <label class="label" for="name">Name</label>
+    <input
+      class="input input-primary w-[24rem]"
+      type="text"
+      id="name"
+      name="name"
+      [formControl]="nameControl"
+    />
+    <label class="label" for="surname">Surname</label>
+    <input
+      class="input input-primary w-[24rem]"
+      type="text"
+      id="surname"
+      name="surname"
+      [formControl]="surnameControl"
+    />
+    <label class="label" for="bio">Bio</label>
+    <textarea
+      class="textarea textarea-primary w-[24rem]"
+      id="bio"
+      name="bio"
+      [formControl]="bioControl"
+    >
+    </textarea>
+  </div>
+
+  <div class="pt-4 mt-4 flex flex-row justify-center">
+    <button
+      *ngIf="!editLoading"
+      class="btn btn-primary mx-auto min-w-24"
+      type="submit"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="editLoading"
+      class="btn btn-primary btn-disabled mx-auto min-w-24"
+      type="submit"
+    >
+      <span class="loading loading-spinner">Loading...</span>
+    </button>
+  </div>
+</form>
+<div *ngIf="loading || !user" class="flex flex-row justify-center mt-10">
+  <span class="loading loading-spinner loading-lg">Loading...</span>
+</div>

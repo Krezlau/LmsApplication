@@ -5,6 +5,7 @@ import { ProfilePageComponent } from './components/profile-page/profile-page.com
 import { CourseDetailsPageComponent } from './components/course-details-page/course-details-page.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
+import { EditUserProfilePageComponent } from './components/edit-user-profile-page/edit-user-profile-page.component';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,10 @@ export const routes: Routes = [
   {
     path: 'users/:email',
     component: ProfilePageComponent,
+  },
+  {
+    path: 'users/:email/edit',
+    component: EditUserProfilePageComponent,
   },
   {
     path: 'courses/:courseId',

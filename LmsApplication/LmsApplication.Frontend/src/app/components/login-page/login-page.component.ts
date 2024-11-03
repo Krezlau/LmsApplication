@@ -6,7 +6,6 @@ import { AlertService } from '../../services/alert.service';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { UserService } from '../../services/user.service';
-import { ApiResponse } from '../../types/api-response';
 import { UserModel } from '../../types/users/user-model';
 import { LoginResponse } from '../../types/users/login-response';
 import { NgIf } from '@angular/common';

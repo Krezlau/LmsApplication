@@ -18,6 +18,7 @@ public class UserUpdateModelValidator : AbstractValidator<UserUpdateModel>
             .MaximumLength(100);
         
         RuleFor(x => x.Bio)
-            .MaximumLength(500);
+            .MaximumLength(500)
+            .When(x => x.Bio is not null && x.Bio.Length > 0);
     }
 }

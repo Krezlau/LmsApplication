@@ -40,7 +40,8 @@ public class UsersController : ControllerBase
             throw new ArgumentException("Invalid user.");
         }
 
-        return Ok(await _userService.UpdateUserAsync(userId, model));
+        await _userService.UpdateUserAsync(userId, model);
+        return Ok();
     }
 
     [HttpGet("{userEmail}")]
