@@ -1,17 +1,17 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.CourseModule.Data.Courses;
-using LmsApplication.CourseModule.Data.Repositories;
+using LmsApplication.CourseModule.Services.Repositories;
 
 namespace LmsApplication.CourseModule.Services.Validation;
 
 public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditionAddUserModel>
 {
-    private readonly ICourseEditionService _courseEditionService;
+    private readonly ICourseEditionRepository _courseEditionRepository;
     
-    public CourseEditionAddUserModelValidator(ICourseEditionService courseEditionService)
+    public CourseEditionAddUserModelValidator(ICourseEditionRepository courseEditionRepository)
     {
-        _courseEditionService = courseEditionService;
+        _courseEditionRepository = courseEditionRepository;
         
         RuleFor(x => x.UserEmail)
             .NotEmpty()
@@ -37,7 +37,7 @@ public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditio
             return;
         }
         
-        var course = await _courseEditionService.GetCourseEditionByIdAsync(courseId);
+        var course = await _courseEditionRepository.GetCourseEditionByIdAsync(courseId);
         if (course is null)
         {
             context.AddFailure("Course does not exist.");

@@ -2,12 +2,12 @@ using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Data.Mapping;
-using LmsApplication.CourseModule.Data.Repositories;
+using LmsApplication.CourseModule.Services.Repositories;
 using LmsApplication.CourseModule.Services.Validation;
 
 namespace LmsApplication.CourseModule.Services.Courses;
 
-public interface ICourseAppService
+public interface ICourseService
 {
     Task<List<CourseModel>> GetAllCoursesAsync();
     
@@ -24,31 +24,31 @@ public interface ICourseAppService
     Task DeleteCategoryAsync(Guid categoryId);
 }
 
-public class CourseAppService : ICourseAppService
+public class CourseService : ICourseService
 {
-    private readonly ICourseService _courseService;
+    private readonly ICourseRepository _courseRepository;
     private readonly IValidationService<CoursePostModel> _coursePostModelValidationService;
     private readonly IValidationService<CategoryPostModel> _categoryPostModelValidationService;
 
-    public CourseAppService(ICourseService courseService,
+    public CourseService(ICourseRepository courseRepository,
         IValidationService<CategoryPostModel> categoryPostModelValidationService,
         IValidationService<CoursePostModel> coursePostModelValidationService)
     {
-        _courseService = courseService;
+        _courseRepository = courseRepository;
         _categoryPostModelValidationService = categoryPostModelValidationService;
         _coursePostModelValidationService = coursePostModelValidationService;
     }
 
     public async Task<List<CourseModel>> GetAllCoursesAsync()
     {
-        var courses = await _courseService.GetAllCoursesAsync();
+        var courses = await _courseRepository.GetAllCoursesAsync();
 
         return courses.Select(x => x.ToModel()).ToList();
     }
 
     public async Task<CourseModel> GetCourseByIdAsync(Guid id)
     {
-        var course = await _courseService.GetCourseByIdAsync(id);
+        var course = await _courseRepository.GetCourseByIdAsync(id);
         if (course is null)
             throw new KeyNotFoundException($"{nameof(Course)} not found.");
 
@@ -57,7 +57,7 @@ public class CourseAppService : ICourseAppService
 
     public async Task<List<CourseCategoryModel>> GetCategoriesAsync()
     {
-        var categories = await _courseService.GetCategoriesAsync();
+        var categories = await _courseRepository.GetCategoriesAsync();
         
         return categories.Select(x => x.ToModel()).ToList();
     }
@@ -73,16 +73,16 @@ public class CourseAppService : ICourseAppService
             Duration = courseModel.Duration,
         };
 
-        await _courseService.CreateAsync(course);
+        await _courseRepository.CreateAsync(course);
         
-        await _courseService.AttachCategoriesAsync(course, courseModel.Categories);
+        await _courseRepository.AttachCategoriesAsync(course, courseModel.Categories);
         
         return course.ToModel();
     }
 
     public async Task DeleteCourseAsync(Guid courseId)
     {
-        var course = await _courseService.GetCourseWithEditionsByIdAsync(courseId);
+        var course = await _courseRepository.GetCourseWithEditionsByIdAsync(courseId);
         
         if (course is null)
             throw new KeyNotFoundException($"{nameof(Course)} not found.");
@@ -90,7 +90,7 @@ public class CourseAppService : ICourseAppService
         if (course.Editions.Count != 0)
             throw new InvalidOperationException("Cannot delete course with editions.");
         
-        await _courseService.DeleteAsync(course);
+        await _courseRepository.DeleteAsync(course);
     }
 
     public async Task<CourseCategoryModel> CreateCategoryAsync(CategoryPostModel categoryModel)
@@ -102,18 +102,18 @@ public class CourseAppService : ICourseAppService
             Name = categoryModel.Name,
         };
 
-        await _courseService.CreateCategoryAsync(category);
+        await _courseRepository.CreateCategoryAsync(category);
 
         return category.ToModel();
     }
 
     public async Task DeleteCategoryAsync(Guid categoryId)
     {
-        var category = await _courseService.GetCategoryByIdAsync(categoryId);
+        var category = await _courseRepository.GetCategoryByIdAsync(categoryId);
         
         if (category is null)
             throw new KeyNotFoundException($"{nameof(CourseCategory)} not found.");
         
-        await _courseService.DeleteCategoryAsync(category);
+        await _courseRepository.DeleteCategoryAsync(category);
     }
 }

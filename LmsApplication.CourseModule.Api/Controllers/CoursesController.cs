@@ -12,30 +12,30 @@ namespace LmsApplication.CourseModule.Api.Controllers;
 [Authorize]
 public class CoursesController : ControllerBase
 {
-    private readonly ICourseAppService _courseAppService;
+    private readonly ICourseService _courseService;
     
-    public CoursesController(ICourseAppService courseAppService) : base()
+    public CoursesController(ICourseService courseService) : base()
     {
-        _courseAppService = courseAppService;
+        _courseService = courseService;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetAllCourses()
     {
-        return Ok(ApiResponseHelper.Success(await _courseAppService.GetAllCoursesAsync()));
+        return Ok(ApiResponseHelper.Success(await _courseService.GetAllCoursesAsync()));
     }
     
     [HttpGet("{courseId}")]
     public async Task<IActionResult> GetCourse(Guid courseId)
     {
-        return Ok(ApiResponseHelper.Success(await _courseAppService.GetCourseByIdAsync(courseId)));
+        return Ok(ApiResponseHelper.Success(await _courseService.GetCourseByIdAsync(courseId)));
     }
 
     [HttpPost]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> CreateCourse([FromBody] CoursePostModel model)
     {
-        var courseId = await _courseAppService.CreateCourseAsync(model);
+        var courseId = await _courseService.CreateCourseAsync(model);
 
         return Ok(ApiResponseHelper.Success(courseId));
     }
@@ -44,7 +44,7 @@ public class CoursesController : ControllerBase
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> DeleteCourse(Guid courseId)
     {
-        await _courseAppService.DeleteCourseAsync(courseId);
+        await _courseService.DeleteCourseAsync(courseId);
         
         return Ok(ApiResponseHelper.Success());
     }
@@ -52,14 +52,14 @@ public class CoursesController : ControllerBase
     [HttpGet("categories")]
     public async Task<IActionResult> GetCategories()
     {
-        return Ok(ApiResponseHelper.Success(await _courseAppService.GetCategoriesAsync()));
+        return Ok(ApiResponseHelper.Success(await _courseService.GetCategoriesAsync()));
     }
     
     [HttpPost("categories")]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> CreateCategory([FromBody] CategoryPostModel model)
     {
-        var category = await _courseAppService.CreateCategoryAsync(model);
+        var category = await _courseService.CreateCategoryAsync(model);
 
         return Ok(ApiResponseHelper.Success(category));
     }
@@ -68,7 +68,7 @@ public class CoursesController : ControllerBase
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> DeleteCategory(Guid categoryId)
     {
-        await _courseAppService.DeleteCategoryAsync(categoryId);
+        await _courseService.DeleteCategoryAsync(categoryId);
         
         return Ok(ApiResponseHelper.Success());
     }

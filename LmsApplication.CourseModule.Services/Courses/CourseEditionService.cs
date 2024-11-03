@@ -1,16 +1,14 @@
 using FluentValidation;
-using LmsApplication.Core.Shared.Entities;
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Data.Mapping;
-using LmsApplication.CourseModule.Data.Repositories;
-using LmsApplication.CourseModule.Services.Validation;
+using LmsApplication.CourseModule.Services.Repositories;
 
 namespace LmsApplication.CourseModule.Services.Courses;
 
-public interface ICourseEditionAppService
+public interface ICourseEditionService
 {
     Task<List<CourseEditionModel>> GetAllCourseEditionsAsync();
     
@@ -27,41 +25,41 @@ public interface ICourseEditionAppService
     Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userEmail);
 }
 
-public class CourseEditionAppService : ICourseEditionAppService
+public class CourseEditionService : ICourseEditionService
 {
-    private readonly ICourseEditionService _courseEditionService;
-    private readonly ICourseService _courseService;
+    private readonly ICourseEditionRepository _courseEditionRepository;
+    private readonly ICourseRepository _courseRepository;
     private readonly IValidationService<CourseEditionPostModel> _courseEditionPostModelValidationService;
     private readonly IValidationService<CourseEditionAddUserModel> _courseEditionAddUserModelValidationService;
 
-    public CourseEditionAppService(ICourseEditionService courseEditionService,
-        ICourseService courseService,
+    public CourseEditionService(ICourseEditionRepository courseEditionRepository,
+        ICourseRepository courseRepository,
         IValidationService<CourseEditionPostModel> courseEditionPostModelValidationService,
         IValidationService<CourseEditionAddUserModel> courseEditionAddUserModelValidationService)
     {
-        _courseEditionService = courseEditionService;
-        _courseService = courseService;
+        _courseEditionRepository = courseEditionRepository;
+        _courseRepository = courseRepository;
         _courseEditionPostModelValidationService = courseEditionPostModelValidationService;
         _courseEditionAddUserModelValidationService = courseEditionAddUserModelValidationService;
     }
 
     public async Task<List<CourseEditionModel>> GetAllCourseEditionsAsync()
     {
-        var courseEditions = await _courseEditionService.GetAllCourseEditionsAsync();
+        var courseEditions = await _courseEditionRepository.GetAllCourseEditionsAsync();
 
         return courseEditions.Select(x => x.ToModel()).ToList();
     }
 
     public async Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId)
     {
-        var courseEditions = await _courseEditionService.GetCourseEditionsByCourseIdAsync(courseId);
+        var courseEditions = await _courseEditionRepository.GetCourseEditionsByCourseIdAsync(courseId);
         
         return courseEditions.Select(x => x.ToModel()).ToList();
     }
 
     public async Task<CourseEditionModel> GetCourseEditionByIdAsync(Guid id)
     {
-        var courseEdition = await _courseEditionService.GetCourseEditionByIdAsync(id);
+        var courseEdition = await _courseEditionRepository.GetCourseEditionByIdAsync(id);
         if (courseEdition is null)
             throw new KeyNotFoundException("Course edition not found");
 
@@ -70,7 +68,7 @@ public class CourseEditionAppService : ICourseEditionAppService
 
     public async Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model)
     {
-        var course = await _courseService.GetCourseByIdAsync(model.CourseId);
+        var course = await _courseRepository.GetCourseByIdAsync(model.CourseId);
         
         var context = new ValidationContext<CourseEditionPostModel>(model)
         {
@@ -90,7 +88,7 @@ public class CourseEditionAppService : ICourseEditionAppService
             Course = course,
         };
         
-        await _courseEditionService.CreateAsync(courseEdition);
+        await _courseEditionRepository.CreateAsync(courseEdition);
         
         return courseEdition.ToModel();
     }
@@ -107,7 +105,7 @@ public class CourseEditionAppService : ICourseEditionAppService
         };
         await _courseEditionAddUserModelValidationService.ValidateAndThrowAsync(context);
         
-        await _courseEditionService.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Teacher);
+        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Teacher);
     }
 
     public async Task AddStudentToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
@@ -122,12 +120,12 @@ public class CourseEditionAppService : ICourseEditionAppService
         };
         await _courseEditionAddUserModelValidationService.ValidateAndThrowAsync(context);
         
-        await _courseEditionService.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Student);
+        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Student);
     }
 
     public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userEmail)
     {
-        var courseEditions = await _courseEditionService.GetUserCourseEditionsAsync(userEmail);
+        var courseEditions = await _courseEditionRepository.GetUserCourseEditionsAsync(userEmail);
         
         return courseEditions.Select(x => x.ToModel()).ToList();
     }

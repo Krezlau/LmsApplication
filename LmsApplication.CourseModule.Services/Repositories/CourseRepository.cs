@@ -2,9 +2,9 @@ using LmsApplication.CourseModule.Data.Database;
 using LmsApplication.CourseModule.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace LmsApplication.CourseModule.Data.Repositories;
+namespace LmsApplication.CourseModule.Services.Repositories;
 
-public interface ICourseService
+public interface ICourseRepository
 {
     Task<List<Course>> GetAllCoursesAsync();
     
@@ -27,11 +27,11 @@ public interface ICourseService
     Task DeleteCategoryAsync(CourseCategory category);
 }
 
-public class CourseService : ICourseService
+public class CourseRepository : ICourseRepository
 {
     private readonly CourseDbContext _dbContext;
 
-    public CourseService(CourseDbContext dbContext)
+    public CourseRepository(CourseDbContext dbContext)
     {
         _dbContext = dbContext;
     }

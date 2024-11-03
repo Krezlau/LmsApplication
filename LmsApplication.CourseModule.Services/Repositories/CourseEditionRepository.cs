@@ -3,9 +3,9 @@ using LmsApplication.CourseModule.Data.Database;
 using LmsApplication.CourseModule.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace LmsApplication.CourseModule.Data.Repositories;
+namespace LmsApplication.CourseModule.Services.Repositories;
 
-public interface ICourseEditionService
+public interface ICourseEditionRepository
 {
     Task<List<CourseEdition>> GetAllCourseEditionsAsync();
     
@@ -22,11 +22,11 @@ public interface ICourseEditionService
     Task UpdateAsync(CourseEdition courseEdition);
 }
 
-public class CourseEditionService : ICourseEditionService
+public class CourseEditionRepository : ICourseEditionRepository
 {
     private readonly CourseDbContext _context;
 
-    public CourseEditionService(CourseDbContext context)
+    public CourseEditionRepository(CourseDbContext context)
     {
         _context = context;
     }

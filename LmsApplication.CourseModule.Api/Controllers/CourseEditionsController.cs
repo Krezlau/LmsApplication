@@ -12,38 +12,38 @@ namespace LmsApplication.CourseModule.Api.Controllers;
 [Authorize]
 public class CourseEditionsController : ControllerBase
 {
-    private readonly ICourseEditionAppService _courseEditionAppService;
+    private readonly ICourseEditionService _courseEditionService;
 
-    public CourseEditionsController(ICourseEditionAppService courseEditionAppService) : base()
+    public CourseEditionsController(ICourseEditionService courseEditionService) : base()
     {
-        _courseEditionAppService = courseEditionAppService;
+        _courseEditionService = courseEditionService;
     }
     
     [HttpGet("all")]
     public async Task<IActionResult> GetAllCourseEditions()
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionAppService.GetAllCourseEditionsAsync()));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetAllCourseEditionsAsync()));
     }
     
     [HttpGet("by-course/{courseId}")]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetCourseEditionsByCourseId(Guid courseId)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionAppService.GetCourseEditionsByCourseIdAsync(courseId)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByCourseIdAsync(courseId)));
     }
     
     [HttpPost]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> CreateCourseEdition([FromBody] CourseEditionPostModel model)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionAppService.CreateCourseEditionAsync(model)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.CreateCourseEditionAsync(model)));
     }
     
     [HttpPost("{courseId}/add-teacher")]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> AddTeacherToCourseEdition(Guid courseId, [FromBody] CourseEditionAddUserModel model)
     {
-        await _courseEditionAppService.AddTeacherToCourseEditionAsync(courseId, model);
+        await _courseEditionService.AddTeacherToCourseEditionAsync(courseId, model);
         return Ok(ApiResponseHelper.Success());
     }
     
@@ -51,7 +51,7 @@ public class CourseEditionsController : ControllerBase
     [Authorize(AuthPolicies.TeacherPolicy)]
     public async Task<IActionResult> AddStudentToCourseEdition(Guid courseId, [FromBody] CourseEditionAddUserModel model)
     {
-        await _courseEditionAppService.AddStudentToCourseEditionAsync(courseId, model);
+        await _courseEditionService.AddStudentToCourseEditionAsync(courseId, model);
         return Ok(ApiResponseHelper.Success());
     }
     
@@ -59,7 +59,7 @@ public class CourseEditionsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCourseEditionById(Guid id)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionAppService.GetCourseEditionByIdAsync(id)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionByIdAsync(id)));
     }
     //
     // [HttpGet("my-courses")]
