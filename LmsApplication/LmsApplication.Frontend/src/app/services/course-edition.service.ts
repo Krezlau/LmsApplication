@@ -35,4 +35,26 @@ export class CourseEditionService {
       },
     );
   }
+
+  createCourseEdition(
+    courseId: string,
+    title: string,
+    studentLimit: number,
+    startDate: Date,
+  ) {
+    return this.http.post<ApiResponse<CourseEditionModel>>(
+      `${env.apiUrl}/api/courses/editions`,
+      {
+        courseId,
+        title,
+        studentLimit,
+        startDateUtc: startDate,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
 }

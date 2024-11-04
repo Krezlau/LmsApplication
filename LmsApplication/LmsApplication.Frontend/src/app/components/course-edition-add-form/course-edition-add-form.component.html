@@ -1,0 +1,43 @@
+<div
+  class="card card-compact bg-base-200 shadow-xl transition hover:scale-105 cursor-pointer min-h-[200px] flex flex-rcol justify-center gap-2 h-full"
+  onclick="my_modal_2.showModal()"
+>
+  <div
+    class="mx-auto w-[50px] h-[50px] bg-base-300 rounded-full flex flex-col justify-center"
+  >
+    <p class="text-center text-xl font-extrabold">➕</p>
+  </div>
+  <p class="mx-auto">Add new edition</p>
+</div>
+<dialog id="my_modal_2" class="modal" #dialogElement>
+  <form class="modal-box flex flex-col justify-center" (ngSubmit)="onSubmit()">
+    <h3 class="font-bold text-xl">Create New Course</h3>
+    <label class="block mt-2 text-lg">Title</label>
+    <input
+      class="input input-bordered block"
+      [formControl]="titleControl"
+      [defaultValue]="course.title"
+    />
+    <label class="block mt-2 text-lg">Student Limit</label>
+    <input
+      class="input input-bordered block"
+      type="number"
+      min="1"
+      [formControl]="studentLimitControl"
+      [defaultValue]="20"
+    />
+    <label class="block mt-2 text-lg">Start Date</label>
+    <input
+      class="input input-bordered block"
+      type="date"
+      [formControl]="startDateControl"
+    />
+    <button *ngIf="!createLoading" class="btn btn-primary mt-4">Create</button>
+    <button *ngIf="createLoading" class="btn btn-primary mt-4" disabled>
+      <span class="loading loading-spinner loading-sm"></span>
+    </button>
+  </form>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

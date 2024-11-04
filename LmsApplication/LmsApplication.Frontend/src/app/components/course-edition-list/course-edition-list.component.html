@@ -1,11 +1,22 @@
 <ul class="grid grid-cols-4 gap-4 mt-2">
-  <li *ngFor="let edition of courseEditions">
-    <div class="card card-compact bg-base-100 shadow-xl transition hover:scale-105 cursor-pointer" (click)="redirectToDetails(edition.id)">
-      <figure><img src="https://maths.mrpitts.co.uk/wp-content/uploads/2018/09/cropped-iStock-484064126.jpg" alt="Shoes" /></figure>
+  <li *ngFor="let edition of courseEditions?.data ?? []">
+    <div
+      class="card card-compact bg-base-100 shadow-xl transition hover:scale-105 cursor-pointer"
+    >
+      <figure>
+        <img
+          src="https://maths.mrpitts.co.uk/wp-content/uploads/2018/09/cropped-iStock-484064126.jpg"
+          alt="Shoes"
+        />
+      </figure>
       <div class="card-body">
-        <h2 class="card-title">{{edition.title}}</h2>
-        <p class="h-[52px] overflow-clip">{{edition.description}}</p>
+        <h2 class="card-title break-all">{{ edition.title }}</h2>
+        <p class="overflow-clip">Ending: {{ edition.endDateUtc.toString().split('T')[0] }}</p>
+        <p class="overflow-clip">Students: {{ edition.studentIds.length }}/{{ edition.studentLimit }}</p>
       </div>
     </div>
+  </li>
+  <li *ngIf="(authState().userData?.role ?? 0) == 2 && course">
+    <app-course-edition-add-form [course]=course.data!/>
   </li>
 </ul>

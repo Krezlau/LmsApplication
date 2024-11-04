@@ -82,6 +82,7 @@ public class CourseEditionService : ICourseEditionService
         var courseEdition = new CourseEdition
         {
             CourseId = model.CourseId,
+            Title = model.Title,
             StartDateUtc = model.StartDateUtc,
             StudentLimit = model.StudentLimit,
             Duration = course!.Duration,

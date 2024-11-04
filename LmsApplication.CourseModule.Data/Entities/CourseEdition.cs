@@ -16,6 +16,8 @@ public class CourseEdition : IAuditable
 
     [ForeignKey(nameof(CourseId))] 
     public virtual Course? Course { get; set; }
+
+    public string Title { get; set; } = string.Empty;
     
     public CourseDuration Duration { get; set; }
     

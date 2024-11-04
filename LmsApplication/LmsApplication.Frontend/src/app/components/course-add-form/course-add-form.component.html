@@ -1,33 +1,64 @@
 <div class="grid grid-cols-2">
-  <button class="btn btn-sm ml-[calc(100%-32*4px)] btn-primary w-32 col-start-2" onclick="my_modal_2.showModal()">New Course</button>
+  <button
+    class="btn btn-sm ml-[calc(100%-32*4px)] btn-primary w-32 col-start-2"
+    onclick="my_modal_2.showModal()"
+  >
+    New Course
+  </button>
 </div>
-  <dialog id="my_modal_2" class="modal" #dialogElement>
-    <form class="modal-box flex flex-col justify-center" (ngSubmit)="onSubmit()">
-      <h3 class="font-bold text-xl">Create New Course</h3>
-      <label class="block mt-2 text-lg">Title</label>
-      <input class="input input-bordered block" [formControl]="titleFormControl"/>
-      <label class="block mt-2 text-lg">Description</label>
-      <textarea class="textarea textarea-bordered block" [formControl]="descriptionFormControl"></textarea>
-      <label class="block mt-2 text-lg">Duration</label>
-      <select class="select select-bordered block" [formControl]="durationFormControl">
-        <option [value]="CourseDuration.OneSemester">One Semester</option>
-        <option [value]="CourseDuration.TwoSemesters">Two Semesters</option>
-      </select>
-      <label class="block mt-2 text-lg">Categories</label>
-      <select *ngIf="!categoriesLoading" class="select select-bordered block" (change)="onSelect($event)">
-        <option value="" disabled selected>Select Categories</option>
-        <option *ngFor="let category of categories" [value]="category.id" [disabled]="chosenCategories.includes(category)">{{category.name}}</option>
-      </select>
-      <span *ngIf="categoriesLoading" class="loading loading-spinner"></span>
-      <div class="flex flex-wrap mt-2">
-        <span *ngFor="let category of chosenCategories" class="badge badge-secondary mx-1">{{category.name}} <button class="pl-2" (click)="removeCategory(category)">x</button></span>
-      </div>
-      <button *ngIf="!createCourseLoading" class="btn btn-primary mt-4">Create</button>
-      <button *ngIf="createCourseLoading" class="btn btn-primary mt-4" disabled>
-        <span class="loading loading-spinner loading-sm"></span>
-      </button>
-    </form>
-    <form method="dialog" class="modal-backdrop">
-      <button>close</button>
-    </form>
-  </dialog>
+<dialog id="my_modal_2" class="modal" #dialogElement>
+  <form class="modal-box flex flex-col justify-center" (ngSubmit)="onSubmit()">
+    <h3 class="font-bold text-xl">Create New Course</h3>
+    <label class="block mt-2 text-lg">Title</label>
+    <input
+      class="input input-bordered block"
+      [formControl]="titleFormControl"
+    />
+    <label class="block mt-2 text-lg">Description</label>
+    <textarea
+      class="textarea textarea-bordered block"
+      [formControl]="descriptionFormControl"
+    ></textarea>
+    <label class="block mt-2 text-lg">Duration</label>
+    <select
+      class="select select-bordered block"
+      [formControl]="durationFormControl"
+    >
+      <option [value]="CourseDuration.OneSemester">One Semester</option>
+      <option [value]="CourseDuration.TwoSemesters">Two Semesters</option>
+    </select>
+    <label class="block mt-2 text-lg">Categories</label>
+    <select
+      *ngIf="!categoriesLoading"
+      class="select select-bordered block"
+      (change)="onSelect($event)"
+    >
+      <option value="" disabled selected>Select Categories</option>
+      <option
+        *ngFor="let category of categories"
+        [value]="category.id"
+        [disabled]="chosenCategories.includes(category)"
+      >
+        {{ category.name }}
+      </option>
+    </select>
+    <span *ngIf="categoriesLoading" class="loading loading-spinner"></span>
+    <div class="flex flex-wrap mt-2">
+      <span
+        *ngFor="let category of chosenCategories"
+        class="badge badge-secondary mx-1"
+        >{{ category.name }}
+        <button class="pl-2" (click)="removeCategory(category)">x</button></span
+      >
+    </div>
+    <button *ngIf="!createCourseLoading" class="btn btn-primary mt-4">
+      Create
+    </button>
+    <button *ngIf="createCourseLoading" class="btn btn-primary mt-4" disabled>
+      <span class="loading loading-spinner loading-sm"></span>
+    </button>
+  </form>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

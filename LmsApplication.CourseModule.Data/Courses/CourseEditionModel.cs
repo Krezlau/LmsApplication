@@ -9,6 +9,8 @@ public class CourseEditionModel
 
     public CourseModel? Course { get; set; } = new();
     
+    public string Title { get; set; } = string.Empty;
+    
     public CourseDuration Duration { get; set; }
     
     public DateTime StartDateUtc { get; set; }

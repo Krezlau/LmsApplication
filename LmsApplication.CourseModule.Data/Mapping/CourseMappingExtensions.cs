@@ -22,6 +22,7 @@ public static class CourseMappingExtensions
         return new CourseEditionModel
         {
             Id = courseEdition.Id,
+            Title = courseEdition.Title,
             Duration = courseEdition.Duration,
             StartDateUtc = courseEdition.StartDateUtc,
             StudentLimit = courseEdition.StudentLimit,

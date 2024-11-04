@@ -12,6 +12,8 @@ public interface ICourseEditionRepository
     Task<List<CourseEdition>> GetCourseEditionsByCourseIdAsync(Guid courseId);
     
     Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userEmail);
+
+    Task<CourseEdition?> GetCourseEditionByCourseIdAndTitleAsync(string title, Guid courseId);
     
     Task<CourseEdition?> GetCourseEditionByIdAsync(Guid id);
     
@@ -58,6 +60,14 @@ public class CourseEditionRepository : ICourseEditionRepository
             .Include(x => x.Participants)
             .Where(x => x.EndDateUtc < DateTime.UtcNow && x.Participants.Any(p => p.ParticipantEmail == userEmail))
             .ToListAsync();
+    }
+
+    public async Task<CourseEdition?> GetCourseEditionByCourseIdAndTitleAsync(string title, Guid courseId)
+    {
+        return await _context.CourseEditions
+            .Include(x => x.Course)
+            .Include(x => x.Participants)
+            .FirstOrDefaultAsync(x => x.CourseId == courseId && x.Title == title);
     }
 
     public async Task<CourseEdition?> GetCourseEditionByIdAsync(Guid id)

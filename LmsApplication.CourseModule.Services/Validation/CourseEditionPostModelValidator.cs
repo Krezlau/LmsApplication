@@ -1,16 +1,28 @@
 using FluentValidation;
-using LmsApplication.Core.Shared.Entities;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
+using LmsApplication.CourseModule.Services.Repositories;
 
 namespace LmsApplication.CourseModule.Services.Validation;
 
 public class CourseEditionPostModelValidator : AbstractValidator<CourseEditionPostModel>
 {
     private const string CourseDoesNotExistMessage = "Course does not exist.";
+    private const string TitleUniqueMessage = "Title must be unique.";
     
-    public CourseEditionPostModelValidator()
+    private readonly ICourseEditionRepository _courseEditionRepository;
+    
+    public CourseEditionPostModelValidator(ICourseEditionRepository courseEditionRepository)
     {
+        _courseEditionRepository = courseEditionRepository;
+        
+        RuleFor(x => x.Title)
+            .NotEmpty();
+        
+        RuleFor(x => x)
+            .MustAsync(TitleUniqueAsync)
+            .WithMessage(TitleUniqueMessage);
+        
         RuleFor(x => x.CourseId)
             .NotEmpty();
         
@@ -25,6 +37,11 @@ public class CourseEditionPostModelValidator : AbstractValidator<CourseEditionPo
         RuleFor(x => x)
             .Must(CourseExists)
             .WithMessage(CourseDoesNotExistMessage);
+    }
+
+    private async Task<bool> TitleUniqueAsync(CourseEditionPostModel model, CancellationToken ct)
+    {
+        return await _courseEditionRepository.GetCourseEditionByCourseIdAndTitleAsync(model.Title, model.CourseId) is null;
     }
 
     private bool CourseExists(CourseEditionPostModel _, CourseEditionPostModel __, ValidationContext<CourseEditionPostModel> context)
