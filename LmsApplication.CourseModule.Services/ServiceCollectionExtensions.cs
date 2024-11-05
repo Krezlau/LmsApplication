@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IValidationService<CoursePostModel>, ValidationService<CoursePostModel>>();
         services.AddScoped<IValidationService<CourseEditionPostModel>, ValidationService<CourseEditionPostModel>>();
         services.AddScoped<IValidationService<CourseEditionAddUserModel>, ValidationService<CourseEditionAddUserModel>>();
+        services.AddScoped<IValidationService<CourseEditionRegisterModel>, ValidationService<CourseEditionRegisterModel>>();
 
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<ICourseEditionRepository, CourseEditionRepository>();

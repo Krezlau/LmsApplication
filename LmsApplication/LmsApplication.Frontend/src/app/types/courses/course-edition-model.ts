@@ -8,4 +8,15 @@ export interface CourseEditionModel {
   studentLimit: number;
   studentIds: string[];
   teacherIds: string[];
+  registrationStartDateUtc: Date | null;
+  registrationEndDateUtc: Date | null;
+  status: CourseEditionStatus;
+}
+
+export enum CourseEditionStatus {
+  Planned,
+  RegistrationOpen,
+  RegistrationClosed,
+  InProgress,
+  Finished,
 }

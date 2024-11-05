@@ -32,6 +32,46 @@
       type="date"
       [formControl]="startDateControl"
     />
+    <div class="mt-6 flex flex-row gap-2">
+      <input
+        type="checkbox"
+        class="checkbox"
+        [checked]="openRegistrationChecked"
+        (change)="openRegistrationChecked = !openRegistrationChecked"
+      />
+      <label class="text-lg">Open Registration</label>
+    </div>
+    <label
+      [ngClass]="{
+        'block mt-2 text-lg': true,
+        'text-opacity-50 text-gray-500': !openRegistrationChecked,
+      }"
+      >Registration Start Date</label
+    >
+    <input
+      [ngClass]="{
+        'input input-bordered block': true,
+        'input-disabled': !openRegistrationChecked,
+      }"
+      type="date"
+      [formControl]="registrationStartDateControl"
+    />
+    <label
+      [ngClass]="{
+        'block mt-2 text-lg': true,
+        'text-opacity-50 text-gray-500': !openRegistrationChecked,
+      }"
+      >Registration End Date</label
+    >
+    <input
+      [ngClass]="{
+        'input input-bordered block': true,
+        'input-disabled': !openRegistrationChecked,
+      }"
+      type="date"
+      [disabled]="!openRegistrationChecked"
+      [formControl]="registrationEndDateControl"
+    />
     <button *ngIf="!createLoading" class="btn btn-primary mt-4">Create</button>
     <button *ngIf="createLoading" class="btn btn-primary mt-4" disabled>
       <span class="loading loading-spinner loading-sm"></span>

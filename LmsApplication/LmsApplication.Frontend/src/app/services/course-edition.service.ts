@@ -14,9 +14,20 @@ export class CourseEditionService {
     private authService: AuthService,
   ) {}
 
-  getCourseEditions() {
+  getMyCourseEditions() {
     return this.http.get<ApiResponse<CourseEditionModel[]>>(
       `${env.apiUrl}/api/courses/editions/my-courses`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  getOpenRegistrationCourseEditions() {
+    return this.http.get<ApiResponse<CourseEditionModel[]>>(
+      `${env.apiUrl}/api/courses/editions/registration-open`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -41,6 +52,8 @@ export class CourseEditionService {
     title: string,
     studentLimit: number,
     startDate: Date,
+    registrationStartDateUtc: Date | null = null,
+    registrationEndDateUtc: Date | null = null,
   ) {
     return this.http.post<ApiResponse<CourseEditionModel>>(
       `${env.apiUrl}/api/courses/editions`,
@@ -49,6 +62,8 @@ export class CourseEditionService {
         title,
         studentLimit,
         startDateUtc: startDate,
+        registrationStartDateUtc,
+        registrationEndDateUtc,
       },
       {
         headers: {

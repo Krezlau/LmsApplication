@@ -1,3 +1,4 @@
+<p class="text-gray-500 italic" *ngIf="courseEditions?.data?.length == 0">No courses found</p>
 <ul class="grid grid-cols-4 gap-4 mt-2">
   <li *ngFor="let edition of courseEditions?.data ?? []">
     <div
@@ -11,12 +12,17 @@
       </figure>
       <div class="card-body">
         <h2 class="card-title break-all">{{ edition.title }}</h2>
-        <p class="overflow-clip">Ending: {{ edition.endDateUtc.toString().split('T')[0] }}</p>
-        <p class="overflow-clip">Students: {{ edition.studentIds.length }}/{{ edition.studentLimit }}</p>
+        <app-course-edition-status-label [edition]="edition" />
+        <p class="overflow-clip">
+          Ending: {{ edition.endDateUtc.toString().split("T")[0] }}
+        </p>
+        <p class="overflow-clip">
+          Students: {{ edition.studentIds.length }}/{{ edition.studentLimit }}
+        </p>
       </div>
     </div>
   </li>
   <li *ngIf="(authState().userData?.role ?? 0) == 2 && course">
-    <app-course-edition-add-form [course]=course.data!/>
+    <app-course-edition-add-form [course]="course.data!" />
   </li>
 </ul>

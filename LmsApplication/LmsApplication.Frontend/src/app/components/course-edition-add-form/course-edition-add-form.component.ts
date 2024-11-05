@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {
   FormControl,
@@ -14,7 +14,7 @@ import { Subscription, tap } from 'rxjs';
 @Component({
   selector: 'app-course-edition-add-form',
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, FormsModule],
+  imports: [NgIf, ReactiveFormsModule, FormsModule, NgClass],
   templateUrl: './course-edition-add-form.component.html',
 })
 export class CourseEditionAddFormComponent implements OnInit {
@@ -35,6 +35,9 @@ export class CourseEditionAddFormComponent implements OnInit {
   ]);
   titleControl = new FormControl(this.course.title, [Validators.required]);
   startDateControl = new FormControl(new Date(), [Validators.required]);
+  openRegistrationChecked = false;
+  registrationStartDateControl = new FormControl(null);
+  registrationEndDateControl = new FormControl(null);
 
   onSubmit() {
     if (this.titleControl.invalid) {
@@ -57,6 +60,41 @@ export class CourseEditionAddFormComponent implements OnInit {
       return;
     }
 
+    if (this.openRegistrationChecked) {
+      if (
+        !this.registrationStartDateControl.value ||
+        !this.registrationEndDateControl.value
+      ) {
+        this.alertService.show(
+          'Registration start and end dates are required.',
+          'error',
+        );
+        return;
+      }
+
+      if (
+        new Date(this.registrationStartDateControl.value!) >
+        new Date(this.registrationEndDateControl.value!)
+      ) {
+        this.alertService.show(
+          'Registration start date must be before registration end date.',
+          'error',
+        );
+        return;
+      }
+
+      if (
+        new Date(this.registrationEndDateControl.value!) >
+        new Date(this.startDateControl.value!)
+      ) {
+        this.alertService.show(
+          'Registration must end before the course edition starts.',
+          'error',
+        );
+        return;
+      }
+    }
+
     this.createLoading = true;
     this.sub.add(
       this.courseEditionService
@@ -65,6 +103,12 @@ export class CourseEditionAddFormComponent implements OnInit {
           this.titleControl.value!,
           this.studentLimitControl.value!,
           new Date(this.startDateControl.value!),
+          this.openRegistrationChecked
+            ? new Date(this.registrationStartDateControl.value!)
+            : null,
+          this.openRegistrationChecked
+            ? new Date(this.registrationEndDateControl.value!)
+            : null,
         )
         .pipe(
           tap({

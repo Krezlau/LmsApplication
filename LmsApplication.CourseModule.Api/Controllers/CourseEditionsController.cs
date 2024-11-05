@@ -74,4 +74,14 @@ public class CourseEditionsController : ControllerBase
         
         return Ok(ApiResponseHelper.Success(await _courseEditionService.GetUserCourseEditionsAsync(userId)));
     }
+    
+    [HttpGet("registration-open")]
+    public async Task<IActionResult> GetOpenRegistrations()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId is null) 
+            return BadRequest(ApiResponseHelper.Error("User not found."));
+        
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetEditionsWithRegistrationOpenAsync(userId)));
+    }
 }

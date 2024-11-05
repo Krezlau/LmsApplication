@@ -1,0 +1,13 @@
+<div
+  *ngIf="edition"
+  [ngClass]="{
+    badge: true,
+    'badge-info': edition.status === 0,
+    'badge-primary': edition.status === 1,
+    'badge-warning': edition.status === 2,
+    'badge-success': edition.status === 3,
+    'badge-error': edition.status === 4,
+  }"
+>
+  {{ toHumanReadable(edition.status) }}
+</div>

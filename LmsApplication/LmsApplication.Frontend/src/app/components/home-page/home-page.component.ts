@@ -1,22 +1,26 @@
 import { Component } from '@angular/core';
-import {AuthService} from "../../services/auth.service";
-import {CourseEditionListComponent} from "../course-edition-list/course-edition-list.component";
-import {AsyncPipe, NgIf} from "@angular/common";
+import { CourseEditionListComponent } from '../course-edition-list/course-edition-list.component';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { ApiResponse } from '../../types/api-response';
+import { CourseEditionService } from '../../services/course-edition.service';
+import { CourseEditionModel } from '../../types/courses/course-edition-model';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [
-    CourseEditionListComponent,
-    AsyncPipe,
-    NgIf
-  ],
-  templateUrl: './home-page.component.html'
+  imports: [CourseEditionListComponent, AsyncPipe, NgIf],
+  templateUrl: './home-page.component.html',
 })
 export class HomePageComponent {
+  constructor(private courseEditionService: CourseEditionService, private authService: AuthService) {}
 
   authState = this.authService.authState;
-  constructor(private authService: AuthService) {
-  }
 
+  courseList$: Observable<ApiResponse<CourseEditionModel[]>> =
+    this.courseEditionService.getMyCourseEditions();
+
+  openRegistrationList$: Observable<ApiResponse<CourseEditionModel[]>> =
+    this.courseEditionService.getOpenRegistrationCourseEditions();
 }

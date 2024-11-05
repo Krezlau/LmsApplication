@@ -1,3 +1,5 @@
 <h1 class="text-2xl font-bold mb-2">Hello, {{ authState().userData?.name }} 👋</h1>
 <h2 class="text-lg font-semibold">Your courses</h2>
-<app-course-edition-list *ngIf="authState().isAuthenticated"></app-course-edition-list>
+<app-course-edition-list [courseEditions]="courseList$ | async"></app-course-edition-list>
+<h2 class="text-lg font-semibold">Registration Open</h2>
+<app-course-edition-list [courseEditions]="openRegistrationList$ | async"></app-course-edition-list>

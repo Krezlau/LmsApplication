@@ -10,6 +10,8 @@ public interface ICourseEditionRepository
     Task<List<CourseEdition>> GetAllCourseEditionsAsync();
     
     Task<List<CourseEdition>> GetCourseEditionsByCourseIdAsync(Guid courseId);
+
+    Task<List<CourseEdition>> GetEditionsWithRegistrationOpenAsync(string userId);
     
     Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userId);
 
@@ -49,6 +51,27 @@ public class CourseEditionRepository : ICourseEditionRepository
             .Include(x => x.Course)
             .Include(x => x.Participants)
             .Where(x => x.CourseId == courseId)
+            .ToListAsync();
+    }
+
+    public async Task<List<CourseEdition>> GetEditionsWithRegistrationOpenAsync(string userId)
+    {
+        var userFinishedCourses = await _context.CourseEditions
+            .Include(x => x.Participants)
+            .Where(x => x.Participants.Any(p => p.ParticipantId == userId))
+            .Select(x => x.CourseId)
+            .ToListAsync();
+
+        var now = DateTime.UtcNow;
+        return await _context.CourseEditions
+            .Include(x => x.Course)
+            .Include(x => x.Participants)
+            .Where(x => x.RegistrationEndDateUtc != null &&
+                        x.RegistrationEndDateUtc > now &&
+                        x.RegistrationStartDateUtc != null &&
+                        x.RegistrationStartDateUtc < now &&
+                        !userFinishedCourses.Contains(x.CourseId) &&
+                        x.Participants.Count < x.StudentLimit)
             .ToListAsync();
     }
 
