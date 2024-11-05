@@ -1,5 +1,6 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
@@ -18,9 +19,9 @@ public interface ICourseEditionService
     
     Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model);
     
-    Task AddTeacherToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model);
+    Task RegisterToCourseEditionAsync(Guid courseId, string userId);
     
-    Task AddStudentToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model);
+    Task AddUserToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model);
     
     Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userEmail);
 }
@@ -31,16 +32,23 @@ public class CourseEditionService : ICourseEditionService
     private readonly ICourseRepository _courseRepository;
     private readonly IValidationService<CourseEditionPostModel> _courseEditionPostModelValidationService;
     private readonly IValidationService<CourseEditionAddUserModel> _courseEditionAddUserModelValidationService;
+    private readonly IValidationService<CourseEditionRegisterModel> _courseEditionRegisterModelValidationService;
+    private readonly IUserProvider _userProvider;
 
-    public CourseEditionService(ICourseEditionRepository courseEditionRepository,
+    public CourseEditionService(
+        ICourseEditionRepository courseEditionRepository,
         ICourseRepository courseRepository,
         IValidationService<CourseEditionPostModel> courseEditionPostModelValidationService,
-        IValidationService<CourseEditionAddUserModel> courseEditionAddUserModelValidationService)
+        IValidationService<CourseEditionAddUserModel> courseEditionAddUserModelValidationService,
+        IValidationService<CourseEditionRegisterModel> courseEditionRegisterModelValidationService,
+        IUserProvider userProvider)
     {
         _courseEditionRepository = courseEditionRepository;
         _courseRepository = courseRepository;
         _courseEditionPostModelValidationService = courseEditionPostModelValidationService;
         _courseEditionAddUserModelValidationService = courseEditionAddUserModelValidationService;
+        _userProvider = userProvider;
+        _courseEditionRegisterModelValidationService = courseEditionRegisterModelValidationService;
     }
 
     public async Task<List<CourseEditionModel>> GetAllCourseEditionsAsync()
@@ -85,6 +93,8 @@ public class CourseEditionService : ICourseEditionService
             Title = model.Title,
             StartDateUtc = model.StartDateUtc,
             StudentLimit = model.StudentLimit,
+            RegistrationStartDateUtc = model.RegistrationStartDateUtc,
+            RegistrationEndDateUtc = model.RegistrationEndDateUtc,
             Duration = course!.Duration,
             Course = course,
         };
@@ -94,34 +104,34 @@ public class CourseEditionService : ICourseEditionService
         return courseEdition.ToModel();
     }
 
-    public async Task AddTeacherToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
+    public async Task RegisterToCourseEditionAsync(Guid courseId, string userId)
     {
-        var context = new ValidationContext<CourseEditionAddUserModel>(model)
+        var course = await _courseEditionRepository.GetCourseEditionByIdAsync(courseId);
+        var user = await _userProvider.GetUserByIdAsync(userId);
+
+        await _courseEditionRegisterModelValidationService.ValidateAndThrowAsync(new CourseEditionRegisterModel
         {
-            RootContextData =
-            {
-                [nameof(courseId)] = courseId,
-                [nameof(UserRole)] = UserRole.Teacher
-            }
-        };
-        await _courseEditionAddUserModelValidationService.ValidateAndThrowAsync(context);
+            CourseEdition = course,
+            User = user,
+        });
         
-        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Teacher);
+        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, user!.Email, user.Role);
     }
 
-    public async Task AddStudentToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
+    public async Task AddUserToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
     {
+        var user = await _userProvider.GetUserByEmailAsync(model.UserEmail);
         var context = new ValidationContext<CourseEditionAddUserModel>(model)
         {
             RootContextData =
             {
                 [nameof(courseId)] = courseId,
-                [nameof(UserRole)] = UserRole.Student
+                [nameof(user)] = user,
             }
         };
         await _courseEditionAddUserModelValidationService.ValidateAndThrowAsync(context);
         
-        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, UserRole.Student);
+        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, user!.Role);
     }
 
     public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userEmail)

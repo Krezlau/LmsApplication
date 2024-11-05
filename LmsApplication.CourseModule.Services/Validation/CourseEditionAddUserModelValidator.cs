@@ -1,5 +1,6 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Services.Repositories;
 
@@ -23,13 +24,6 @@ public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditio
 
     private async Task UserValidAsync(CourseEditionAddUserModel model, ValidationContext<CourseEditionAddUserModel> context, CancellationToken ct)
     {
-        // var user = await _graphService.GetUserAsync(model.UserEmail);
-        // if (user is null)
-        // {
-        //     context.AddFailure("User does not exist.");
-        //     return;
-        // }
-
         Guid courseId;
         if (!context.RootContextData.TryGetValue(nameof(courseId), out var value) || !Guid.TryParse(value?.ToString(), out courseId))
         {
@@ -44,13 +38,13 @@ public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditio
             return;
         }
 
-        if (!context.RootContextData.TryGetValue(nameof(UserRole), out var role) || role is not UserRole userRole)
+        if (!context.RootContextData.TryGetValue("user", out var userValue) || userValue is not UserExchangeModel user)
         {
-            context.AddFailure("Incorrect user role.");
+            context.AddFailure("Could not find user.");
             return;
         }
         
-        switch (userRole)
+        switch (user.Role)
         {
             case UserRole.Teacher when course.TeacherEmails.Contains(model.UserEmail):
                 context.AddFailure("User is already a teacher of this course.");

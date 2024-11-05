@@ -9,4 +9,8 @@ public class CourseEditionPostModel
     public DateTime StartDateUtc { get; set; }
     
     public int StudentLimit { get; set; }
+    
+    public DateTime? RegistrationStartDateUtc { get; set; }
+    
+    public DateTime? RegistrationEndDateUtc { get; set; }
 }

@@ -1,11 +1,9 @@
 using LmsApplication.Core.Api.Middleware;
-using LmsApplication.Core.Shared.Config;
 using LmsApplication.CourseModule.Api;
 using LmsApplication.CourseModule.Data.Database;
 using LmsApplication.UserModule.Api;
 using LmsApplication.UserModule.Data.Database;
 using LmsApplication.UserModule.Data.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
@@ -115,7 +113,7 @@ using (var scope = app.Services.CreateScope())
     if (admin is not null)
     {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        await userManager.AddToRolesAsync(admin, new[] { "Admin", "Teacher" });
+        await userManager.AddToRolesAsync(admin, ["Admin", "Teacher"]);
     }
     Console.WriteLine("Migrations applied successfully.");
 }

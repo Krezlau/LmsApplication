@@ -37,6 +37,39 @@ public class CourseEditionPostModelValidator : AbstractValidator<CourseEditionPo
         RuleFor(x => x)
             .Must(CourseExists)
             .WithMessage(CourseDoesNotExistMessage);
+
+        RuleFor(x => x)
+            .Custom(RegistrationPeriodValid);
+    }
+
+    private void RegistrationPeriodValid(CourseEditionPostModel model, ValidationContext<CourseEditionPostModel> context)
+    {
+        if (model.RegistrationStartDateUtc is null && model.RegistrationEndDateUtc is null)
+        {
+            // course without registration period
+            return;
+        }
+        if ((model.RegistrationStartDateUtc is null && model.RegistrationEndDateUtc is not null) ||
+            (model.RegistrationStartDateUtc is not null && model.RegistrationEndDateUtc is null))
+        {
+            // only one of the dates is set
+            context.AddFailure("RegistrationStartDateUtc",
+                "For courses with registration period both registration start and end date must be set.");
+            return;
+        }
+        
+        // course with registration period
+        if (model.RegistrationStartDateUtc >= model.StartDateUtc || model.RegistrationEndDateUtc >= model.StartDateUtc)
+        {
+            context.AddFailure("RegistrationStartDateUtc",
+                "Registration start and end date must be before course start date.");
+        }
+        
+        if (model.RegistrationStartDateUtc >= model.RegistrationEndDateUtc)
+        {
+            context.AddFailure("RegistrationStartDateUtc",
+                "Registration start date must be before registration end date.");
+        }
     }
 
     private async Task<bool> TitleUniqueAsync(CourseEditionPostModel model, CancellationToken ct)

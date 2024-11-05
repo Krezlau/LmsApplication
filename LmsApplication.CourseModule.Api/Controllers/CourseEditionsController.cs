@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using LmsApplication.Core.Shared.Config;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Data.Courses;
@@ -39,19 +40,22 @@ public class CourseEditionsController : ControllerBase
         return Ok(ApiResponseHelper.Success(await _courseEditionService.CreateCourseEditionAsync(model)));
     }
     
-    [HttpPost("{courseId}/add-teacher")]
-    [Authorize(AuthPolicies.AdminPolicy)]
-    public async Task<IActionResult> AddTeacherToCourseEdition(Guid courseId, [FromBody] CourseEditionAddUserModel model)
+    [HttpPost("{courseEditionId}/register")]
+    public async Task<IActionResult> RegisterToCourseEdition(Guid courseEditionId)
     {
-        await _courseEditionService.AddTeacherToCourseEditionAsync(courseId, model);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId is null) 
+            return BadRequest(ApiResponseHelper.Error("User not found."));
+        
+        await _courseEditionService.RegisterToCourseEditionAsync(courseEditionId, userId);
         return Ok(ApiResponseHelper.Success());
     }
     
-    [HttpPost("{courseId}/add-student")]
+    [HttpPost("{courseEditionId}/add-user")]
     [Authorize(AuthPolicies.TeacherPolicy)]
-    public async Task<IActionResult> AddStudentToCourseEdition(Guid courseId, [FromBody] CourseEditionAddUserModel model)
+    public async Task<IActionResult> AddUserToCourseEdition(Guid courseEditionId, [FromBody] CourseEditionAddUserModel model)
     {
-        await _courseEditionService.AddStudentToCourseEditionAsync(courseId, model);
+        await _courseEditionService.AddUserToCourseEditionAsync(courseEditionId, model);
         return Ok(ApiResponseHelper.Success());
     }
     

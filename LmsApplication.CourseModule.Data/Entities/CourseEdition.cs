@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using LmsApplication.Core.Shared.Entities;
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Extensions;
+using LmsApplication.CourseModule.Data.Courses;
 
 namespace LmsApplication.CourseModule.Data.Entities;
 
@@ -20,6 +21,31 @@ public class CourseEdition : IAuditable
     public string Title { get; set; } = string.Empty;
     
     public CourseDuration Duration { get; set; }
+    
+    public DateTime? RegistrationStartDateUtc { get; set; }
+    
+    public DateTime? RegistrationEndDateUtc { get; set; }
+
+    public CourseEditionStatus Status
+    {
+        get
+        {
+            var now = DateTime.UtcNow;
+            if (now > EndDateUtc) 
+                return CourseEditionStatus.Finished;
+            if (now > StartDateUtc)
+                return CourseEditionStatus.InProgress;
+            
+            var isCourseWithOpenRegistration = RegistrationStartDateUtc is not null && RegistrationEndDateUtc is not null;
+            
+            if (isCourseWithOpenRegistration && now > RegistrationEndDateUtc)
+                return CourseEditionStatus.RegistrationClosed;
+            if (isCourseWithOpenRegistration && now > RegistrationStartDateUtc)
+                return CourseEditionStatus.RegistrationOpen;
+            
+            return CourseEditionStatus.Planned;
+        }
+    } 
     
     public DateTime StartDateUtc { get; set; }
     

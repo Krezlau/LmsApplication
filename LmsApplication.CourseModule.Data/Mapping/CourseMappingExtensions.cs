@@ -24,11 +24,14 @@ public static class CourseMappingExtensions
             Id = courseEdition.Id,
             Title = courseEdition.Title,
             Duration = courseEdition.Duration,
+            RegistrationStartDateUtc = courseEdition.RegistrationStartDateUtc,
+            RegistrationEndDateUtc = courseEdition.RegistrationEndDateUtc,
             StartDateUtc = courseEdition.StartDateUtc,
             StudentLimit = courseEdition.StudentLimit,
             TeacherIds = courseEdition.TeacherEmails.ToList(),
             StudentIds = courseEdition.StudentEmails.ToList(),
             EndDateUtc = courseEdition.EndDateUtc,
+            Status = courseEdition.Status,
             Course = courseEdition.Course?.ToModel(),
         };
     }

@@ -5,21 +5,36 @@ namespace LmsApplication.CourseModule.Data.Courses;
 
 public class CourseEditionModel
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 
-    public CourseModel? Course { get; set; } = new();
+    public required CourseModel? Course { get; set; }
     
-    public string Title { get; set; } = string.Empty;
+    public required string Title { get; set; }
     
-    public CourseDuration Duration { get; set; }
+    public required CourseDuration Duration { get; set; }
     
-    public DateTime StartDateUtc { get; set; }
+    public required DateTime? RegistrationStartDateUtc { get; set; }
     
-    public DateTime EndDateUtc { get => StartDateUtc.Add(Duration.ToTimeSpan()); set { } }
+    public required DateTime? RegistrationEndDateUtc { get; set; }
     
-    public int StudentLimit { get; set; }
+    public required CourseEditionStatus Status { get; set; }
     
-    public List<string> TeacherIds { get; set; } = new();
+    public required DateTime StartDateUtc { get; set; }
     
-    public List<string> StudentIds { get; set; } = new();
+    public required DateTime EndDateUtc { get => StartDateUtc.Add(Duration.ToTimeSpan()); set { } }
+    
+    public required int StudentLimit { get; set; }
+    
+    public required List<string> TeacherIds { get; set; } = new();
+    
+    public required List<string> StudentIds { get; set; } = new();
+}
+
+public enum CourseEditionStatus
+{
+    Planned,
+    RegistrationOpen,
+    RegistrationClosed,
+    InProgress,
+    Finished
 }
