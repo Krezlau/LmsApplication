@@ -11,13 +11,13 @@ public interface ICourseEditionRepository
     
     Task<List<CourseEdition>> GetCourseEditionsByCourseIdAsync(Guid courseId);
     
-    Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userEmail);
+    Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userId);
 
     Task<CourseEdition?> GetCourseEditionByCourseIdAndTitleAsync(string title, Guid courseId);
     
     Task<CourseEdition?> GetCourseEditionByIdAsync(Guid id);
     
-    Task AddParticipantToCourseEditionAsync(Guid courseEditionId, string userEmail, UserRole userRole);
+    Task AddParticipantToCourseEditionAsync(Guid courseEditionId, string userId, UserRole userRole);
 
     Task CreateAsync(CourseEdition courseEdition);
     
@@ -52,13 +52,13 @@ public class CourseEditionRepository : ICourseEditionRepository
             .ToListAsync();
     }
 
-    public async Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userEmail)
+    public async Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userId)
     {
         // todo pagination
         return await _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
-            .Where(x => x.EndDateUtc < DateTime.UtcNow && x.Participants.Any(p => p.ParticipantEmail == userEmail))
+            .Where(x => x.EndDateUtc < DateTime.UtcNow && x.Participants.Any(p => p.ParticipantId == userId))
             .ToListAsync();
     }
 
@@ -78,12 +78,12 @@ public class CourseEditionRepository : ICourseEditionRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddParticipantToCourseEditionAsync(Guid courseEditionId, string userEmail, UserRole userRole)
+    public async Task AddParticipantToCourseEditionAsync(Guid courseEditionId, string userId, UserRole userRole)
     {
-        var participant = new CourseEditionParticipant()
+        var participant = new CourseEditionParticipant
         {
             CourseEditionId = courseEditionId,
-            ParticipantEmail = userEmail,
+            ParticipantId = userId,
             ParticipantRole = userRole
         };
         

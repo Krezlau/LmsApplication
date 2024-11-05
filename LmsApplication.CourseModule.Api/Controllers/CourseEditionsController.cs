@@ -59,16 +59,19 @@ public class CourseEditionsController : ControllerBase
         return Ok(ApiResponseHelper.Success());
     }
     
-    
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCourseEditionById(Guid id)
     {
         return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionByIdAsync(id)));
     }
-    //
-    // [HttpGet("my-courses")]
-    // public async Task<IActionResult> GetMyCourses()
-    // {
-    //     return Ok(ApiResponseHelper.Success(await _courseEditionAppService.GetUserCourseEditionsAsync(GetUserEmail())));
-    // }
+    
+    [HttpGet("my-courses")]
+    public async Task<IActionResult> GetMyCourses()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId is null) 
+            return BadRequest(ApiResponseHelper.Error("User not found."));
+        
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetUserCourseEditionsAsync(userId)));
+    }
 }

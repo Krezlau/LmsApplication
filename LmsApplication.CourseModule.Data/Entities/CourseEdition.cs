@@ -53,9 +53,9 @@ public class CourseEdition : IAuditable
     
     public int StudentLimit { get; set; }
     
-    public List<string> TeacherEmails => Participants.Where(p => p.ParticipantRole == UserRole.Teacher).Select(p => p.ParticipantEmail).ToList(); 
+    public List<string> TeacherEmails => Participants.Where(p => p.ParticipantRole == UserRole.Teacher).Select(p => p.ParticipantId).ToList(); 
     
-    public List<string> StudentEmails => Participants.Where(p => p.ParticipantRole == UserRole.Student).Select(p => p.ParticipantEmail).ToList();
+    public List<string> StudentEmails => Participants.Where(p => p.ParticipantRole == UserRole.Student).Select(p => p.ParticipantId).ToList();
 
     public virtual List<CourseEditionParticipant> Participants { get; set; } = new();
     

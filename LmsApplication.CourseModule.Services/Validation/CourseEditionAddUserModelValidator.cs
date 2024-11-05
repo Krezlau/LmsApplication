@@ -13,10 +13,9 @@ public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditio
     public CourseEditionAddUserModelValidator(ICourseEditionRepository courseEditionRepository)
     {
         _courseEditionRepository = courseEditionRepository;
-        
-        RuleFor(x => x.UserEmail)
-            .NotEmpty()
-            .EmailAddress();
+
+        RuleFor(x => x.UserId)
+            .NotEmpty();
 
         RuleFor(x => x)
             .CustomAsync(UserValidAsync);
@@ -46,10 +45,10 @@ public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditio
         
         switch (user.Role)
         {
-            case UserRole.Teacher when course.TeacherEmails.Contains(model.UserEmail):
+            case UserRole.Teacher when course.TeacherEmails.Contains(model.UserId):
                 context.AddFailure("User is already a teacher of this course.");
                 break;
-            case UserRole.Student when course.StudentEmails.Contains(model.UserEmail):
+            case UserRole.Student when course.StudentEmails.Contains(model.UserId):
                 context.AddFailure("User is already a student of this course.");
                 break;
         }

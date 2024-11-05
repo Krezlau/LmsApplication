@@ -1,5 +1,4 @@
 using FluentValidation;
-using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
@@ -23,7 +22,7 @@ public interface ICourseEditionService
     
     Task AddUserToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model);
     
-    Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userEmail);
+    Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userId);
 }
 
 public class CourseEditionService : ICourseEditionService
@@ -115,12 +114,12 @@ public class CourseEditionService : ICourseEditionService
             User = user,
         });
         
-        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, user!.Email, user.Role);
+        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, user!.Id, user.Role);
     }
 
     public async Task AddUserToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model)
     {
-        var user = await _userProvider.GetUserByEmailAsync(model.UserEmail);
+        var user = await _userProvider.GetUserByIdAsync(model.UserId);
         var context = new ValidationContext<CourseEditionAddUserModel>(model)
         {
             RootContextData =
@@ -131,12 +130,12 @@ public class CourseEditionService : ICourseEditionService
         };
         await _courseEditionAddUserModelValidationService.ValidateAndThrowAsync(context);
         
-        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, model.UserEmail, user!.Role);
+        await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, user!.Id, user.Role);
     }
 
-    public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userEmail)
+    public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userId)
     {
-        var courseEditions = await _courseEditionRepository.GetUserCourseEditionsAsync(userEmail);
+        var courseEditions = await _courseEditionRepository.GetUserCourseEditionsAsync(userId);
         
         return courseEditions.Select(x => x.ToModel()).ToList();
     }

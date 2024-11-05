@@ -13,7 +13,7 @@ public class CourseEditionParticipant : IAuditable
     
     public Guid CourseEditionId { get; set; }
     
-    public string ParticipantEmail { get; set; } = string.Empty;
+    public string ParticipantId { get; set; } = string.Empty;
 
     public UserRole ParticipantRole { get; set; } = UserRole.Student;
     
