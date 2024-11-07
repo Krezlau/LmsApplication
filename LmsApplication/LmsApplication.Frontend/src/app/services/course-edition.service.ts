@@ -47,6 +47,17 @@ export class CourseEditionService {
     );
   }
 
+  getCourseEditionById(editionId: string) {
+    return this.http.get<ApiResponse<CourseEditionModel>>(
+      `${env.apiUrl}/api/courses/editions/${editionId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
   createCourseEdition(
     courseId: string,
     title: string,

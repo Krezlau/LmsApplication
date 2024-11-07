@@ -6,6 +6,7 @@ import { CourseDetailsPageComponent } from './components/course-details-page/cou
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { EditUserProfilePageComponent } from './components/edit-user-profile-page/edit-user-profile-page.component';
+import { CourseEditionPageComponent } from './components/course-edition-page/course-edition-page.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,10 @@ export const routes: Routes = [
   {
     path: 'courses/:courseId',
     component: CourseDetailsPageComponent,
+  },
+  {
+    path: 'courses/:courseId/editions/:editionId',
+    component: CourseEditionPageComponent,
   },
   {
     path: '',

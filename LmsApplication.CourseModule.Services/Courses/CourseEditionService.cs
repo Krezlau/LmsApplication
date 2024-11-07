@@ -10,13 +10,13 @@ namespace LmsApplication.CourseModule.Services.Courses;
 
 public interface ICourseEditionService
 {
-    Task<List<CourseEditionModel>> GetAllCourseEditionsAsync();
+    Task<List<CourseEditionModel>> GetAllCourseEditionsAsync(string userId);
     
-    Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId);
+    Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId, string userId);
     
-    Task<CourseEditionModel> GetCourseEditionByIdAsync(Guid id);
+    Task<CourseEditionModel> GetCourseEditionByIdAsync(Guid id, string userId);
     
-    Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model);
+    Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model, string userId);
     
     Task RegisterToCourseEditionAsync(Guid courseId, string userId);
     
@@ -52,30 +52,30 @@ public class CourseEditionService : ICourseEditionService
         _courseEditionRegisterModelValidationService = courseEditionRegisterModelValidationService;
     }
 
-    public async Task<List<CourseEditionModel>> GetAllCourseEditionsAsync()
+    public async Task<List<CourseEditionModel>> GetAllCourseEditionsAsync(string userId)
     {
         var courseEditions = await _courseEditionRepository.GetAllCourseEditionsAsync();
 
-        return courseEditions.Select(x => x.ToModel()).ToList();
+        return courseEditions.Select(x => x.ToModel(userId)).ToList();
     }
 
-    public async Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId)
+    public async Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId, string userId)
     {
         var courseEditions = await _courseEditionRepository.GetCourseEditionsByCourseIdAsync(courseId);
         
-        return courseEditions.Select(x => x.ToModel()).ToList();
+        return courseEditions.Select(x => x.ToModel(userId)).ToList();
     }
 
-    public async Task<CourseEditionModel> GetCourseEditionByIdAsync(Guid id)
+    public async Task<CourseEditionModel> GetCourseEditionByIdAsync(Guid id, string userId)
     {
         var courseEdition = await _courseEditionRepository.GetCourseEditionByIdAsync(id);
         if (courseEdition is null)
             throw new KeyNotFoundException("Course edition not found");
 
-        return courseEdition.ToModel();
+        return courseEdition.ToModel(userId);
     }
 
-    public async Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model)
+    public async Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model, string userId)
     {
         var course = await _courseRepository.GetCourseByIdAsync(model.CourseId);
         
@@ -102,7 +102,7 @@ public class CourseEditionService : ICourseEditionService
         
         await _courseEditionRepository.CreateAsync(courseEdition);
         
-        return courseEdition.ToModel();
+        return courseEdition.ToModel(userId);
     }
 
     public async Task RegisterToCourseEditionAsync(Guid courseId, string userId)
@@ -139,13 +139,13 @@ public class CourseEditionService : ICourseEditionService
     {
         var courseEditions = await _courseEditionRepository.GetUserCourseEditionsAsync(userId);
         
-        return courseEditions.Select(x => x.ToModel()).ToList();
+        return courseEditions.Select(x => x.ToModel(userId)).ToList();
     }
 
     public async Task<List<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync(string userId)
     {
         var courseEditions = await _courseEditionRepository.GetEditionsWithRegistrationOpenAsync(userId);
         
-        return courseEditions.Select(x => x.ToModel()).ToList();
+        return courseEditions.Select(x => x.ToModel(userId)).ToList();
     }
 }

@@ -44,11 +44,23 @@
   </div>
 
   <div class="pt-4 mt-4 flex flex-row justify-center">
-    <button *ngIf="!loading" class="btn btn-primary mx-auto min-w-24" type="submit">Register</button>
-    <button *ngIf="loading" class="btn btn-primary btn-disabled mx-auto min-w-24" type="submit">
+    <button
+      *ngIf="!loading"
+      class="btn btn-primary mx-auto min-w-24"
+      type="submit"
+    >
+      Register
+    </button>
+    <button
+      *ngIf="loading"
+      class="btn btn-primary btn-disabled mx-auto min-w-24"
+      type="submit"
+    >
       <span class="loading loading-spinner">Loading...</span>
     </button>
   </div>
-    <p class="text-center">
-      Already have an account? <a class="link link-secondary link-hover" routerLink="/register">Log in</a>
+  <p class="text-center">
+    Already have an account?
+    <a class="link link-secondary link-hover" routerLink="/login">Log in</a>
+  </p>
 </form>

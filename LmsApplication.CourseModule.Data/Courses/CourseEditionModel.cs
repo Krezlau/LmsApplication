@@ -1,5 +1,4 @@
 using LmsApplication.Core.Shared.Enums;
-using LmsApplication.Core.Shared.Extensions;
 
 namespace LmsApplication.CourseModule.Data.Courses;
 
@@ -21,13 +20,13 @@ public class CourseEditionModel
     
     public required DateTime StartDateUtc { get; set; }
     
-    public required DateTime EndDateUtc { get => StartDateUtc.Add(Duration.ToTimeSpan()); set { } }
+    public required DateTime EndDateUtc { get; set; }
     
     public required int StudentLimit { get; set; }
     
-    public required List<string> TeacherIds { get; set; } = new();
+    public required int StudentCount { get; set; }
     
-    public required List<string> StudentIds { get; set; } = new();
+    public required bool IsUserRegistered { get; set; }
 }
 
 public enum CourseEditionStatus

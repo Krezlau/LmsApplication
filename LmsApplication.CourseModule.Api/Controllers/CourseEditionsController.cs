@@ -23,29 +23,27 @@ public class CourseEditionsController : ControllerBase
     [HttpGet("all")]
     public async Task<IActionResult> GetAllCourseEditions()
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetAllCourseEditionsAsync()));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetAllCourseEditionsAsync(GetUserId())));
     }
     
     [HttpGet("by-course/{courseId}")]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetCourseEditionsByCourseId(Guid courseId)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByCourseIdAsync(courseId)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByCourseIdAsync(courseId, GetUserId())));
     }
     
     [HttpPost]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> CreateCourseEdition([FromBody] CourseEditionPostModel model)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.CreateCourseEditionAsync(model)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.CreateCourseEditionAsync(model, GetUserId())));
     }
     
     [HttpPost("{courseEditionId}/register")]
     public async Task<IActionResult> RegisterToCourseEdition(Guid courseEditionId)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null) 
-            return BadRequest(ApiResponseHelper.Error("User not found."));
+        var userId = GetUserId();
         
         await _courseEditionService.RegisterToCourseEditionAsync(courseEditionId, userId);
         return Ok(ApiResponseHelper.Success());
@@ -62,7 +60,7 @@ public class CourseEditionsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCourseEditionById(Guid id)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionByIdAsync(id)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionByIdAsync(id, GetUserId())));
     }
     
     [HttpGet("my-courses")]
@@ -83,5 +81,14 @@ public class CourseEditionsController : ControllerBase
             return BadRequest(ApiResponseHelper.Error("User not found."));
         
         return Ok(ApiResponseHelper.Success(await _courseEditionService.GetEditionsWithRegistrationOpenAsync(userId)));
+    }
+    
+    private string GetUserId()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId is null) 
+            throw new ArgumentException("Incorrect user id.");
+        
+        return userId;
     }
 }

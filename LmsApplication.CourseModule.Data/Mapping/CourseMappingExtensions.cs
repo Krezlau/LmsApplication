@@ -17,7 +17,7 @@ public static class CourseMappingExtensions
         };
     }
     
-    public static CourseEditionModel ToModel(this CourseEdition courseEdition)
+    public static CourseEditionModel ToModel(this CourseEdition courseEdition, string currentUserId)
     {
         return new CourseEditionModel
         {
@@ -28,11 +28,11 @@ public static class CourseMappingExtensions
             RegistrationEndDateUtc = courseEdition.RegistrationEndDateUtc,
             StartDateUtc = courseEdition.StartDateUtc,
             StudentLimit = courseEdition.StudentLimit,
-            TeacherIds = courseEdition.TeacherEmails.ToList(),
-            StudentIds = courseEdition.StudentEmails.ToList(),
+            StudentCount = courseEdition.Participants.Count,
             EndDateUtc = courseEdition.EndDateUtc,
             Status = courseEdition.Status,
             Course = courseEdition.Course?.ToModel(),
+            IsUserRegistered = courseEdition.Participants.Any(x => x.ParticipantId == currentUserId),
         };
     }
     
