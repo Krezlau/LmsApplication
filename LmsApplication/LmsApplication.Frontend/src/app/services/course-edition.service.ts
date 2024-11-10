@@ -83,4 +83,16 @@ export class CourseEditionService {
       },
     );
   }
+
+  registerForCourseEdition(editionId: string) {
+    return this.http.post<ApiResponse<null>>(
+      `${env.apiUrl}/api/courses/editions/${editionId}/register`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
 }

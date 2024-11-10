@@ -43,20 +43,14 @@ export class CourseEditionListComponent implements OnDestroy {
       edition.isUserRegistered ||
       this.authState().userData?.role == UserRole.Admin
     ) {
-      this.router.navigate([
-        '/courses',
-        edition.course.id,
-        'editions',
-        edition.id,
-      ]);
+      this.router.navigate(['editions', edition.id]);
       return;
     }
 
     if (edition.status == CourseEditionStatus.RegistrationOpen) {
-      this.router.navigate(
-        ['/courses', edition.course.id, 'editions', edition.id],
-        { queryParams: { page: 'register' } },
-      );
+      this.router.navigate(['editions', edition.id], {
+        queryParams: { page: 'register' },
+      });
       return;
     }
   }

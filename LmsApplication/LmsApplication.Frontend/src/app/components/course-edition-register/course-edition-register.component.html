@@ -1,0 +1,22 @@
+<div class="text-center flex flex-col justify-center my-20 gap-4 mx-auto w-3/4">
+  <h1 class="text-2xl font-semibold">Registration Open</h1>
+  <p>
+    You are not registered for this course edition. To view the content, please
+    register for the course edition.
+  </p>
+  <button
+    *ngIf="!loading"
+    class="btn btn-primary mx-auto"
+    (click)="registerForCourseEdition()"
+  >
+    Register
+  </button>
+  <button
+    *ngIf="loading"
+    class="btn btn-primary mx-auto"
+    (click)="registerForCourseEdition()"
+    disabled
+  >
+    <span class="loading loading-spinner">Loading...</span>
+  </button>
+</div>

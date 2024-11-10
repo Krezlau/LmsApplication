@@ -7,6 +7,10 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { EditUserProfilePageComponent } from './components/edit-user-profile-page/edit-user-profile-page.component';
 import { CourseEditionPageComponent } from './components/course-edition-page/course-edition-page.component';
+import { CourseEditionOverviewComponent } from './components/course-edition-overview/course-edition-overview.component';
+import { CourseEditionMembersComponent } from './components/course-edition-members/course-edition-members.component';
+import { CourseEditionSettingsComponent } from './components/course-edition-settings/course-edition-settings.component';
+import { CourseEditionBoardComponent } from './components/course-edition-board/course-edition-board.component';
 
 export const routes: Routes = [
   {
@@ -38,8 +42,26 @@ export const routes: Routes = [
     component: CourseDetailsPageComponent,
   },
   {
-    path: 'courses/:courseId/editions/:editionId',
+    path: 'editions/:editionId',
     component: CourseEditionPageComponent,
+    children: [
+      {
+        path: '',
+        component: CourseEditionOverviewComponent,
+      },
+      {
+        path: 'board',
+        component: CourseEditionBoardComponent,
+      },
+      {
+        path: 'members',
+        component: CourseEditionMembersComponent,
+      },
+      {
+        path: 'settings',
+        component: CourseEditionSettingsComponent,
+      },
+    ],
   },
   {
     path: '',

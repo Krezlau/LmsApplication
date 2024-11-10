@@ -81,7 +81,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         return await _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
-            .Where(x => x.EndDateUtc < DateTime.UtcNow && x.Participants.Any(p => p.ParticipantId == userId))
+            .Where(x => x.EndDateUtc > DateTime.UtcNow && x.Participants.Any(p => p.ParticipantId == userId))
             .ToListAsync();
     }
 
