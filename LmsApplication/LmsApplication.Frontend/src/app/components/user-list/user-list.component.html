@@ -1,13 +1,54 @@
 <ul *ngIf="!usersLoading && users" class="mt-2">
-  <div class="grid grid-cols-3 border-b-2">
+  <div
+    [ngClass]="{
+      'grid grid-cols-3 border-b-2': true,
+      'grid-cols-4': this.authState().userData?.role === 2,
+    }"
+  >
     <h2 class="font-semibold">Full Name</h2>
     <h2 class="font-semibold">Email</h2>
     <h2 class="font-semibold">Role</h2>
+    <h2 *ngIf="this.authState().userData?.role === 2" class="font-semibold">
+      Actions
+    </h2>
   </div>
   <li *ngFor="let user of users" class="">
-    <app-user-card [user]="user"></app-user-card>
+    <div
+      *ngIf="user"
+      [ngClass]="{
+        'grid grid-cols-3 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 cursor-pointer': true,
+        'grid-cols-4': this.authState().userData?.role === 2,
+      }"
+    >
+      <div
+        role="button"
+        [ngClass]="{ avatar: true, placeholder: !user.photo }"
+        (click)="onUserClick(user)"
+      >
+        <div
+          class="w-8 h-8 my-auto rounded-full bg-neutral text-neutral-content mr-2"
+        >
+          <span *ngIf="!user.photo" class="text">{{ user.name[0] }}</span>
+        </div>
+        <h2 class="my-auto">{{ user.name + " " + user.surname }}</h2>
+      </div>
+      <p class="my-auto break-words p-1" (click)="onUserClick(user)">
+        {{ user.email }}
+      </p>
+      <p class="my-auto p-1" (click)="onUserClick(user)">
+        {{ toHumanReadable(user.role) }}
+      </p>
+      <button class="btn btn-error btn-sm w-20" (click)="removeUser(user)">
+        Remove
+      </button>
+    </div>
   </li>
 </ul>
+<div *ngIf="this.authState().userData?.role === 2" class="mt-4 flex flex-row justify-end">
+<button class="btn btn-success" (click)="addUsersClicked()"> Add Users </button>
+</div>
 <div *ngIf="usersLoading" class="flex flex-row justify-center">
-  <span class="loading loading-spinner loading-lg mt-10 mx-auto">Loading...</span>
+  <span class="loading loading-spinner loading-lg mt-10 mx-auto"
+    >Loading...</span
+  >
 </div>

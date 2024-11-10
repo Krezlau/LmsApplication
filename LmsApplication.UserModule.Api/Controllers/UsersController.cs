@@ -22,11 +22,7 @@ public class UsersController : ControllerBase
     [HttpGet("current")]
     public async Task<IActionResult> GetCurrentUser()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null)
-        {
-            throw new ArgumentException("Invalid user.");
-        }
+        var userId = GetUserId();
 
         return Ok(await _userService.GetUserAsync(userId));
     }
@@ -55,5 +51,24 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetAllUsers()
     {
         return Ok(await _userService.GetUsersAsync());
+    }
+    
+    [HttpGet("by-course-edition/{courseEditionId}")]
+    public async Task<IActionResult> GetUsersByCourseEdition(Guid courseEditionId)
+    {
+        var userId = GetUserId();
+        
+        return Ok(await _userService.GetUsersByCourseEditionAsync(courseEditionId, userId));
+    }
+    
+    private string GetUserId()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId is null)
+        {
+            throw new ArgumentException("Invalid user.");
+        }
+
+        return userId;
     }
 }

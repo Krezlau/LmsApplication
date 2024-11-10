@@ -1,6 +1,9 @@
 <div
   *ngIf="user"
-  class="grid grid-cols-3 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 cursor-pointer"
+  [ngClass]="{
+    'grid grid-cols-3 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 cursor-pointer': true,
+    'grid-cols-4': this.authState().userData?.role === 2,
+  }"
   (click)="onUserClick()"
 >
   <div role="button" [ngClass]="{ avatar: true, placeholder: !user.photo }">

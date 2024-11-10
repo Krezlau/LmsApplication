@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserModel } from '../types/users/user-model';
 import { AuthService } from './auth.service';
-import { ApiResponse } from '../types/api-response';
 import { env } from '../../env';
 
 @Injectable({
@@ -56,6 +55,17 @@ export class UserService {
     return this.http.put<UserModel>(
       `${env.apiUrl}/api/users/current`,
       { name, surname, bio },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  public getUsersByCourseEdition(courseEditionId: string) {
+    return this.http.get<UserModel[]>(
+      `${env.apiUrl}/api/users/by-course-edition/${courseEditionId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,

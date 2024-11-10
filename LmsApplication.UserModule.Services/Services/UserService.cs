@@ -1,3 +1,5 @@
+using FluentValidation;
+using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.UserModule.Data.Database;
 using LmsApplication.UserModule.Data.Entities;
@@ -16,6 +18,8 @@ public interface IUserService
     
     Task<List<UserModel>> GetUsersAsync();
     
+    Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId, string userId);
+    
     Task UpdateUserAsync(string userId, UserUpdateModel model);
 }
 
@@ -23,16 +27,19 @@ public class UserService : IUserService
 {
     private readonly UserDbContext _userDbContext;
     private readonly UserManager<User> _userManager;
+    private readonly ICourseEditionProvider _courseEditionProvider;
     private readonly IValidationService<UserUpdateModel> _validationService;
 
     public UserService(
         UserDbContext userDbContext,
         UserManager<User> userManager,
-        IValidationService<UserUpdateModel> validationService)
+        IValidationService<UserUpdateModel> validationService,
+        ICourseEditionProvider courseEditionProvider)
     {
         _userDbContext = userDbContext;
         _userManager = userManager;
         _validationService = validationService;
+        _courseEditionProvider = courseEditionProvider;
     }
 
     public async Task<UserModel> GetUserAsync(string userId)
@@ -61,6 +68,26 @@ public class UserService : IUserService
     {
         var users = await _userDbContext.Users
             .Include(x => x.Roles)
+            .ToListAsync();
+        
+        return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();
+    }
+
+    public async Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId, string userId)
+    {
+        var isAdmin = _userManager.IsInRoleAsync(new User {Id = userId }, "Admin");
+        var isParticipant = _courseEditionProvider.IsUserRegisteredToCourseEditionAsync(courseEditionId, userId);
+        
+        if (!await isAdmin && !await isParticipant)
+        {
+            throw new ValidationException("User is not registered to this course edition.");
+        }
+        
+        var userIds = await _courseEditionProvider.GetCourseEditionParticipantsAsync(courseEditionId);
+        
+        var users = await _userDbContext.Users
+            .Include(x => x.Roles)
+            .Where(x => userIds.Contains(x.Id))
             .ToListAsync();
         
         return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();
