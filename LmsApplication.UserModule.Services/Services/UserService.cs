@@ -19,6 +19,8 @@ public interface IUserService
     Task<List<UserModel>> GetUsersAsync();
     
     Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId, string userId);
+
+    Task<List<UserModel>> SearchUsersByEmailAsync(string query);
     
     Task UpdateUserAsync(string userId, UserUpdateModel model);
 }
@@ -88,6 +90,16 @@ public class UserService : IUserService
         var users = await _userDbContext.Users
             .Include(x => x.Roles)
             .Where(x => userIds.Contains(x.Id))
+            .ToListAsync();
+        
+        return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();
+    }
+
+    public async Task<List<UserModel>> SearchUsersByEmailAsync(string query)
+    {
+        var users = await _userDbContext.Users
+            .Include(x => x.Roles)
+            .Where(x => x.NormalizedEmail.Contains(query.ToUpper()))
             .ToListAsync();
         
         return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();

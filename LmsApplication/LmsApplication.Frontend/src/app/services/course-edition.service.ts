@@ -95,4 +95,16 @@ export class CourseEditionService {
       },
     );
   }
+
+  addUserToCourseEdition(editionId: string, userId: string) {
+    return this.http.post<ApiResponse<null>>(
+      `${env.apiUrl}/api/courses/editions/${editionId}/add-user`,
+      { userId },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
 }

@@ -60,6 +60,12 @@ public class UsersController : ControllerBase
         
         return Ok(await _userService.GetUsersByCourseEditionAsync(courseEditionId, userId));
     }
+
+    [HttpGet("search/{query}")]
+    public async Task<IActionResult> SearchUsersByEmail(string query)
+    {
+        return Ok(await _userService.SearchUsersByEmailAsync(query));
+    }
     
     private string GetUserId()
     {

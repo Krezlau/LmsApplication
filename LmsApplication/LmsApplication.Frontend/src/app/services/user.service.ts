@@ -73,4 +73,15 @@ export class UserService {
       },
     );
   }
+
+  public searchUsersByEmail(email: string) {
+    return this.http.get<UserModel[]>(
+      `${env.apiUrl}/api/users/search/${email}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
 }

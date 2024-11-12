@@ -1,4 +1,4 @@
-<ul *ngIf="!usersLoading && users" class="mt-2">
+<ul *ngIf="!usersLoading && users && users.length > 0" class="mt-2">
   <div
     [ngClass]="{
       'grid grid-cols-3 border-b-2': true,
@@ -38,14 +38,27 @@
       <p class="my-auto p-1" (click)="onUserClick(user)">
         {{ toHumanReadable(user.role) }}
       </p>
-      <button class="btn btn-error btn-sm w-20" (click)="removeUser(user)">
+      <button
+        class="btn btn-error btn-sm w-20"
+        (click)="removeUser(user)"
+        *ngIf="courseEditionId"
+      >
         Remove
       </button>
     </div>
   </li>
 </ul>
-<div *ngIf="this.authState().userData?.role === 2" class="mt-4 flex flex-row justify-end">
-<button class="btn btn-success" (click)="addUsersClicked()"> Add Users </button>
+<p *ngIf="users && users.length === 0" class="italic text-gray-500">
+  No users found.
+</p>
+<div
+  *ngIf="this.authState().userData?.role === 2 && courseEditionId"
+  class="mt-4 flex flex-row justify-end"
+>
+  <app-course-edition-add-user-dialog
+    [alreadyAddedUserIds]="getUserIds()"
+    [courseEditionId]="courseEditionId"
+  />
 </div>
 <div *ngIf="usersLoading" class="flex flex-row justify-center">
   <span class="loading loading-spinner loading-lg mt-10 mx-auto"

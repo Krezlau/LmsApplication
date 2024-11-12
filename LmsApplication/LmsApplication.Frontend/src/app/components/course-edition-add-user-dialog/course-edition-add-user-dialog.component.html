@@ -1,0 +1,47 @@
+<button class="btn btn-success" onclick="my_modal_2.showModal()">
+  Add Users
+</button>
+<dialog id="my_modal_2" class="modal" #dialogElement>
+  <div class="modal-box flex flex-col justify-center">
+    <h1 class="text-xl font-bold">Select users</h1>
+    <input
+      class="input input-bordered block mt-4"
+      placeholder="Seach users by email..."
+      [value]="searchUser"
+      (input)="updateSearchUser($event)"
+    />
+    <ul class="mt-4">
+      <li *ngFor="let user of userList" class="flex flex-row justify-between mb-2">
+        <div class="flex flex-row">
+          <div class="avatar placeholder">
+            <div
+              class="w-8 h-8 my-auto rounded-full bg-neutral text-neutral-content mr-2"
+            >
+              <span *ngIf="!user.photo" class="text">{{ user.name[0] }}</span>
+            </div>
+          </div>
+          <h2 class="my-auto">{{ user.name + " " + user.surname }}</h2>
+        </div>
+        <button
+          *ngIf="!alreadyAddedUserIds.includes(user.id)"
+          class="btn btn-success btn-sm"
+          (click)="addUser(user)"
+        >
+          Add
+        </button>
+        <button
+          *ngIf="alreadyAddedUserIds.includes(user.id)"
+          class="btn btn-disabled btn-sm"
+        >
+          Added
+        </button>
+      </li>
+    </ul>
+    <p *ngIf="userList.length === 0" class="italic text-gray-500">
+      No users match your search
+    </p>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

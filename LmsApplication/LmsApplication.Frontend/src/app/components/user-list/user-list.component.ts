@@ -7,11 +7,18 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { toHumanReadable } from '../../types/users/user-role';
+import { CourseEditionAddUserDialogComponent } from '../course-edition-add-user-dialog/course-edition-add-user-dialog.component';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [NgForOf, NgIf, UserCardComponent, NgClass],
+  imports: [
+    NgForOf,
+    NgIf,
+    UserCardComponent,
+    NgClass,
+    CourseEditionAddUserDialogComponent,
+  ],
   templateUrl: './user-list.component.html',
 })
 export class UserListComponent implements OnInit, OnDestroy {
@@ -37,14 +44,13 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
   }
 
+  getUserIds() {
+    return this.users.map((user) => user.id);
+  }
+
   removeUser(user: UserModel) {
     // TODO
     console.log('removeUser', user);
-  }
-
-  addUsersClicked() {
-    // TODO
-    console.log('addUsersClicked');
   }
 
   ngOnInit(): void {
