@@ -21,6 +21,8 @@ public interface ICourseEditionService
     Task RegisterToCourseEditionAsync(Guid courseId, string userId);
     
     Task AddUserToCourseEditionAsync(Guid courseId, CourseEditionAddUserModel model);
+
+    Task RemoveUserFromCourseEditionAsync(Guid courseId, CourseEditionRemoveUserModel model);
     
     Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userId);
 
@@ -34,6 +36,7 @@ public class CourseEditionService : ICourseEditionService
     private readonly IValidationService<CourseEditionPostModel> _courseEditionPostModelValidationService;
     private readonly IValidationService<CourseEditionAddUserModel> _courseEditionAddUserModelValidationService;
     private readonly IValidationService<CourseEditionRegisterModel> _courseEditionRegisterModelValidationService;
+    private readonly IValidationService<CourseEditionRemoveUserModel> _courseEditionRemoveUserModelValidationService;
     private readonly IUserProvider _userProvider;
 
     public CourseEditionService(
@@ -42,13 +45,15 @@ public class CourseEditionService : ICourseEditionService
         IValidationService<CourseEditionPostModel> courseEditionPostModelValidationService,
         IValidationService<CourseEditionAddUserModel> courseEditionAddUserModelValidationService,
         IValidationService<CourseEditionRegisterModel> courseEditionRegisterModelValidationService,
-        IUserProvider userProvider)
+        IUserProvider userProvider,
+        IValidationService<CourseEditionRemoveUserModel> courseEditionRemoveUserModelValidationService)
     {
         _courseEditionRepository = courseEditionRepository;
         _courseRepository = courseRepository;
         _courseEditionPostModelValidationService = courseEditionPostModelValidationService;
         _courseEditionAddUserModelValidationService = courseEditionAddUserModelValidationService;
         _userProvider = userProvider;
+        _courseEditionRemoveUserModelValidationService = courseEditionRemoveUserModelValidationService;
         _courseEditionRegisterModelValidationService = courseEditionRegisterModelValidationService;
     }
 
@@ -133,6 +138,22 @@ public class CourseEditionService : ICourseEditionService
         await _courseEditionAddUserModelValidationService.ValidateAndThrowAsync(context);
         
         await _courseEditionRepository.AddParticipantToCourseEditionAsync(courseId, user!.Id, user.Role);
+    }
+
+    public async Task RemoveUserFromCourseEditionAsync(Guid courseId, CourseEditionRemoveUserModel model)
+    {
+        var user = await _userProvider.GetUserByIdAsync(model.UserId);
+        var context = new ValidationContext<CourseEditionRemoveUserModel>(model)
+        {
+            RootContextData =
+            {
+                [nameof(courseId)] = courseId,
+                [nameof(user)] = user,
+            }
+        };
+        await _courseEditionRemoveUserModelValidationService.ValidateAndThrowAsync(context);
+        
+        await _courseEditionRepository.RemoveParticipantFromCourseEditionAsync(courseId, user!.Id);
     }
 
     public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync(string userId)

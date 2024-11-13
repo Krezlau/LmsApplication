@@ -20,6 +20,8 @@ public interface ICourseEditionRepository
     Task<CourseEdition?> GetCourseEditionByIdAsync(Guid id);
     
     Task AddParticipantToCourseEditionAsync(Guid courseEditionId, string userId, UserRole userRole);
+    
+    Task RemoveParticipantFromCourseEditionAsync(Guid courseEditionId, string userId);
 
     Task CreateAsync(CourseEdition courseEdition);
     
@@ -112,6 +114,18 @@ public class CourseEditionRepository : ICourseEditionRepository
         
         await _context.CourseEditionParticipants.AddAsync(participant);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoveParticipantFromCourseEditionAsync(Guid courseEditionId, string userId)
+    {
+        var participant = await _context.CourseEditionParticipants
+            .FirstOrDefaultAsync(x => x.CourseEditionId == courseEditionId && x.ParticipantId == userId);
+
+        if (participant is not null)
+        {
+            _context.CourseEditionParticipants.Remove(participant);
+            await _context.SaveChangesAsync();
+        }
     }
 
     public async Task CreateAsync(CourseEdition courseEdition)

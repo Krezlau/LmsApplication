@@ -3,11 +3,13 @@ import { UserModel } from '../../types/users/user-model';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { UserCardComponent } from '../user-card/user-card.component';
 import { UserService } from '../../services/user.service';
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { toHumanReadable } from '../../types/users/user-role';
 import { CourseEditionAddUserDialogComponent } from '../course-edition-add-user-dialog/course-edition-add-user-dialog.component';
+import { CourseEditionService } from '../../services/course-edition.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-user-list',
@@ -35,6 +37,8 @@ export class UserListComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private courseEditionService: CourseEditionService,
+    private alertService: AlertService,
     private router: Router,
   ) {}
 
@@ -49,8 +53,31 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   removeUser(user: UserModel) {
-    // TODO
-    console.log('removeUser', user);
+    if (!this.courseEditionId) {
+      return;
+    }
+    this.sub.add(
+      this.courseEditionService
+        .removeUserFromCourseEdition(this.courseEditionId, user.id)
+        .pipe(
+          tap({
+            next: () => {
+              this.users = this.users.filter((u) => u.id !== user.id);
+            },
+            error: (err) => {
+              if (err.error?.message) {
+                this.alertService.show(err.error.message, 'error');
+              } else {
+                this.alertService.show(
+                  'Failed to remove user from course',
+                  'error',
+                );
+              }
+            },
+          }),
+        )
+        .subscribe(),
+    );
   }
 
   ngOnInit(): void {

@@ -15,7 +15,7 @@ public class CourseEditionsController : ControllerBase
 {
     private readonly ICourseEditionService _courseEditionService;
 
-    public CourseEditionsController(ICourseEditionService courseEditionService) : base()
+    public CourseEditionsController(ICourseEditionService courseEditionService)
     {
         _courseEditionService = courseEditionService;
     }
@@ -54,6 +54,14 @@ public class CourseEditionsController : ControllerBase
     public async Task<IActionResult> AddUserToCourseEdition(Guid courseEditionId, [FromBody] CourseEditionAddUserModel model)
     {
         await _courseEditionService.AddUserToCourseEditionAsync(courseEditionId, model);
+        return Ok(ApiResponseHelper.Success());
+    }
+    
+    [HttpPost("{courseEditionId}/remove-user")]
+    [Authorize(AuthPolicies.AdminPolicy)]
+    public async Task<IActionResult> RemoveUserFromCourseEdition(Guid courseEditionId, [FromBody] CourseEditionRemoveUserModel model)
+    {
+        await _courseEditionService.RemoveUserFromCourseEditionAsync(courseEditionId, model);
         return Ok(ApiResponseHelper.Success());
     }
     

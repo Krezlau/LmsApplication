@@ -107,4 +107,16 @@ export class CourseEditionService {
       },
     );
   }
+
+  removeUserFromCourseEdition(editionId: string, userId: string) {
+    return this.http.post<ApiResponse<null>>(
+      `${env.apiUrl}/api/courses/editions/${editionId}/remove-user`,
+      { userId },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
 }
