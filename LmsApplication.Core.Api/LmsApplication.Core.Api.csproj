@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LmsApplication.CourseBoardModule.Api\LmsApplication.CourseBoardModule.Api.csproj" />
       <ProjectReference Include="..\LmsApplication.CourseModule.Api\LmsApplication.CourseModule.Api.csproj" />
       <ProjectReference Include="..\LmsApplication.UserModule.Api\LmsApplication.UserModule.Api.csproj" />
       <ProjectReference Include="..\LmsApplication\LmsApplication.Core.Shared\LmsApplication.Core.Shared.csproj" />

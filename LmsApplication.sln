@@ -22,6 +22,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.UserModule.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.UserModule.Services", "LmsApplication.UserModule.Services\LmsApplication.UserModule.Services.csproj", "{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LmsApplication.CourseBoardModule", "LmsApplication.CourseBoardModule", "{EBCED877-4519-4FB1-82B3-F2AE42254BD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.CourseBoardModule.Api", "LmsApplication.CourseBoardModule.Api\LmsApplication.CourseBoardModule.Api.csproj", "{57BCBD0C-DB08-4A96-BBFF-C44309399D51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.CourseBoardModule.Data", "LmsApplication.CourseBoardModule.Data\LmsApplication.CourseBoardModule.Data.csproj", "{1CEF7E4C-8130-4452-89CF-CE49AA312130}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.CourseBoardModule.Services", "LmsApplication.CourseBoardModule.Services\LmsApplication.CourseBoardModule.Services.csproj", "{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +72,18 @@ Global
 		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57BCBD0C-DB08-4A96-BBFF-C44309399D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57BCBD0C-DB08-4A96-BBFF-C44309399D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57BCBD0C-DB08-4A96-BBFF-C44309399D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57BCBD0C-DB08-4A96-BBFF-C44309399D51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CEF7E4C-8130-4452-89CF-CE49AA312130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CEF7E4C-8130-4452-89CF-CE49AA312130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CEF7E4C-8130-4452-89CF-CE49AA312130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CEF7E4C-8130-4452-89CF-CE49AA312130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FF65ADF2-0726-4FC5-ADD5-7E1623E497CB} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}
@@ -72,5 +92,8 @@ Global
 		{154DB848-C537-4E98-B2A4-1D2A696105DF} = {AA9C221C-4908-41EC-8E19-3D1D11E552C4}
 		{616BA6B0-3792-4D98-AED4-3C03DB3738D0} = {AA9C221C-4908-41EC-8E19-3D1D11E552C4}
 		{AC504FB4-1E0C-4877-8B2F-6ECEB6396061} = {AA9C221C-4908-41EC-8E19-3D1D11E552C4}
+		{57BCBD0C-DB08-4A96-BBFF-C44309399D51} = {EBCED877-4519-4FB1-82B3-F2AE42254BD3}
+		{1CEF7E4C-8130-4452-89CF-CE49AA312130} = {EBCED877-4519-4FB1-82B3-F2AE42254BD3}
+		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC} = {EBCED877-4519-4FB1-82B3-F2AE42254BD3}
 	EndGlobalSection
 EndGlobal

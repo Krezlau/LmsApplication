@@ -1,4 +1,6 @@
 using LmsApplication.Core.Api.Middleware;
+using LmsApplication.CourseBoardModule.Api;
+using LmsApplication.CourseBoardModule.Data.Database;
 using LmsApplication.CourseModule.Api;
 using LmsApplication.CourseModule.Data.Database;
 using LmsApplication.UserModule.Api;
@@ -30,6 +32,7 @@ builder.Services.AddHttpLogging(o => { });
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCourseModuleApi(builder.Configuration);
+builder.Services.AddCourseBoardModuleApi(builder.Configuration);
 builder.Services.AddUserModuleApi(builder.Configuration);
 
 
@@ -98,6 +101,8 @@ using (var scope = app.Services.CreateScope())
     courseContext.Database.Migrate();
     var userContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
     userContext.Database.Migrate();
+    var courseBoardContext = scope.ServiceProvider.GetRequiredService<CourseBoardDbContext>();
+    courseBoardContext.Database.Migrate();
     
     // seed roles like this for now 
     // should be changed later
