@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserModel } from '../types/users/user-model';
 import { AuthService } from './auth.service';
 import { env } from '../../env';
+import { UserRole } from '../types/users/user-role';
 
 @Injectable({
   providedIn: 'root',
@@ -77,6 +78,18 @@ export class UserService {
   public searchUsersByEmail(email: string) {
     return this.http.get<UserModel[]>(
       `${env.apiUrl}/api/users/search/${email}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  public updateUserRole(userId: string, role: UserRole) {
+    return this.http.put<null>(
+      `${env.apiUrl}/api/users/${userId}/role`,
+      { role: +role },
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,

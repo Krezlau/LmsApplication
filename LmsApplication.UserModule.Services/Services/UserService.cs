@@ -1,4 +1,5 @@
 using FluentValidation;
+using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.UserModule.Data.Database;
@@ -23,6 +24,8 @@ public interface IUserService
     Task<List<UserModel>> SearchUsersByEmailAsync(string query);
     
     Task UpdateUserAsync(string userId, UserUpdateModel model);
+
+    Task UpdateUserRoleAsync(string userId, UpdateUserRoleModel model);
 }
 
 public class UserService : IUserService
@@ -118,5 +121,33 @@ public class UserService : IUserService
         user.Bio = model.Bio;
         
         await _userManager.UpdateAsync(user);
+    }
+
+    public async Task UpdateUserRoleAsync(string userId, UpdateUserRoleModel model)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is null) 
+            throw new KeyNotFoundException("Couldn't find user with the given id.");
+
+        if (model.Role is UserRole.Student)
+        {
+            await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+            return;
+        }
+        var role = await GetRoleByEnumAsync(model.Role);
+        
+        await _userManager.AddToRoleAsync(user, role.Name!);
+    }
+    
+    private async Task<IdentityRole> GetRoleByEnumAsync(UserRole role)
+    {
+        var roleName = Enum.GetName(role)?.ToUpper();
+        var identityRole = await _userDbContext.Roles.FirstOrDefaultAsync(x => x.Name!.ToUpper() == roleName);
+        if (identityRole is null)
+        {
+            throw new KeyNotFoundException("Couldn't find the role.");
+        }
+
+        return identityRole;
     }
 }

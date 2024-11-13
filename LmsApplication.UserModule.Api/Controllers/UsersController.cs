@@ -18,7 +18,7 @@ public class UsersController : ControllerBase
     {
         _userService = userService;
     }
-    
+
     [HttpGet("current")]
     public async Task<IActionResult> GetCurrentUser()
     {
@@ -26,7 +26,7 @@ public class UsersController : ControllerBase
 
         return Ok(await _userService.GetUserAsync(userId));
     }
-    
+
     [HttpPut("current")]
     public async Task<IActionResult> UpdateCurrentUser(UserUpdateModel model)
     {
@@ -45,19 +45,19 @@ public class UsersController : ControllerBase
     {
         return Ok(await _userService.GetUserByEmailAsync(userEmail));
     }
-    
+
     [HttpGet("")]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetAllUsers()
     {
         return Ok(await _userService.GetUsersAsync());
     }
-    
+
     [HttpGet("by-course-edition/{courseEditionId}")]
     public async Task<IActionResult> GetUsersByCourseEdition(Guid courseEditionId)
     {
         var userId = GetUserId();
-        
+
         return Ok(await _userService.GetUsersByCourseEditionAsync(courseEditionId, userId));
     }
 
@@ -66,8 +66,16 @@ public class UsersController : ControllerBase
     {
         return Ok(await _userService.SearchUsersByEmailAsync(query));
     }
-    
-    private string GetUserId()
+
+    [HttpPut("{userId}/role")]
+    [Authorize(AuthPolicies.AdminPolicy)]
+    public async Task<IActionResult> UpdateUserRole(string userId, [FromBody] UpdateUserRoleModel model)
+    {
+        await _userService.UpdateUserRoleAsync(userId, model);
+        return Ok();
+    }
+
+private string GetUserId()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userId is null)

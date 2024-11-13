@@ -10,8 +10,19 @@
       <button *ngIf="isLoggedInUser()" class="btn btn-secondary">
         Settings
       </button>
-      <button *ngIf="isLoggedInUser()" class="btn btn-secondary" [routerLink]="['/users', user.email, 'edit']">
+      <button
+        *ngIf="isLoggedInUser()"
+        class="btn btn-secondary"
+        [routerLink]="['/users', user.email, 'edit']"
+      >
         Edit Profile
+      </button>
+      <button
+        *ngIf="!isLoggedInUser() && authState().userData?.role === 2"
+        class="btn btn-secondary"
+        onclick="my_modal_2.showModal()"
+      >
+        Update Role
       </button>
     </div>
   </div>
@@ -35,3 +46,36 @@
     <div>TODO</div>
   </div>
 </div>
+<dialog id="my_modal_2" class="modal" #dialogElement>
+  <form
+    class="modal-box flex flex-col justify-center"
+    (submit)="changeUserRole($event)"
+  >
+    <h1 class="text-xl font-semibold text-center">Select New Role</h1>
+    <select
+      class="select select-bordered block mx-auto mt-4 w-1/2"
+      [formControl]="roleFormControl"
+    >
+      <option [value]="UserRole.Student">User</option>
+      <option [value]="UserRole.Teacher">Teacher</option>
+      <option [value]="UserRole.Admin">Admin</option>
+    </select>
+    <button
+      *ngIf="!updateRoleLoading"
+      type="submit"
+      class="btn btn-primary mt-4 mx-auto"
+    >
+      Update Role
+    </button>
+    <button
+      *ngIf="updateRoleLoading"
+      type="submit"
+      class="btn btn-primary mt-4 mx-auto"
+    >
+      <span class="loading loading-spinner">Loading...</span>
+    </button>
+  </form>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
