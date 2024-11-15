@@ -14,22 +14,18 @@ public interface IPostService
     Task<PostModel> CreatePostAsync(Guid editionId, string userId, PostCreateModel postCreateModel);
 }
 
-public class PostService : IPostService
+public class PostService : CourseBoardService, IPostService
 {
     private readonly IPostRepository _postRepository;
-    private readonly ICourseEditionProvider _courseEditionProvider;
-    private readonly IUserProvider _userProvider;
     private readonly IValidationService<PostCreateModel> _postCreateModelValidationService;
 
     public PostService(
         IPostRepository postRepository,
         ICourseEditionProvider courseEditionProvider,
         IUserProvider userProvider,
-        IValidationService<PostCreateModel> postCreateModelValidationService)
+        IValidationService<PostCreateModel> postCreateModelValidationService) : base(courseEditionProvider, userProvider)
     {
         _postRepository = postRepository;
-        _courseEditionProvider = courseEditionProvider;
-        _userProvider = userProvider;
         _postCreateModelValidationService = postCreateModelValidationService;
     }
 
@@ -44,7 +40,7 @@ public class PostService : IPostService
             .Distinct()
             .ToList();
         
-        var users = await _userProvider.GetUsersByIdsAsync(userIds);
+        var users = await UserProvider.GetUsersByIdsAsync(userIds);
         var usernames = users.ToDictionary(x => x.Key, x => x.Value.Name + "" + x.Value.Surname);
         
         return new CollectionResource<PostModel>(posts.Select(x => x.ToModel(users[x.UserId], usernames, userId)), totalCount);
@@ -54,7 +50,7 @@ public class PostService : IPostService
     {
         await ValidateUserAccessToEditionAsync(editionId, userId);
         
-        var user = await _userProvider.GetUserByIdAsync(userId);
+        var user = await UserProvider.GetUserByIdAsync(userId);
         if (user is null) 
             throw new KeyNotFoundException("User not found.");
         
@@ -70,14 +66,5 @@ public class PostService : IPostService
         await _postRepository.CreatePostAsync(post);
 
         return post.ToModel(user, [], userId);
-    }
-    
-    private async Task ValidateUserAccessToEditionAsync(Guid editionId, string userId)
-    {
-        var isAdmin = _userProvider.IsUserAdminAsync(userId);
-        var isRegistered = _courseEditionProvider.IsUserRegisteredToCourseEditionAsync(editionId, userId);
-        
-        if (!await isRegistered && !await isAdmin)
-            throw new UnauthorizedAccessException("User is not registered to course edition.");
     }
 }

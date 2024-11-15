@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LmsApplication.CourseBoardModule.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/editions/{editionId:guid}/[controller]")]
 [Authorize]
 public class PostsController : ControllerBase
 {
@@ -19,13 +19,13 @@ public class PostsController : ControllerBase
         _postService = postService;
     }
     
-    [HttpGet("{editionId:guid}")]
+    [HttpGet]
     public async Task<IActionResult> GetPosts(Guid editionId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         return Ok(ApiResponseHelper.Success(await _postService.GetPostsAsync(editionId, GetUserId(), page, pageSize)));
     }
     
-    [HttpPost("{editionId:guid}")]
+    [HttpPost]
     public async Task<IActionResult> CreatePost(Guid editionId, [FromBody] PostCreateModel model)
     {
         return Ok(ApiResponseHelper.Success(await _postService.CreatePostAsync(editionId, GetUserId(), model)));

@@ -68,7 +68,7 @@ public class UserProvider : IUserProvider
         };
     }
     
-    private UserExchangeModel MapUserExchangeModel(User user, List<string> roles)
+    private static UserExchangeModel MapUserExchangeModel(User user, List<string> roles)
     {
         var userRole = UserRole.Student;
         if (roles.Contains("Teacher"))
