@@ -3,6 +3,7 @@ using LmsApplication.Core.Shared.Models;
 using LmsApplication.Core.Shared.Providers;
 using LmsApplication.UserModule.Data.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LmsApplication.UserModule.Services.Providers;
 
@@ -32,10 +33,43 @@ public class UserProvider : IUserProvider
 
         return await MapUserExchangeModelAsync(user);
     }
-    
+
+    public async Task<Dictionary<string, UserExchangeModel>> GetUsersByIdsAsync(List<string> ids)
+    {
+        var users = await _userManager.Users.Include(x => x.Roles)
+            .Where(x => ids.Contains(x.Id))
+            .ToDictionaryAsync(x => x.Id, x => x);
+        
+        return users.ToDictionary(x => x.Key,
+            x => MapUserExchangeModel(x.Value, x.Value.Roles.Select(r => r.Name!).ToList()));
+    }
+
+    public async Task<bool> IsUserAdminAsync(string userId)
+    {
+        return await _userManager.IsInRoleAsync(new User { Id = userId }, "Admin");
+    }
+
     private async Task<UserExchangeModel> MapUserExchangeModelAsync(User user)
     {
         var roles = await _userManager.GetRolesAsync(user);
+        var userRole = UserRole.Student;
+        if (roles.Contains("Teacher"))
+            userRole = UserRole.Teacher;
+        else if (roles.Contains("Admin"))
+            userRole = UserRole.Admin;
+
+        return new UserExchangeModel
+        {
+            Id = user.Id,
+            Email = user.Email!,
+            Name = user.Name,
+            Surname = user.Surname,
+            Role = userRole
+        };
+    }
+    
+    private UserExchangeModel MapUserExchangeModel(User user, List<string> roles)
+    {
         var userRole = UserRole.Student;
         if (roles.Contains("Teacher"))
             userRole = UserRole.Teacher;

@@ -15,6 +15,8 @@ public class Post : IAuditable
     
     public string UserId { get; set; } = string.Empty;
     
+    public Guid EditionId { get; set; }
+    
     public virtual List<Comment> Comments { get; set; } = new();
 
     public virtual List<PostReaction> Reactions { get; set; } = new();
