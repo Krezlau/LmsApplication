@@ -8,6 +8,7 @@ public class PostCreateModelValidator : AbstractValidator<PostCreateModel>
     public PostCreateModelValidator()
     {
         RuleFor(x => x.Content)
-            .NotEmpty();
+            .NotEmpty()
+            .MaximumLength(1000);
     }
 }

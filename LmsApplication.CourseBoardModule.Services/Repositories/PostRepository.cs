@@ -8,7 +8,13 @@ public interface IPostRepository
 {
     Task<(int totalCount, List<Post> posts)> GetPostsAsync(Guid editionId, int page, int pageSize);
     
+    Task<Post?> GetPostByIdAsync(Guid postId);
+    
     Task CreatePostAsync(Post post);
+    
+    Task UpdatePostAsync(Post post);
+    
+    Task DeletePostAsync(Post post);
 }
 
 public class PostRepository : IPostRepository
@@ -37,9 +43,29 @@ public class PostRepository : IPostRepository
         return (totalCount, posts);
     }
 
+    public async Task<Post?> GetPostByIdAsync(Guid postId)
+    {
+        return await _dbContext.Posts
+            .FirstOrDefaultAsync(x => x.Id == postId);
+    }
+
     public async Task CreatePostAsync(Post post)
     {
         await _dbContext.Posts.AddAsync(post);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdatePostAsync(Post post)
+    {
+        _dbContext.Posts.Update(post);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeletePostAsync(Post post)
+    {
+        post.IsDeleted = true;
+        post.DeletedAtUtc = DateTime.UtcNow;
+        _dbContext.Posts.Update(post);
         await _dbContext.SaveChangesAsync();
     }
 }

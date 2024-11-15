@@ -31,6 +31,19 @@ public class PostsController : ControllerBase
         return Ok(ApiResponseHelper.Success(await _postService.CreatePostAsync(editionId, GetUserId(), model)));
     }
     
+    [HttpPut("{postId:guid}")]
+    public async Task<IActionResult> UpdatePost(Guid editionId, Guid postId, [FromBody] PostUpdateModel model)
+    {
+        return Ok(ApiResponseHelper.Success(await _postService.UpdatePostAsync(editionId, GetUserId(), postId, model)));
+    }
+    
+    [HttpDelete("{postId:guid}")]
+    public async Task<IActionResult> DeletePost(Guid editionId, Guid postId)
+    {
+        await _postService.DeletePostAsync(editionId, GetUserId(), postId);
+        return Ok(ApiResponseHelper.Success());
+    }
+    
     private string GetUserId()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

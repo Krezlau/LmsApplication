@@ -63,7 +63,9 @@ public class CommentRepository : ICommentRepository
 
     public async Task DeleteCommentAsync(Comment comment)
     {
-        _dbContext.Comments.Remove(comment);
+        comment.IsDeleted = true;
+        comment.DeletedAtUtc = DateTime.UtcNow;
+        _dbContext.Comments.Update(comment);
         await _dbContext.SaveChangesAsync();
     }
 }

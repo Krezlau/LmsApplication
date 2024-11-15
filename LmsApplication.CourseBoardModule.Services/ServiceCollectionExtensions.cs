@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
         
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
         services.AddScoped<IValidationService<PostCreateModel>, ValidationService<PostCreateModel>>();
+        services.AddScoped<IValidationService<PostUpdateModel>, ValidationService<PostUpdateModel>>();
         services.AddScoped<IValidationService<CommentCreateModel>, ValidationService<CommentCreateModel>>();
         services.AddScoped<IValidationService<CommentUpdateModel>, ValidationService<CommentUpdateModel>>();
 

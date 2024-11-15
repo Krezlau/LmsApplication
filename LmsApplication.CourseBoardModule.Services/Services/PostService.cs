@@ -1,3 +1,4 @@
+using FluentValidation;
 using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
@@ -12,21 +13,28 @@ public interface IPostService
     Task<CollectionResource<PostModel>> GetPostsAsync(Guid editionId, string userId, int page, int pageSize);
     
     Task<PostModel> CreatePostAsync(Guid editionId, string userId, PostCreateModel postCreateModel);
+    
+    Task<PostModel> UpdatePostAsync(Guid editionId, string userId, Guid postId, PostUpdateModel postUpdateModel);
+    
+    Task DeletePostAsync(Guid editionId, string userId, Guid postId);
 }
 
 public class PostService : CourseBoardService, IPostService
 {
     private readonly IPostRepository _postRepository;
     private readonly IValidationService<PostCreateModel> _postCreateModelValidationService;
+    private readonly IValidationService<PostUpdateModel> _postUpdateModelValidationService;
 
     public PostService(
         IPostRepository postRepository,
         ICourseEditionProvider courseEditionProvider,
         IUserProvider userProvider,
-        IValidationService<PostCreateModel> postCreateModelValidationService) : base(courseEditionProvider, userProvider)
+        IValidationService<PostCreateModel> postCreateModelValidationService,
+        IValidationService<PostUpdateModel> postUpdateModelValidationService) : base(courseEditionProvider, userProvider)
     {
         _postRepository = postRepository;
         _postCreateModelValidationService = postCreateModelValidationService;
+        _postUpdateModelValidationService = postUpdateModelValidationService;
     }
 
     public async Task<CollectionResource<PostModel>> GetPostsAsync(Guid editionId, string userId, int page, int pageSize)
@@ -56,7 +64,7 @@ public class PostService : CourseBoardService, IPostService
         
         await _postCreateModelValidationService.ValidateAndThrowAsync(postCreateModel);
 
-        var post = new Post()
+        var post = new Post
         {
             EditionId = editionId,
             UserId = userId,
@@ -66,5 +74,43 @@ public class PostService : CourseBoardService, IPostService
         await _postRepository.CreatePostAsync(post);
 
         return post.ToModel(user, [], userId);
+    }
+
+    public async Task<PostModel> UpdatePostAsync(Guid editionId, string userId, Guid postId, PostUpdateModel model)
+    {
+        await ValidateUserAccessToEditionAsync(editionId, userId);
+        
+        var post = await _postRepository.GetPostByIdAsync(postId);
+        var user = await UserProvider.GetUserByIdAsync(userId);
+        
+        var context = new ValidationContext<PostUpdateModel>(model)
+        {
+            RootContextData = 
+            {
+                { nameof(Post), post },
+                { nameof(user), user },
+            }
+        };
+        await _postUpdateModelValidationService.ValidateAndThrowAsync(context);
+        
+        post!.Content = model.Content;
+        
+        await _postRepository.UpdatePostAsync(post);
+        
+        return post.ToModel(user!, [], userId);
+    }
+
+    public async Task DeletePostAsync(Guid editionId, string userId, Guid postId)
+    {
+        await ValidateUserAccessToEditionAsync(editionId, userId);
+        
+        var post = await _postRepository.GetPostByIdAsync(postId);
+        if (post is null) 
+            throw new KeyNotFoundException("Post not found.");
+        
+        if (post.UserId != userId && !await UserProvider.IsUserAdminAsync(userId))
+            throw new UnauthorizedAccessException("User is not allowed to delete this post.");
+        
+        await _postRepository.DeletePostAsync(post);
     }
 }
