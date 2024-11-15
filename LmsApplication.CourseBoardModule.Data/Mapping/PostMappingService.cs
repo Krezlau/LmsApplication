@@ -6,7 +6,8 @@ namespace LmsApplication.CourseBoardModule.Data.Mapping;
 
 public static class PostMappingService
 {
-    public static PostModel ToModel(this Post post,
+    public static PostModel ToModel(
+        this Post post,
         UserExchangeModel author,
         Dictionary<string, string> userNames,
         string currentUserId)

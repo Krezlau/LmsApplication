@@ -13,4 +13,13 @@ public static class ReactionMappingService
             ReactionType = reaction.ReactionType,
         };
     }
+    
+    public static ReactionModel ToModel(this CommentReaction reaction, string username)
+    {
+        return new ReactionModel
+        {
+            Username = username,
+            ReactionType = reaction.ReactionType,
+        };
+    }
 }

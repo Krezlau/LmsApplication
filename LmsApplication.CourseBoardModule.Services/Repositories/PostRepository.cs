@@ -24,6 +24,8 @@ public class PostRepository : IPostRepository
     {
         var query = _dbContext.Posts
             .Where(x => x.EditionId == editionId)
+            .Include(x => x.Reactions)
+            .Include(x => x.Comments)
             .OrderByDescending(x => x.CreatedAtUtc);
         
         var totalCount = await query.CountAsync();
