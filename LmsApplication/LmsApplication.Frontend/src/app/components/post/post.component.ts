@@ -21,6 +21,7 @@ import { NgIf } from '@angular/common';
 import { PostBottomBarComponent } from '../post-bottom-bar/post-bottom-bar.component';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 import { DateFormatting } from '../../helpers/date-formatter';
+import { CommentListComponent } from '../comment-list/comment-list.component';
 
 @Component({
   selector: 'app-post',
@@ -31,6 +32,7 @@ import { DateFormatting } from '../../helpers/date-formatter';
     EditPostComponent,
     PostBottomBarComponent,
     UserAvatarComponent,
+    CommentListComponent,
   ],
   templateUrl: './post.component.html',
 })
@@ -47,6 +49,8 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
   imageSub = new Subscription();
   imageLoading = signal(false);
   imageUrl: string | null = null;
+
+  commentsOpen = false;
 
   constructor(
     private authService: AuthService,
@@ -136,6 +140,10 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
 
   async redirectToProfile() {
     await this.router.navigate(['/users', this.post.author.email]);
+  }
+
+  toggleComments() {
+    this.commentsOpen = !this.commentsOpen;
   }
 
   ngOnInit() {

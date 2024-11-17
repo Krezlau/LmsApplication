@@ -29,6 +29,7 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() post: PostModel = {} as PostModel;
   @Output() changeReaction: EventEmitter<ReactionType | null> =
     new EventEmitter<ReactionType | null>();
+  @Output() toggleComments: EventEmitter<void> = new EventEmitter<void>();
 
   formattedDate: string = '';
   isVisible: boolean = true;
@@ -52,6 +53,10 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
     private reactionService: ReactionService,
     private postService: PostService,
   ) {}
+
+  onCommentsClicked() {
+    this.toggleComments.emit();
+  }
 
   checkIfPostWasEdited() {
     if (

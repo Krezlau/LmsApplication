@@ -16,13 +16,17 @@
       </h2>
       <p class="italic text-[12px]">
         {{ formattedDate }}
-        <span *ngIf="post.author.role !== 0" class="badge badge-primary badge-sm ml-2">{{
-          post.author.role === 1
-            ? "Teacher"
-            : post.author.role === 2
-              ? "Admin"
-              : ""
-        }}</span>
+        <span
+          *ngIf="post.author.role !== 0"
+          class="badge badge-primary badge-sm ml-2"
+          >{{
+            post.author.role === 1
+              ? "Teacher"
+              : post.author.role === 2
+                ? "Admin"
+                : ""
+          }}</span
+        >
       </p>
     </div>
     <div class="ml-auto mt-4">
@@ -75,7 +79,13 @@
   <app-post-bottom-bar
     [post]="post"
     (changeReaction)="changeReaction($event)"
+    (toggleComments)="toggleComments()"
   ></app-post-bottom-bar>
-  <br />
-  <!--<app-comment-list (contentDeleted)="handleCommentDeletion()" (contentAdded)="handleCommentAdding()" [postId]="post.postId"></app-comment-list>-->
+  <app-comment-list
+    *ngIf="commentsOpen"
+    (contentDeleted)="handleCommentDeletion()"
+    (contentAdded)="handleCommentAdding()"
+    [postId]="post.id"
+    [editionId]="post.editionId"
+  ></app-comment-list>
 </div>

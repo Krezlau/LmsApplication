@@ -1,1 +1,24 @@
-<p>comment-list works!</p>
+<ul class="flex flex-col gap-5 mt-4">
+  <li *ngFor="let comment of comments">
+    <app-comment
+      (deleted)="handleDeletion($event)"
+      [comment]="comment"
+      [editionId]="editionId"
+    ></app-comment>
+  </li>
+  <div *ngIf="currentPage !== totalPages" class="text-right pr-6">
+    <p
+      (click)="getComments(currentPage + 1, 5)"
+      class="text-xs cursor-pointer inline-block"
+    >
+      Load more comments...
+    </p>
+  </div>
+</ul>
+<!--<app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>-->
+<br *ngIf="!isLoading" />
+<app-add-comment
+  (contentAdded)="addComment($event)"
+  [postId]="postId"
+  [editionId]="editionId"
+></app-add-comment>

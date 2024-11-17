@@ -20,10 +20,13 @@
     [currentUserReaction]="post.currentUserReaction"
     (changeReaction)="upsertReaction($event)"
   ></app-like-button>
-  <button class="w-[calc(470px/2)] hover:bg-base-200 rounded">
+  <button
+    class="w-[calc(470px/2)] hover:bg-base-200 rounded"
+    (click)="onCommentsClicked()"
+  >
     <div class="flex flex-row gap-2 justify-center">
       <span class="material-symbols-outlined inline">comment</span>
-      <p>Show Comments</p>
+      <p>Comments</p>
     </div>
   </button>
 </div>
