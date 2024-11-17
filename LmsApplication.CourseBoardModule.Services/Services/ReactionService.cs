@@ -1,15 +1,14 @@
 using LmsApplication.Core.Shared.Providers;
 using LmsApplication.CourseBoardModule.Data.Entities;
-using LmsApplication.CourseBoardModule.Data.Models;
 using LmsApplication.CourseBoardModule.Services.Repositories;
 
 namespace LmsApplication.CourseBoardModule.Services.Services;
 
 public interface IReactionService
 {
-    Task<ReactionUpdateModel> UpdatePostReactionAsync(Guid editionId, string userId, Guid postId, ReactionUpdateModel model);
+    Task<ReactionType?> UpdatePostReactionAsync(Guid editionId, string userId, Guid postId, ReactionType? type);
     
-    Task<ReactionUpdateModel> UpdateCommentReactionAsync(Guid editionId, string userId, Guid commentId, ReactionUpdateModel model);
+    Task<ReactionType?> UpdateCommentReactionAsync(Guid editionId, string userId, Guid commentId, ReactionType? type);
 }
 
 public class ReactionService : CourseBoardService, IReactionService
@@ -24,65 +23,63 @@ public class ReactionService : CourseBoardService, IReactionService
         _reactionRepository = reactionRepository;
     }
 
-    public async Task<ReactionUpdateModel> UpdatePostReactionAsync(Guid editionId, string userId, Guid postId, ReactionUpdateModel model)
+    public async Task<ReactionType?> UpdatePostReactionAsync(Guid editionId, string userId, Guid postId, ReactionType? type)
     {
         await ValidateUserAccessToEditionAsync(editionId, userId);
 
         var currentReaction = await _reactionRepository.GetPostReactionAsync(postId, userId);
-        
-        var newReaction = model.Type;
-        if (currentReaction is null && newReaction is not null)
+
+        if (currentReaction is null && type is not null)
         {
             await _reactionRepository.CreatePostReactionAsync(new PostReaction
             {
                 UserId = userId,
                 PostId = postId,
-                ReactionType = newReaction.Value,
+                ReactionType = type.Value,
             });
         }
 
-        if (currentReaction is not null && newReaction is null)
+        if (currentReaction is not null && type is null)
         {
             await _reactionRepository.DeletePostReactionAsync(currentReaction);
         }
 
-        if (currentReaction is not null && newReaction is not null)
+        if (currentReaction is not null && type is not null)
         {
-            currentReaction.ReactionType = newReaction.Value;
+            currentReaction.ReactionType = type.Value;
             await _reactionRepository.UpdatePostReactionAsync(currentReaction);
         }
 
-        return model;
+        return type;
     }
 
-    public async Task<ReactionUpdateModel> UpdateCommentReactionAsync(Guid editionId, string userId, Guid commentId, ReactionUpdateModel model)
+    public async Task<ReactionType?> UpdateCommentReactionAsync(Guid editionId, string userId, Guid commentId, ReactionType? type)
     {
         await ValidateUserAccessToEditionAsync(editionId, userId);
 
         var currentReaction = await _reactionRepository.GetCommentReactionAsync(commentId, userId);
-        
-        var newReaction = model.Type;
-        if (currentReaction is null && newReaction is not null)
+
+        if (currentReaction is null && type is not null)
         {
             await _reactionRepository.CreateCommentReactionAsync(new CommentReaction
             {
                 UserId = userId,
                 CommentId = commentId,
-                ReactionType = newReaction.Value,
+                ReactionType = type.Value,
             });
         }
 
-        if (currentReaction is not null && newReaction is null)
+        if (currentReaction is not null && type is null)
         {
             await _reactionRepository.DeleteCommentReactionAsync(currentReaction);
         }
 
-        if (currentReaction is not null && newReaction is not null)
+        if (currentReaction is not null && type is not null)
         {
-            currentReaction.ReactionType = newReaction.Value;
+            currentReaction.ReactionType = type.Value;
             await _reactionRepository.UpdateCommentReactionAsync(currentReaction);
         }
 
-        return model;
+        return type;
     }
 }

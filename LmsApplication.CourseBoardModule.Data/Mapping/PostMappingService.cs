@@ -12,13 +12,15 @@ public static class PostMappingService
         Dictionary<string, string> userNames,
         string currentUserId)
     {
+        var currentUserReaction = post.Reactions.FirstOrDefault(x => x.UserId == currentUserId)?.ReactionType ?? null;
         return new PostModel
         {
             Id = post.Id,
             Content = post.Content,
+            EditionId = post.EditionId,
             Author = author,
-            Reactions = post.Reactions.Select(x => x.ToModel(userNames[x.UserId])).ToList(),
-            CurrentUserReaction = post.Reactions.FirstOrDefault(x => x.UserId == currentUserId)?.ToModel(userNames[currentUserId]),
+            Reactions = post.Reactions.ToModel(),
+            CurrentUserReaction = currentUserReaction,
             CommentsCount = post.Comments.Count,
             CreatedAt = post.CreatedAtUtc,
             UpdatedAt = post.UpdatedAtUtc,

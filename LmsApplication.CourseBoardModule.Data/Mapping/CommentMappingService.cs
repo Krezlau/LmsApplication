@@ -12,6 +12,8 @@ public static class CommentMappingService
         Dictionary<string, string> userNames,
         string currentUserId)
     {
+        var currentUserReaction = comment.Reactions.FirstOrDefault(x => x.UserId == currentUserId)?.ReactionType ?? null;
+        
         return new CommentModel()
         {
             Id = comment.Id,
@@ -20,8 +22,8 @@ public static class CommentMappingService
             Content = comment.Content,
             CreatedAt = comment.CreatedAtUtc,
             UpdatedAt = comment.UpdatedAtUtc,
-            Reactions = comment.Reactions.Select(x => x.ToModel(userNames[x.UserId])).ToList(),
-            CurrentUserReaction = comment.Reactions.FirstOrDefault(x => x.UserId == currentUserId)?.ToModel(userNames[currentUserId]),
+            Reactions = comment.Reactions.ToModel(),
+            CurrentUserReaction = currentUserReaction, 
         };
     }
 }

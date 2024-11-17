@@ -4,7 +4,7 @@ namespace LmsApplication.CourseBoardModule.Data.Models;
 
 public class ReactionModel
 {
-    public required string Username { get; set; }
+    public required int SumOfReactions { get; set; }
     
-    public required ReactionType ReactionType { get; set; }
+    public required Dictionary<ReactionType, int> SumOfReactionsByType { get; set; }
 }

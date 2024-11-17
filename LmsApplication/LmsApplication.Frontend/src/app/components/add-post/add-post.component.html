@@ -1,0 +1,25 @@
+<div class="card w-[500px] mx-auto" style="padding-bottom: 10px">
+  <form [formGroup]="myForm" (ngSubmit)="onFormSubmit()" class="space-y-6">
+    <div>
+      <div class="mt-2">
+        <textarea
+          (keydown.enter)="onFormSubmit()"
+          id="content"
+          formControlName="content"
+          class="text-black w-full h-[80px] rounded-[5px] bg-gray-200 pl-[15px] pt-[7px] border-b-2 border-primary resize-none"
+          placeholder="Add an update for all members to see..."
+          name="content"
+          type="text"
+        ></textarea>
+      </div>
+      <div>
+        <div class="flex flex-row justify-end gap-4">
+          <button [disabled]="isLoading" class="btn btn-primary">
+            <span *ngIf="isLoading" class="loading loading-spinner"></span>
+            <ng-container *ngIf="!isLoading"> Post </ng-container>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

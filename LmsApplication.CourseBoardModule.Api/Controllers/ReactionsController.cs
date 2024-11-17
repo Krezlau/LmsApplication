@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using LmsApplication.Core.Shared.Models;
+using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Models;
 using LmsApplication.CourseBoardModule.Services.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LmsApplication.CourseBoardModule.Api.Controllers;
 
 [ApiController]
-[Route("api/editions/{editionId:guid}/[action]/[controller]")]
+[Route("api/editions/{editionId:guid}/")]
 [Authorize]
 public class ReactionsController : ControllerBase
 {
@@ -19,16 +20,16 @@ public class ReactionsController : ControllerBase
         _reactionService = reactionService;
     }
 
-    [HttpPut("posts/{postId:guid}")]
-    public async Task<IActionResult> UpdatePostReaction(Guid editionId, Guid postId, [FromBody] ReactionUpdateModel model)
+    [HttpPut("posts/{postId:guid}/[controller]")]
+    public async Task<IActionResult> UpdatePostReaction(Guid editionId, Guid postId, [FromQuery] ReactionType? type)
     {
-        return Ok(ApiResponseHelper.Success(await _reactionService.UpdatePostReactionAsync(editionId, GetUserId(), postId, model)));
+        return Ok(ApiResponseHelper.Success(await _reactionService.UpdatePostReactionAsync(editionId, GetUserId(), postId, type)));
     }
 
-    [HttpPut("comments/{commentId:guid}")]
-    public async Task<IActionResult> UpdateCommentReaction(Guid editionId, Guid commentId, [FromBody] ReactionUpdateModel model)
+    [HttpPut("comments/{commentId:guid}/[controller]")]
+    public async Task<IActionResult> UpdateCommentReaction(Guid editionId, Guid commentId, [FromQuery] ReactionType? type)
     {
-        return Ok(ApiResponseHelper.Success(await _reactionService.UpdateCommentReactionAsync(editionId, GetUserId(), commentId, model)));
+        return Ok(ApiResponseHelper.Success(await _reactionService.UpdateCommentReactionAsync(editionId, GetUserId(), commentId, type)));
     }
     
     private string GetUserId()

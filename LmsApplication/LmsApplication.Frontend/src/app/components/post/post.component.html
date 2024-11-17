@@ -1,0 +1,81 @@
+<div class="mx-auto pl-[5px] pr-[10x] py-2 w-[500px]">
+  <div class="flex items-center">
+    <app-user-avatar
+      [initial]="post.author.name.charAt(0)"
+      [src]="post.author.photo"
+      size="sm"
+      class="cursor-pointer"
+      (click)="redirectToProfile()"
+    ></app-user-avatar>
+    <div class="pl-[10px]">
+      <h2
+        class="text-xl font-semibold cursor-pointer"
+        (click)="redirectToProfile()"
+      >
+        {{ post.author.name + " " + post.author.surname }}
+      </h2>
+      <p class="italic text-[12px]">
+        {{ formattedDate }}
+        <span *ngIf="post.author.role !== 0" class="badge badge-primary badge-sm ml-2">{{
+          post.author.role === 1
+            ? "Teacher"
+            : post.author.role === 2
+              ? "Admin"
+              : ""
+        }}</span>
+      </p>
+    </div>
+    <div class="ml-auto mt-4">
+      <app-delete-post
+        (deleted)="handleDeletion($event)"
+        [postId]="post.id"
+        [authorId]="post.author.id"
+        [editionId]="post.editionId"
+      ></app-delete-post>
+      <span
+        *ngIf="userId === post.author.id"
+        (click)="enableEditing()"
+        class="tooltip tooltip-bottom cursor-pointer -top-4"
+        data-tip="Edit"
+      >
+        <span
+          class="material-symbols-outlined relative -bottom-2 text-primary"
+          [class.text-primary]="isEdited"
+          >edit</span
+        >
+      </span>
+    </div>
+  </div>
+  <p
+    *ngIf="!isEdited"
+    style="max-width: 100%"
+    class="m-[1px] mt-2 break-words whitespace-pre-line"
+  >
+    {{ post.content }}
+  </p>
+  <app-edit-post
+    *ngIf="isEdited"
+    [authorId]="post.author.id"
+    [postId]="post.id"
+    [currentContent]="post.content"
+    [imageId]="null"
+    [editionId]="post.editionId"
+    (contentUpdated)="updateContent($event)"
+    (imageDeleted)="removeImage()"
+  ></app-edit-post>
+  <figure *ngIf="!imageLoading() && imageUrl">
+    <img [src]="imageUrl" alt="post image" />
+  </figure>
+  <div
+    *ngIf="!imageUrl && imageLoading()"
+    class="mx-auto h-[200px] w-full bg-gray-300 rounded-[20px] flex flex-col justify-center"
+  >
+    <!--<app-loading-spinner class="loading loading-spinner loading-lg mx-auto"></app-loading-spinner>>-->
+  </div>
+  <app-post-bottom-bar
+    [post]="post"
+    (changeReaction)="changeReaction($event)"
+  ></app-post-bottom-bar>
+  <br />
+  <!--<app-comment-list (contentDeleted)="handleCommentDeletion()" (contentAdded)="handleCommentAdding()" [postId]="post.postId"></app-comment-list>-->
+</div>

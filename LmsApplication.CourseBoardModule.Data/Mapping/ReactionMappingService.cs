@@ -5,21 +5,23 @@ namespace LmsApplication.CourseBoardModule.Data.Mapping;
 
 public static class ReactionMappingService
 {
-    public static ReactionModel ToModel(this PostReaction reaction, string username)
+    public static ReactionModel ToModel(this List<PostReaction> reactions)
     {
         return new ReactionModel
         {
-            Username = username,
-            ReactionType = reaction.ReactionType,
+            SumOfReactions = reactions.Count,
+            SumOfReactionsByType = reactions.GroupBy(x => x.ReactionType)
+                .ToDictionary(x => x.Key, x => x.Count()),
         };
     }
     
-    public static ReactionModel ToModel(this CommentReaction reaction, string username)
+    public static ReactionModel ToModel(this List<CommentReaction> reactions)
     {
         return new ReactionModel
         {
-            Username = username,
-            ReactionType = reaction.ReactionType,
+            SumOfReactions = reactions.Count,
+            SumOfReactionsByType = reactions.GroupBy(x => x.ReactionType)
+                .ToDictionary(x => x.Key, x => x.Count()),
         };
     }
 }

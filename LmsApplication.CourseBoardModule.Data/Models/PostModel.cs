@@ -1,4 +1,5 @@
 using LmsApplication.Core.Shared.Models;
+using LmsApplication.CourseBoardModule.Data.Entities;
 
 namespace LmsApplication.CourseBoardModule.Data.Models;
 
@@ -8,11 +9,13 @@ public class PostModel
     
     public required string Content { get; set; }
     
+    public required Guid EditionId { get; set; }
+    
     public required UserExchangeModel Author { get; set; }
     
-    public required List<ReactionModel> Reactions { get; set; }
+    public required ReactionModel Reactions { get; set; }
     
-    public required ReactionModel? CurrentUserReaction { get; set; }
+    public required ReactionType? CurrentUserReaction { get; set; }
     
     public required int CommentsCount { get; set; }
     
