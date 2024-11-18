@@ -10,6 +10,9 @@ import { ApiResponse } from '../../types/api-response';
 import { CollectionResource } from '../../types/collection-resource';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ReactionType } from '../../types/course-board/reaction-type';
+import { CourseEditionModel } from '../../types/courses/course-edition-model';
+import { CourseEditionService } from '../../services/course-edition.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-post-list',
@@ -24,11 +27,15 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   totalPages: number = 0;
   courseEditionId: string = '';
+  courseEdition: CourseEditionModel | null = null;
+  authState = this.authService.authState;
 
   subscription = new Subscription();
 
   constructor(
     private postService: PostService,
+    private courseEditionService: CourseEditionService,
+    private authService: AuthService,
     private router: Router,
   ) {}
 
@@ -64,7 +71,6 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.pageNumber = this.pageNumber + 1;
             this.isLoading = false;
             this.totalPages = response.data?.totalCount! / 10;
-            console.log(this.posts);
           },
           error: (error) => {
             this.isLoading = false;
@@ -89,6 +95,13 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.courseEditionId = this.router.url.split('/')[2];
+    this.subscription.add(
+      this.courseEditionService
+        .getCourseEditionById(this.courseEditionId)
+        .subscribe((courseEdition) => {
+          this.courseEdition = courseEdition.data;
+        }),
+    );
     this.loadPosts();
   }
 

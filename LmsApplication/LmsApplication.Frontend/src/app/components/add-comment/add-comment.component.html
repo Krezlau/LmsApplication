@@ -2,9 +2,12 @@
   <div class="flex items-center">
     <div class="flex-none mt-1">
       <app-user-avatar
-        [initial]="authState().userData!.name.charAt(0)"
+        [initial]="
+          authState().userData!.name.charAt(0) +
+          authState().userData!.surname.charAt(0)
+        "
         [src]="authState().userData!.photo"
-        size="xsm"
+        size="sm"
       ></app-user-avatar>
     </div>
     <form (ngSubmit)="onFormSubmit()">

@@ -19,7 +19,14 @@
         'bg-black': true,
       }"
     />
-    <span *ngIf="!src" class="text-neutral-content text-lg">
+    <span
+      *ngIf="!src"
+      [ngClass]="{
+        'text-neutral-content': true,
+        'text-lg':
+          size === 'sm' || size === 'm' || size === 'xl' || size === 'xxl',
+      }"
+    >
       {{ initial }}
     </span>
     <span

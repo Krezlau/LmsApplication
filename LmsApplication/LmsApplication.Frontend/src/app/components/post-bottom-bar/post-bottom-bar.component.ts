@@ -33,13 +33,11 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
 
   formattedDate: string = '';
   isVisible: boolean = true;
-
   subscription: Subscription = new Subscription();
-
   reactions: ReactionModel = {} as ReactionModel;
   sortedReactions: [ReactionType, number][] = [];
-
   postReactionTypesCount = 0;
+  commentsOpen = false;
 
   // musze tak bo nie działają enumy w htmlu
   like = ReactionType.Like;
@@ -55,6 +53,7 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   onCommentsClicked() {
+    this.commentsOpen = !this.commentsOpen;
     this.toggleComments.emit();
   }
 
@@ -79,7 +78,12 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   upsertReaction(reactionType: ReactionType) {
     if (this.reactionService.isLoading()) return;
     this.subscription = this.reactionService
-      .upsertReaction(this.post.editionId, this.post.id, reactionType, this.post.currentUserReaction)
+      .upsertReaction(
+        this.post.editionId,
+        this.post.id,
+        reactionType,
+        this.post.currentUserReaction,
+      )
       .subscribe(() => this.updateReaction(reactionType));
   }
 
@@ -103,8 +107,6 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.sortedReactions = [];
     }
-    console.log(this.reactions);
-    console.log(this.sortedReactions);
   }
 
   ngOnDestroy(): void {

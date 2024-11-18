@@ -1,4 +1,9 @@
-<ul class="flex flex-col gap-5 mt-4">
+<ul
+  [ngClass]="{
+    'flex flex-col gap-5 mt-4': true,
+    'mb-4': currentPage === totalPages,
+  }"
+>
   <li *ngFor="let comment of comments">
     <app-comment
       (deleted)="handleDeletion($event)"
@@ -6,16 +11,18 @@
       [editionId]="editionId"
     ></app-comment>
   </li>
-  <div *ngIf="currentPage !== totalPages" class="text-right pr-6">
-    <p
-      (click)="getComments(currentPage + 1, 5)"
-      class="text-xs cursor-pointer inline-block"
-    >
+  <div
+    *ngIf="currentPage !== totalPages && totalPages !== 0"
+    class="text-right pr-6"
+  >
+    <p (click)="getComments(currentPage + 1, 5)" class="text-xs cursor-pointer">
       Load more comments...
     </p>
   </div>
 </ul>
-<!--<app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>-->
+<div *ngIf="isLoading" class="flex flex-row justify-center mt-4">
+  <span class="loading loading-spinner">Loading...</span>
+</div>
 <br *ngIf="!isLoading" />
 <app-add-comment
   (contentAdded)="addComment($event)"

@@ -27,6 +27,8 @@ public class CourseEditionModel
     public required int StudentCount { get; set; }
     
     public required bool IsUserRegistered { get; set; }
+    
+    public required CourseEditionPublicSettingsModel Settings { get; set; }
 }
 
 public enum CourseEditionStatus

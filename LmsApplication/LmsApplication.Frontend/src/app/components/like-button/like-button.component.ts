@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReactionType } from '../../types/course-board/reaction-type';
 import { NgClass, NgIf } from '@angular/common';
 
@@ -9,7 +9,7 @@ import { NgClass, NgIf } from '@angular/common';
   templateUrl: './like-button.component.html',
   styleUrl: './like-button.component.css',
 })
-export class LikeButtonComponent implements OnInit {
+export class LikeButtonComponent {
   @Input() currentUserReaction: ReactionType | null = null;
   @Input() isComment?: boolean = false;
 
@@ -23,8 +23,4 @@ export class LikeButtonComponent implements OnInit {
   wow = ReactionType.Wow;
   sad = ReactionType.Sad;
   wrr = ReactionType.Angry;
-
-  ngOnInit() {
-    console.log(this.currentUserReaction);
-  }
 }

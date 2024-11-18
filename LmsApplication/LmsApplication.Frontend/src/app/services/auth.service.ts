@@ -65,10 +65,8 @@ export class AuthService {
   }
 
   private checkAuthState(): AuthState | null {
-    console.log("checking auth state");
     const stateInStorage = localStorage.getItem('authState');
     if (!stateInStorage) {
-      console.log("no state in storage");
       return null;
     }
 
@@ -79,8 +77,6 @@ export class AuthService {
       authState.validUntil < new Date() ||
       !authState.userData
     ) {
-      console.log(authState)
-      console.log("state is invalid");
       return null;
     }
 

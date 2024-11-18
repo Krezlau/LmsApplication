@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<ICourseEditionService, CourseEditionService>();
+        services.AddScoped<ICourseEditionSettingsService, CourseEditionSettingsService>();
         
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
         services.AddScoped<IValidationService<CategoryPostModel>, ValidationService<CategoryPostModel>>();
@@ -26,6 +27,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<ICourseEditionRepository, CourseEditionRepository>();
+        services.AddScoped<ICourseEditionSettingsRepository, CourseEditionSettingsRepository>();
 
         services.AddScoped<ICourseEditionProvider, CourseEditionProvider>();
         

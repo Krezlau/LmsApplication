@@ -24,7 +24,12 @@
     class="w-[calc(470px/2)] hover:bg-base-200 rounded"
     (click)="onCommentsClicked()"
   >
-    <div class="flex flex-row gap-2 justify-center">
+    <div
+      [ngClass]="{
+        'flex flex-row gap-2 justify-center': true,
+        'text-primary': commentsOpen,
+      }"
+    >
       <span class="material-symbols-outlined inline">comment</span>
       <p>Comments</p>
     </div>

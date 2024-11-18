@@ -27,6 +27,7 @@
       <a>Members</a>
     </div>
     <div
+      *ngIf="authState().userData!.role > 0"
       class="border-b-2 border-black w-full link link-hover pb-2"
       [routerLink]="['/editions', edition.id, 'settings']"
       [routerLinkActive]="'border-primary link-primary'"

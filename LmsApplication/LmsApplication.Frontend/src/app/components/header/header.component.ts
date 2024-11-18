@@ -21,9 +21,9 @@ export class HeaderComponent {
   ) {
     effect(() => {
       this.letterAvatar =
-        this.authState().userData?.name[0].toUpperCase() ?? '';
+        (this.authState().userData?.name[0].toUpperCase() ?? '') +
+        (this.authState().userData?.surname[0].toUpperCase() ?? '');
     });
-    console.log(this.authState().userData)
   }
 
   logoff() {

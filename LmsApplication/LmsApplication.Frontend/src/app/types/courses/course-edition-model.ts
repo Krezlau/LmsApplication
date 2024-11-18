@@ -13,6 +13,7 @@ export interface CourseEditionModel {
   status: CourseEditionStatus;
   isUserRegistered: boolean;
   course: CourseModel;
+  settings: CourseEditionPublicSettings;
 }
 
 export enum CourseEditionStatus {
@@ -21,4 +22,8 @@ export enum CourseEditionStatus {
   RegistrationClosed,
   InProgress,
   Finished,
+}
+
+export interface CourseEditionPublicSettings {
+  allowAllToPost: boolean;
 }

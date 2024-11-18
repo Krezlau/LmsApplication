@@ -33,6 +33,7 @@ public static class CourseMappingExtensions
             Status = courseEdition.Status,
             Course = courseEdition.Course?.ToModel(),
             IsUserRegistered = courseEdition.Participants.Any(x => x.ParticipantId == currentUserId),
+            Settings = courseEdition.Settings.ToPublicModel(),
         };
     }
     

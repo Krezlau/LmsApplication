@@ -11,7 +11,7 @@ import { CommentModel } from '../../types/course-board/comment-model';
 import { CommentService } from '../../services/comment.service';
 import { ReactionType } from '../../types/course-board/reaction-type';
 import { CollectionResource } from '../../types/collection-resource';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, NgClass } from '@angular/common';
 import { CommentComponent } from '../comment/comment.component';
 import { ApiResponse } from '../../types/api-response';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
@@ -19,7 +19,7 @@ import { AddCommentComponent } from '../add-comment/add-comment.component';
 @Component({
   selector: 'app-comment-list',
   standalone: true,
-  imports: [NgIf, NgFor, CommentComponent, AddCommentComponent],
+  imports: [NgIf, NgFor, NgClass, CommentComponent, AddCommentComponent],
   templateUrl: './comment-list.component.html',
 })
 export class CommentListComponent implements OnInit, OnDestroy {
@@ -30,7 +30,7 @@ export class CommentListComponent implements OnInit, OnDestroy {
 
   comments: CommentModel[] = [];
   totalPages: number = 0;
-  currentPage: number = 1;
+  currentPage: number = 0;
 
   isLoading: boolean = false;
   subscription = new Subscription();
@@ -72,7 +72,7 @@ export class CommentListComponent implements OnInit, OnDestroy {
           if (response.data?.items) {
             this.comments = [...this.comments, ...response.data.items];
             this.parseComments(this.comments);
-            this.totalPages = response.data.totalCount / 5;
+            this.totalPages = Math.ceil(response.data.totalCount / 5);
             this.isLoading = false;
             this.currentPage++;
           }

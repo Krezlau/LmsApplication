@@ -28,7 +28,7 @@
         <div
           class="w-8 h-8 my-auto rounded-full bg-neutral text-neutral-content mr-2"
         >
-          <span *ngIf="!user.photo" class="text">{{ user.name[0] }}</span>
+          <span *ngIf="!user.photo" class="text">{{ user.name[0] + user.surname[0] }}</span>
         </div>
         <h2 class="my-auto">{{ user.name + " " + user.surname }}</h2>
       </div>
@@ -41,7 +41,7 @@
       <button
         class="btn btn-error btn-sm w-20"
         (click)="removeUser(user)"
-        *ngIf="courseEditionId"
+        *ngIf="courseEditionId && this.authState().userData?.role === 2"
       >
         Remove
       </button>

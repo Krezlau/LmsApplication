@@ -22,6 +22,8 @@ public interface ICourseEditionRepository
     Task AddParticipantToCourseEditionAsync(Guid courseEditionId, string userId, UserRole userRole);
     
     Task RemoveParticipantFromCourseEditionAsync(Guid courseEditionId, string userId);
+    
+    Task<bool> IsUserParticipantInCourseEditionAsync(Guid courseEditionId, string userId);
 
     Task CreateAsync(CourseEdition courseEdition);
     
@@ -43,6 +45,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         return await _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
+            .Include(x => x.Settings)
             .ToListAsync();
     }
 
@@ -52,6 +55,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         return await _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
+            .Include(x => x.Settings)
             .Where(x => x.CourseId == courseId)
             .ToListAsync();
     }
@@ -68,6 +72,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         return await _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
+            .Include(x => x.Settings)
             .Where(x => x.RegistrationEndDateUtc != null &&
                         x.RegistrationEndDateUtc > now &&
                         x.RegistrationStartDateUtc != null &&
@@ -83,6 +88,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         return await _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
+            .Include(x => x.Settings)
             .Where(x => x.EndDateUtc > DateTime.UtcNow && x.Participants.Any(p => p.ParticipantId == userId))
             .ToListAsync();
     }
@@ -92,6 +98,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         return await _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
+            .Include(x => x.Settings)
             .FirstOrDefaultAsync(x => x.CourseId == courseId && x.Title == title);
     }
 
@@ -100,6 +107,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         return await _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
+            .Include(x => x.Settings)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
@@ -126,6 +134,12 @@ public class CourseEditionRepository : ICourseEditionRepository
             _context.CourseEditionParticipants.Remove(participant);
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task<bool> IsUserParticipantInCourseEditionAsync(Guid courseEditionId, string userId)
+    {
+        return await _context.CourseEditionParticipants
+            .AnyAsync(x => x.CourseEditionId == courseEditionId && x.ParticipantId == userId);
     }
 
     public async Task CreateAsync(CourseEdition courseEdition)

@@ -1,7 +1,7 @@
 <div class="mx-auto pl-[5px] pr-[10x] py-2 w-[500px]">
   <div class="flex items-center">
     <app-user-avatar
-      [initial]="post.author.name.charAt(0)"
+      [initial]="post.author.name[0] + post.author.surname[0]"
       [src]="post.author.photo"
       size="sm"
       class="cursor-pointer"
