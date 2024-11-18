@@ -1,4 +1,5 @@
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.Models;
 
 namespace LmsApplication.CourseModule.Data.Courses;
 

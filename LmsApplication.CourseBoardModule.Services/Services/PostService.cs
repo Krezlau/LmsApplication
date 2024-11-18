@@ -1,4 +1,5 @@
 using FluentValidation;
+using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
@@ -56,7 +57,7 @@ public class PostService : CourseBoardService, IPostService
 
     public async Task<PostModel> CreatePostAsync(Guid editionId, string userId, PostCreateModel postCreateModel)
     {
-        await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateUserAccessToPostAsync(editionId, userId);
         
         var user = await UserProvider.GetUserByIdAsync(userId);
         if (user is null) 
@@ -112,5 +113,25 @@ public class PostService : CourseBoardService, IPostService
             throw new UnauthorizedAccessException("User is not allowed to delete this post.");
         
         await _postRepository.DeletePostAsync(post);
+    }
+    
+    private async Task ValidateUserAccessToPostAsync(Guid editionId, string userId)
+    {
+        var user = await UserProvider.GetUserByIdAsync(userId);
+        if (user is null) 
+            throw new KeyNotFoundException("User not found.");
+        
+        if (user.Role is UserRole.Admin)
+            return;
+        
+        var isRegistered = await CourseEditionProvider.IsUserRegisteredToCourseEditionAsync(editionId, userId);
+        if (user.Role is UserRole.Teacher && isRegistered)
+            return;
+        
+        var settings = await CourseEditionProvider.GetCourseEditionPublicSettingsAsync(editionId);
+        if (settings.AllowAllToPost && isRegistered)
+            return;
+        
+        throw new UnauthorizedAccessException("User is not allowed to create posts.");
     }
 }

@@ -1,4 +1,4 @@
-namespace LmsApplication.CourseModule.Data.Courses;
+namespace LmsApplication.Core.Shared.Models;
 
 public class CourseEditionPublicSettingsModel
 {

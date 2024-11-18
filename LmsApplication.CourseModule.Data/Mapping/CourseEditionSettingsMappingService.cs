@@ -1,3 +1,4 @@
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 

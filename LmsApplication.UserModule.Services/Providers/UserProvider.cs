@@ -51,12 +51,14 @@ public class UserProvider : IUserProvider
 
     private async Task<UserExchangeModel> MapUserExchangeModelAsync(User user)
     {
-        var roles = await _userManager.GetRolesAsync(user);
+        var isAdmin = _userManager.IsInRoleAsync(user, "Admin");
+        var isTeacher = _userManager.IsInRoleAsync(user, "Teacher");
+        
         var userRole = UserRole.Student;
-        if (roles.Contains("Teacher"))
-            userRole = UserRole.Teacher;
-        else if (roles.Contains("Admin"))
+        if (await isAdmin) 
             userRole = UserRole.Admin;
+        else if (await isTeacher)
+            userRole = UserRole.Teacher;
 
         return new UserExchangeModel
         {

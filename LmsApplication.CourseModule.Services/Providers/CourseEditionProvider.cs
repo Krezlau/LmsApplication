@@ -1,5 +1,7 @@
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.Core.Shared.Providers;
 using LmsApplication.CourseModule.Data.Database;
+using LmsApplication.CourseModule.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LmsApplication.CourseModule.Services.Providers;
@@ -25,5 +27,13 @@ public class CourseEditionProvider : ICourseEditionProvider
     {
         return await _courseDbContext.CourseEditionParticipants
             .AnyAsync(x => x.CourseEditionId == courseEditionId && x.ParticipantId == userId);
+    }
+
+    public async Task<CourseEditionPublicSettingsModel> GetCourseEditionPublicSettingsAsync(Guid courseEditionId)
+    {
+        var settings = await _courseDbContext.CourseEditionSettings
+            .FirstOrDefaultAsync(x => x.CourseEditionId == courseEditionId);
+
+        return new CourseEditionPublicSettingsModel { AllowAllToPost = settings?.AllowAllToPost ?? new CourseEditionSettings().AllowAllToPost };
     }
 }
