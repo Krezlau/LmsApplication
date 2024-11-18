@@ -9,16 +9,19 @@ import { CourseDetailsComponent } from '../course-details/course-details.compone
 import { CourseEditionListComponent } from '../course-edition-list/course-edition-list.component';
 import { AsyncPipe } from '@angular/common';
 import { ApiResponse } from '../../types/api-response';
+import { CourseResourcesListComponent } from '../course-resources-list/course-resources-list.component';
 
 @Component({
   selector: 'app-course-details-page',
   standalone: true,
-  imports: [CourseDetailsComponent, CourseEditionListComponent, AsyncPipe],
+  imports: [CourseDetailsComponent, CourseEditionListComponent, AsyncPipe, CourseResourcesListComponent],
   templateUrl: './course-details-page.component.html',
 })
 export class CourseDetailsPageComponent implements OnInit, OnDestroy {
   course$: Observable<ApiResponse<CourseModel>> | null = null;
   courseEditions$: Observable<ApiResponse<CourseEditionModel[]>> | null = null;
+
+  courseId = '';
 
   sub = new Subscription();
   constructor(
@@ -29,10 +32,11 @@ export class CourseDetailsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe((params) => {
-      this.course$ = this.courseService.getCourseById(params['courseId']);
+      this.courseId = params['courseId'];
+      this.course$ = this.courseService.getCourseById(this.courseId);
       this.courseEditions$ =
         this.courseEditionService.getCourseEditionsByCourseId(
-          params['courseId'],
+          this.courseId,
         );
     });
   }

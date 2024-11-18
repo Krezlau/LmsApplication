@@ -1,0 +1,63 @@
+<ul *ngIf="!resourcesLoading && resources && resources.length > 0" class="mt-2">
+  <div
+    [ngClass]="{
+      'grid grid-cols-5 border-b-2': true,
+    }"
+  >
+    <h2 class="font-semibold">File name</h2>
+    <h2 class="font-semibold">Author</h2>
+    <h2 class="font-semibold">Size</h2>
+    <h2 class="font-semibold">Created</h2>
+    <h2 *ngIf="this.authState().userData?.role === 2" class="font-semibold">
+      Actions
+    </h2>
+  </div>
+  <li
+    *ngFor="let resource of resources"
+    [ngClass]="{
+      'grid grid-cols-5 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300': true,
+    }"
+  >
+    <h3 class="my-auto">
+      {{ resource.fileDisplayName + resource.fileExtension }}
+    </h3>
+    <h3 class="my-auto">
+      {{ resource.user.name + " " + resource.user.surname }}
+    </h3>
+    <h3 class="my-auto">{{ (resource.fileSize / 1024).toFixed(2) }} KB</h3>
+    <h3 class="my-auto">
+      {{ dataFormatter.formatDateTime(resource.createdAtUtc) }}
+    </h3>
+    <div
+      *ngIf="this.authState().userData?.role === 2"
+      class="flex flex-row justify-start gap-4"
+    >
+      <button
+        class="btn btn-sm btn-primary"
+        (click)="downloadResource(resource)"
+      >
+        <span class="material-symbols-outlined text-primary-content my-auto"
+          >download</span
+        >
+      </button>
+      <button
+        *ngIf="canUserDeleteResource()"
+        class="btn btn-sm btn-error"
+        (click)="deleteResource(resource)"
+      >
+        Delete
+      </button>
+    </div>
+  </li>
+</ul>
+<p
+  *ngIf="!resourcesLoading && resources.length === 0"
+  class="italic text-gray-500"
+>
+  No resources found.
+</p>
+<div *ngIf="resourcesLoading" class="flex flex-row justify-center">
+  <span class="loading loading-spinner loading-lg mt-10 mx-auto"
+    >Loading...</span
+  >
+</div>

@@ -42,9 +42,9 @@ public class ResourcesController : ControllerBase
     
     [HttpDelete("{id:guid}")]
     [Authorize(AuthPolicies.TeacherPolicy)]
-    public async Task<IActionResult> DeleteResource(Guid resourceId)
+    public async Task<IActionResult> DeleteResource(Guid id)
     {
-        await _resourceService.DeleteResourceAsync(resourceId, GetUserId());
+        await _resourceService.DeleteResourceAsync(id, GetUserId());
         return Ok(ApiResponseHelper.Success());
     }
     
