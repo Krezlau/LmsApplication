@@ -23,9 +23,11 @@ var sqlServer = builder.AddSqlServer("sql-db", password).WithDataVolume("sql-db"
 var courseDb = sqlServer.AddDatabase("course-db");
 var userDb = sqlServer.AddDatabase("user-db");
 var courseBoardDb = sqlServer.AddDatabase("course-board-db");
+var resourceDb = sqlServer.AddDatabase("resource-db");
 
 app.WithReference(userDb);
 app.WithReference(courseDb);
 app.WithReference(courseBoardDb);
+app.WithReference(resourceDb);
 
 builder.Build().Run();

@@ -30,6 +30,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICourseEditionSettingsRepository, CourseEditionSettingsRepository>();
 
         services.AddScoped<ICourseEditionProvider, CourseEditionProvider>();
+        services.AddScoped<ICourseProvider, CourseProvider>();
         
         return services;
     }

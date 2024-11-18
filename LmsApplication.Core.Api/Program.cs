@@ -3,6 +3,8 @@ using LmsApplication.CourseBoardModule.Api;
 using LmsApplication.CourseBoardModule.Data.Database;
 using LmsApplication.CourseModule.Api;
 using LmsApplication.CourseModule.Data.Database;
+using LmsApplication.ResourceModule.Api;
+using LmsApplication.ResourceModule.Data.Database;
 using LmsApplication.UserModule.Api;
 using LmsApplication.UserModule.Data.Database;
 using LmsApplication.UserModule.Data.Entities;
@@ -34,7 +36,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCourseModuleApi(builder.Configuration);
 builder.Services.AddCourseBoardModuleApi(builder.Configuration);
 builder.Services.AddUserModuleApi(builder.Configuration);
-
+builder.Services.AddResourceModuleApi(builder.Configuration);
 
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -103,6 +105,8 @@ using (var scope = app.Services.CreateScope())
     userContext.Database.Migrate();
     var courseBoardContext = scope.ServiceProvider.GetRequiredService<CourseBoardDbContext>();
     courseBoardContext.Database.Migrate();
+    var resourceContext = scope.ServiceProvider.GetRequiredService<ResourceDbContext>();
+    resourceContext.Database.Migrate();
     
     // seed roles like this for now 
     // should be changed later

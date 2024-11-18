@@ -15,6 +15,11 @@ public class CourseEditionProvider : ICourseEditionProvider
         _courseDbContext = courseDbContext;
     }
 
+    public async Task<bool> CourseEditionExistsAsync(Guid courseEditionId)
+    {
+        return await _courseDbContext.CourseEditions.AnyAsync(x => x.Id == courseEditionId);
+    }
+
     public async Task<List<string>> GetCourseEditionParticipantsAsync(Guid courseEditionId)
     {
         return await _courseDbContext.CourseEditionParticipants

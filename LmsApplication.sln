@@ -30,6 +30,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.CourseBoardM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.CourseBoardModule.Services", "LmsApplication.CourseBoardModule.Services\LmsApplication.CourseBoardModule.Services.csproj", "{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LmsApplication.ResourceModule", "LmsApplication.ResourceModule", "{1CCB778E-65B1-42C1-8813-24E804BF0D8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.ResourceModule.Api", "LmsApplication.ResourceModule.Api\LmsApplication.ResourceModule.Api.csproj", "{FE61C23C-E451-474D-BBDA-BDB91DF5A073}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.ResourceModule.Data", "LmsApplication.ResourceModule.Data\LmsApplication.ResourceModule.Data.csproj", "{2385CEAB-8A36-4EE2-B5CC-256E7CD476C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.ResourceModule.Services", "LmsApplication.ResourceModule.Services\LmsApplication.ResourceModule.Services.csproj", "{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +92,18 @@ Global
 		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE61C23C-E451-474D-BBDA-BDB91DF5A073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE61C23C-E451-474D-BBDA-BDB91DF5A073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE61C23C-E451-474D-BBDA-BDB91DF5A073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE61C23C-E451-474D-BBDA-BDB91DF5A073}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2385CEAB-8A36-4EE2-B5CC-256E7CD476C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2385CEAB-8A36-4EE2-B5CC-256E7CD476C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2385CEAB-8A36-4EE2-B5CC-256E7CD476C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2385CEAB-8A36-4EE2-B5CC-256E7CD476C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FF65ADF2-0726-4FC5-ADD5-7E1623E497CB} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}
@@ -95,5 +115,8 @@ Global
 		{57BCBD0C-DB08-4A96-BBFF-C44309399D51} = {EBCED877-4519-4FB1-82B3-F2AE42254BD3}
 		{1CEF7E4C-8130-4452-89CF-CE49AA312130} = {EBCED877-4519-4FB1-82B3-F2AE42254BD3}
 		{42C3A4CE-FFE1-4F3A-AFA7-CE13BE0626EC} = {EBCED877-4519-4FB1-82B3-F2AE42254BD3}
+		{FE61C23C-E451-474D-BBDA-BDB91DF5A073} = {1CCB778E-65B1-42C1-8813-24E804BF0D8F}
+		{2385CEAB-8A36-4EE2-B5CC-256E7CD476C5} = {1CCB778E-65B1-42C1-8813-24E804BF0D8F}
+		{A9F573FF-95C5-4258-A840-CD5EAC02C4D3} = {1CCB778E-65B1-42C1-8813-24E804BF0D8F}
 	EndGlobalSection
 EndGlobal
