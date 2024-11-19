@@ -60,8 +60,8 @@ export class AuthService {
   }
 
   public logOut() {
-    localStorage.removeItem('authState');
     this.authState.set(this.initialState);
+    localStorage.removeItem('authState');
   }
 
   private checkAuthState(): AuthState | null {

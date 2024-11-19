@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CourseResourceService } from '../../services/course-resource.service';
 import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
@@ -7,16 +14,20 @@ import { ApiResponse } from '../../types/api-response';
 import { ResourceMetadataModel } from '../../types/resources/resource-metadata-model';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { DateFormatting } from '../../helpers/date-formatter';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-course-resources-list',
   standalone: true,
-  imports: [NgClass, NgIf, NgFor],
+  imports: [NgClass, NgIf, NgFor, ReactiveFormsModule],
   templateUrl: './course-resources-list.component.html',
 })
 export class CourseResourcesListComponent implements OnInit, OnDestroy {
   @Input() id: string = '';
   @Input() type: 'course' | 'edition' = 'course';
+
+  @ViewChild('modal') modal: ElementRef | undefined;
+  @ViewChild('fileInput') fileInput: ElementRef | undefined;
 
   dataFormatter = DateFormatting;
 
@@ -30,6 +41,24 @@ export class CourseResourcesListComponent implements OnInit, OnDestroy {
   authState = this.authService.authState;
   resources: ResourceMetadataModel[] = [];
   resourcesLoading = false;
+  uploadLoading = false;
+
+  nameControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^[a-zA-Z0-9_-]*$/),
+  ]);
+  file: File | null = null;
+
+  openModal() {
+    this.modal!.nativeElement.showModal();
+  }
+
+  onFilePicked(event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      this.file = files[0];
+    }
+  }
 
   downloadResource(resource: ResourceMetadataModel) {
     this.sub.add(
@@ -45,8 +74,56 @@ export class CourseResourcesListComponent implements OnInit, OnDestroy {
     );
   }
 
+  uploadResource(event: Event) {
+    event.preventDefault();
+
+    if (this.nameControl.invalid || !this.nameControl.value) {
+      this.alertService.show(
+        "Name must be composed of alphanumeric characters and/or '-' '_'. ",
+        'error',
+      );
+      return;
+    }
+
+    if (this.file === null) {
+      this.alertService.show('Please select a file', 'error');
+      return;
+    }
+
+    this.uploadLoading = true;
+    this.sub.add(
+      this.resourceService
+        .uploadResource(this.type, this.id, this.nameControl.value, this.file)
+        .pipe(
+          tap({
+            next: (response: ApiResponse<ResourceMetadataModel>) => {
+              this.uploadLoading = false;
+              this.resources.push(response.data!);
+              this.alertService.show(
+                'Resource uploaded successfully',
+                'success',
+              );
+              this.nameControl.reset();
+              this.file = null;
+              this.fileInput!.nativeElement.value = null;
+              this.modal!.nativeElement.close();
+            },
+            error: (err: any) => {
+              this.uploadLoading = false;
+              if (err.error.message) {
+                this.alertService.show(err.error.message, 'error');
+              } else {
+                this.alertService.show('An error occurred', 'error');
+              }
+            },
+          }),
+        )
+        .subscribe(),
+    );
+  }
+
   deleteResource(resource: ResourceMetadataModel) {
-    if (!this.canUserDeleteResource()) {
+    if (!this.canUserManageResources()) {
       return;
     }
 
@@ -77,7 +154,7 @@ export class CourseResourcesListComponent implements OnInit, OnDestroy {
     );
   }
 
-  canUserDeleteResource() {
+  canUserManageResources() {
     if (this.type === 'course') {
       return this.authState().userData!.role === 2;
     }

@@ -1,0 +1,8 @@
+<h2 class="text-xl font-semibold mt-4">Course resources</h2>
+<app-course-resources-list
+  *ngIf="courseId !== ''"
+  type="course"
+  [id]="courseId"
+/>
+<h2 class="text-xl font-semibold mt-4">This edition resources</h2>
+<app-course-resources-list type="edition" [id]="editionId" />

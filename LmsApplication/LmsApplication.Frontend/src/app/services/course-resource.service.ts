@@ -47,4 +47,26 @@ export class CourseResourceService {
       },
     );
   }
+
+  public uploadResource(
+    resourceType: 'course' | 'edition',
+    parentId: string,
+    name: string,
+    file: File,
+  ) {
+    const formData = new FormData();
+    formData.append('fileDisplayName', name);
+    formData.append('file', file);
+    formData.append('parentId', parentId);
+    formData.append('type', resourceType);
+    return this.http.post<ApiResponse<ResourceMetadataModel>>(
+      `${env.apiUrl}/api/resources/upload`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
 }

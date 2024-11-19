@@ -1,22 +1,22 @@
 <ul *ngIf="!resourcesLoading && resources && resources.length > 0" class="mt-2">
   <div
     [ngClass]="{
-      'grid grid-cols-5 border-b-2': true,
+      'grid border-b-2': true,
     }"
+    style="grid-template-columns: 2fr 2fr 1fr 2fr 1fr"
   >
     <h2 class="font-semibold">File name</h2>
     <h2 class="font-semibold">Author</h2>
     <h2 class="font-semibold">Size</h2>
     <h2 class="font-semibold">Created</h2>
-    <h2 *ngIf="this.authState().userData?.role === 2" class="font-semibold">
-      Actions
-    </h2>
+    <h2 class="font-semibold">Actions</h2>
   </div>
   <li
     *ngFor="let resource of resources"
     [ngClass]="{
-      'grid grid-cols-5 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300': true,
+      'grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300': true,
     }"
+    style="grid-template-columns: 2fr 2fr 1fr 2fr 1fr"
   >
     <h3 class="my-auto">
       {{ resource.fileDisplayName + resource.fileExtension }}
@@ -28,10 +28,7 @@
     <h3 class="my-auto">
       {{ dataFormatter.formatDateTime(resource.createdAtUtc) }}
     </h3>
-    <div
-      *ngIf="this.authState().userData?.role === 2"
-      class="flex flex-row justify-start gap-4"
-    >
+    <div class="flex flex-row justify-start gap-4">
       <button
         class="btn btn-sm btn-primary"
         (click)="downloadResource(resource)"
@@ -41,7 +38,7 @@
         >
       </button>
       <button
-        *ngIf="canUserDeleteResource()"
+        *ngIf="canUserManageResources()"
         class="btn btn-sm btn-error"
         (click)="deleteResource(resource)"
       >
@@ -61,3 +58,40 @@
     >Loading...</span
   >
 </div>
+<div *ngIf="canUserManageResources()" class="flex justify-end">
+  <button class="btn btn-primary mt-2" (click)="openModal()">
+    Upload resource
+  </button>
+</div>
+<dialog [id]="'my_modal_' + type" class="modal" #modal>
+  <div class="modal-box">
+    <h1 class="font-bold text-xl">Upload resource</h1>
+    <form
+      class="flex flex-col justify-center"
+      (submit)="uploadResource($event)"
+    >
+      <label class="block mt-2 text-lg">Resource name</label>
+      <input
+        type="text"
+        class="input input-bordered block"
+        [formControl]="nameControl"
+      />
+      <label class="block mt-2 text-lg">Resource file</label>
+      <input
+        type="file"
+        class="file-input file-input-bordered block"
+        (change)="onFilePicked($event)"
+        #fileInput
+      />
+      <button *ngIf="!uploadLoading" class="btn btn-primary mt-4" type="submit">
+        Create
+      </button>
+      <button *ngIf="uploadLoading" class="btn btn-primary mt-4" disabled>
+        <span class="loading loading-spinner loading-sm"></span>
+      </button>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
