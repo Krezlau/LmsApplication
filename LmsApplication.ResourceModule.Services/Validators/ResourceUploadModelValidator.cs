@@ -18,8 +18,10 @@ public class ResourceUploadModelValidator : AbstractValidator<ResourceUploadMode
         RuleFor(x => x.FileDisplayName)
             .Matches(@"^[a-zA-Z0-9_-]+$");
         
+        // max file size 512MB
         RuleFor(x => x.File.Length)
-            .LessThanOrEqualTo(104857600);
+            .LessThanOrEqualTo(512 * 1024 * 1024)
+            .WithMessage("File size can't exceed 512MB");
 
         RuleFor(x => x)
             .MustAsync(ParentExistsAsync)

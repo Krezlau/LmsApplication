@@ -22,6 +22,8 @@ public class ResourcesController : ControllerBase
 
     [HttpPost("upload")]
     [Authorize(AuthPolicies.TeacherPolicy)]
+    [DisableRequestSizeLimit]
+    [RequestFormLimits(MultipartBodyLengthLimit = 512 * 1024 * 1024)]
     public async Task<IActionResult> UploadResource([FromForm] ResourceUploadModel model)
     {
         return Ok(ApiResponseHelper.Success(await _resourceService.UploadResourceAsync(model)));
