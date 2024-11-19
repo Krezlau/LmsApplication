@@ -1,4 +1,5 @@
-using LmsApplication.Core.Shared.Providers;
+using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Data.Mapping;
@@ -8,30 +9,30 @@ namespace LmsApplication.CourseModule.Services.Courses;
 
 public interface ICourseEditionSettingsService
 {
-    Task<CourseEditionSettingsModel> GetCourseEditionSettingsAsync(Guid editionId, string userId);
+    Task<CourseEditionSettingsModel> GetCourseEditionSettingsAsync(Guid editionId);
     
-    Task UpdateCourseEditionSettingsAsync(Guid editionId, string userId, CourseEditionSettingsUpdateModel model);
+    Task UpdateCourseEditionSettingsAsync(Guid editionId, CourseEditionSettingsUpdateModel model);
 }
 
 public class CourseEditionSettingsService : ICourseEditionSettingsService
 {
     private readonly ICourseEditionSettingsRepository _courseEditionSettingsRepository;
     private readonly ICourseEditionRepository _courseEditionRepository;
-    private readonly IUserProvider _userProvider;
+    private readonly IUserContext _userContext;
 
     public CourseEditionSettingsService(
         ICourseEditionSettingsRepository courseEditionSettingsRepository,
         ICourseEditionRepository courseEditionRepository,
-        IUserProvider userProvider)
+        IUserContext userContext)
     {
         _courseEditionSettingsRepository = courseEditionSettingsRepository;
         _courseEditionRepository = courseEditionRepository;
-        _userProvider = userProvider;
+        _userContext = userContext;
     }
 
-    public async Task<CourseEditionSettingsModel> GetCourseEditionSettingsAsync(Guid editionId, string userId)
+    public async Task<CourseEditionSettingsModel> GetCourseEditionSettingsAsync(Guid editionId)
     {
-        await ValidateUserAccessAsync(editionId, userId);
+        await ValidateUserAccessAsync(editionId);
         
         var settings = await _courseEditionSettingsRepository.GetCourseEditionSettingsAsync(editionId) ??
                        new CourseEditionSettings { CourseEditionId = editionId }; 
@@ -39,9 +40,9 @@ public class CourseEditionSettingsService : ICourseEditionSettingsService
         return settings.ToModel();
     }
 
-    public async Task UpdateCourseEditionSettingsAsync(Guid editionId, string userId, CourseEditionSettingsUpdateModel model)
+    public async Task UpdateCourseEditionSettingsAsync(Guid editionId, CourseEditionSettingsUpdateModel model)
     {
-        await ValidateUserAccessAsync(editionId, userId);
+        await ValidateUserAccessAsync(editionId);
         
         var settings = await _courseEditionSettingsRepository.GetCourseEditionSettingsAsync(editionId) ??
                        new CourseEditionSettings { CourseEditionId = editionId };
@@ -54,12 +55,13 @@ public class CourseEditionSettingsService : ICourseEditionSettingsService
             await _courseEditionSettingsRepository.UpdateCourseEditionSettingsAsync(settings);
     }
     
-    private async Task ValidateUserAccessAsync(Guid editionId, string userId)
+    private async Task ValidateUserAccessAsync(Guid editionId)
     {
+        var userId = _userContext.GetUserId();
         var isParticipant = _courseEditionRepository.IsUserParticipantInCourseEditionAsync(editionId, userId);
-        var isAdmin = _userProvider.IsUserAdminAsync(userId);
+        var isAdmin = _userContext.GetUserRole() is UserRole.Admin;
         
-        if (!await isParticipant && !await isAdmin)
+        if (!await isParticipant && !isAdmin)
             throw new UnauthorizedAccessException("User is not a participant of this course edition.");
     }
 }

@@ -1,5 +1,5 @@
-using System.Security.Claims;
 using LmsApplication.Core.Shared.Config;
+using LmsApplication.Core.Shared.Services;
 using LmsApplication.UserModule.Data.Models;
 using LmsApplication.UserModule.Services.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -13,30 +13,24 @@ namespace LmsApplication.UserModule.Api.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IUserContext _userContext;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, IUserContext userContext)
     {
         _userService = userService;
+        _userContext = userContext;
     }
 
     [HttpGet("current")]
     public async Task<IActionResult> GetCurrentUser()
     {
-        var userId = GetUserId();
-
-        return Ok(await _userService.GetUserAsync(userId));
+        return Ok(await _userService.GetCurrentUserAsync());
     }
 
     [HttpPut("current")]
     public async Task<IActionResult> UpdateCurrentUser(UserUpdateModel model)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null)
-        {
-            throw new ArgumentException("Invalid user.");
-        }
-
-        await _userService.UpdateUserAsync(userId, model);
+        await _userService.UpdateUserAsync(_userContext.GetUserId(), model);
         return Ok();
     }
 
@@ -56,9 +50,7 @@ public class UsersController : ControllerBase
     [HttpGet("by-course-edition/{courseEditionId}")]
     public async Task<IActionResult> GetUsersByCourseEdition(Guid courseEditionId)
     {
-        var userId = GetUserId();
-
-        return Ok(await _userService.GetUsersByCourseEditionAsync(courseEditionId, userId));
+        return Ok(await _userService.GetUsersByCourseEditionAsync(courseEditionId));
     }
 
     [HttpGet("search/{query}")]
@@ -73,16 +65,5 @@ public class UsersController : ControllerBase
     {
         await _userService.UpdateUserRoleAsync(userId, model);
         return Ok();
-    }
-
-private string GetUserId()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null)
-        {
-            throw new ArgumentException("Invalid user.");
-        }
-
-        return userId;
     }
 }

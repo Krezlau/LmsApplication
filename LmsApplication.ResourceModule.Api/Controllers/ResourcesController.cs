@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using LmsApplication.Core.Shared.Config;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.ResourceModule.Data.Entities;
@@ -25,26 +24,26 @@ public class ResourcesController : ControllerBase
     [Authorize(AuthPolicies.TeacherPolicy)]
     public async Task<IActionResult> UploadResource([FromForm] ResourceUploadModel model)
     {
-        return Ok(ApiResponseHelper.Success(await _resourceService.UploadResourceAsync(GetUserId(), model)));
+        return Ok(ApiResponseHelper.Success(await _resourceService.UploadResourceAsync(model)));
     }
     
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> DownloadResource(Guid id)
     {
-        return Ok(await _resourceService.DownloadResourceAsync(id, GetUserId()));
+        return Ok(await _resourceService.DownloadResourceAsync(id));
     }
     
     [HttpGet("metadatas/{resourceType}s/{parentId:guid}")]
     public async Task<IActionResult> GetResourceMetadatas(string resourceType, Guid parentId)
     {
-        return Ok(ApiResponseHelper.Success(await _resourceService.GetResourcesAsync(GetUserId(), ParseResourceType(resourceType), parentId)));
+        return Ok(ApiResponseHelper.Success(await _resourceService.GetResourcesAsync(ParseResourceType(resourceType), parentId)));
     }
     
     [HttpDelete("{id:guid}")]
     [Authorize(AuthPolicies.TeacherPolicy)]
     public async Task<IActionResult> DeleteResource(Guid id)
     {
-        await _resourceService.DeleteResourceAsync(id, GetUserId());
+        await _resourceService.DeleteResourceAsync(id);
         return Ok(ApiResponseHelper.Success());
     }
     
@@ -54,14 +53,5 @@ public class ResourcesController : ControllerBase
             throw new ArgumentException("Incorrect resource type.");
         
         return parsedResourceType;
-    }
-
-    private string GetUserId()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null) 
-            throw new ArgumentException("Incorrect user id.");
-        
-        return userId;
     }
 }

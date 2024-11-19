@@ -1,4 +1,5 @@
 using LmsApplication.Core.Api.Middleware;
+using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Api;
 using LmsApplication.CourseBoardModule.Data.Database;
 using LmsApplication.CourseModule.Api;
@@ -32,6 +33,7 @@ builder.Logging.AddConsole();
 builder.Services.AddHttpLogging(o => { });
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped<IUserContext, UserContext>();
 
 builder.Services.AddCourseModuleApi(builder.Configuration);
 builder.Services.AddCourseBoardModuleApi(builder.Configuration);

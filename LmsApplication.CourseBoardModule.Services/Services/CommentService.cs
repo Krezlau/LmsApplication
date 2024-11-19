@@ -1,4 +1,5 @@
 using FluentValidation;
+using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
@@ -10,13 +11,13 @@ namespace LmsApplication.CourseBoardModule.Services.Services;
 
 public interface ICommentService
 {
-    Task<CollectionResource<CommentModel>> GetCommentsForPostAsync(Guid editionId, string userId, Guid postId, int page, int pageSize);
+    Task<CollectionResource<CommentModel>> GetCommentsForPostAsync(Guid editionId, Guid postId, int page, int pageSize);
     
-    Task<CommentModel> CreateCommentAsync(Guid editionId, string userId, Guid postId, CommentCreateModel model);
+    Task<CommentModel> CreateCommentAsync(Guid editionId, Guid postId, CommentCreateModel model);
     
-    Task<CommentModel> UpdateCommentAsync(Guid editionId, string userId, Guid commentId, CommentUpdateModel model);
+    Task<CommentModel> UpdateCommentAsync(Guid editionId, Guid commentId, CommentUpdateModel model);
     
-    Task DeleteCommentAsync(Guid editionId, string userId, Guid commentId);
+    Task DeleteCommentAsync(Guid editionId, Guid commentId);
 }
 
 public class CommentService : CourseBoardService, ICommentService
@@ -24,21 +25,25 @@ public class CommentService : CourseBoardService, ICommentService
     private readonly ICommentRepository _commentRepository;
     private readonly IValidationService<CommentCreateModel> _commentCreateModelValidationService;
     private readonly IValidationService<CommentUpdateModel> _commentUpdateModelValidationService;
-    
+    private readonly IUserProvider _userProvider;
+
     public CommentService(
         ICourseEditionProvider courseEditionProvider,
-        IUserProvider userProvider,
+        IUserContext userContext,
         ICommentRepository commentRepository,
         IValidationService<CommentCreateModel> commentCreateModelValidationService,
-        IValidationService<CommentUpdateModel> commentUpdateModelValidationService) : base(courseEditionProvider, userProvider)
+        IValidationService<CommentUpdateModel> commentUpdateModelValidationService,
+        IUserProvider userProvider) : base(courseEditionProvider, userContext)
     {
         _commentRepository = commentRepository;
         _commentCreateModelValidationService = commentCreateModelValidationService;
         _commentUpdateModelValidationService = commentUpdateModelValidationService;
+        _userProvider = userProvider;
     }
 
-    public async Task<CollectionResource<CommentModel>> GetCommentsForPostAsync(Guid editionId, string userId, Guid postId, int page, int pageSize)
+    public async Task<CollectionResource<CommentModel>> GetCommentsForPostAsync(Guid editionId, Guid postId, int page, int pageSize)
     {
+        var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
         
         var (totalCount, comments) = await _commentRepository.GetCommentsForPostAsync(postId, page, pageSize);
@@ -48,17 +53,18 @@ public class CommentService : CourseBoardService, ICommentService
             .Distinct()
             .ToList();
         
-        var users = await UserProvider.GetUsersByIdsAsync(userIds);
+        var users = await _userProvider.GetUsersByIdsAsync(userIds);
         var usernames = users.ToDictionary(x => x.Key, x => x.Value.Name + "" + x.Value.Surname);
         
         return new CollectionResource<CommentModel>(comments.Select(x => x.ToModel(users[x.UserId], usernames, userId)), totalCount);
     }
 
-    public async Task<CommentModel> CreateCommentAsync(Guid editionId, string userId, Guid postId, CommentCreateModel model)
+    public async Task<CommentModel> CreateCommentAsync(Guid editionId, Guid postId, CommentCreateModel model)
     {
+        var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
         
-        var user = await UserProvider.GetUserByIdAsync(userId);
+        var user = await _userProvider.GetUserByIdAsync(userId);
         if (user is null) 
             throw new KeyNotFoundException("User not found.");
         
@@ -76,12 +82,13 @@ public class CommentService : CourseBoardService, ICommentService
         return comment.ToModel(user, [], userId);
     }
 
-    public async Task<CommentModel> UpdateCommentAsync(Guid editionId, string userId, Guid commentId, CommentUpdateModel model)
+    public async Task<CommentModel> UpdateCommentAsync(Guid editionId, Guid commentId, CommentUpdateModel model)
     {
+        var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
         
         var comment = await _commentRepository.GetCommentByIdAsync(commentId);
-        var user = await UserProvider.GetUserByIdAsync(userId);
+        var user = await _userProvider.GetUserByIdAsync(userId);
         
         var context = new ValidationContext<CommentUpdateModel>(model)
         {
@@ -100,15 +107,16 @@ public class CommentService : CourseBoardService, ICommentService
         return comment.ToModel(user!, [], userId);
     }
 
-    public async Task DeleteCommentAsync(Guid editionId, string userId, Guid commentId)
+    public async Task DeleteCommentAsync(Guid editionId, Guid commentId)
     {
+        var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
 
         var comment = await _commentRepository.GetCommentByIdAsync(commentId);
         if (comment is null)
             throw new KeyNotFoundException("Comment not found.");
         
-        if (comment.UserId != userId && !await UserProvider.IsUserAdminAsync(userId))
+        if (comment.UserId != userId && UserContext.GetUserRole() is not UserRole.Admin)
             throw new UnauthorizedAccessException("You are not allowed to delete this comment.");
         
         await _commentRepository.DeleteCommentAsync(comment);

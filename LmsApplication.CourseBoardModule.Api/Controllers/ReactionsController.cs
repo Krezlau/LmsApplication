@@ -1,7 +1,5 @@
-using System.Security.Claims;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseBoardModule.Data.Entities;
-using LmsApplication.CourseBoardModule.Data.Models;
 using LmsApplication.CourseBoardModule.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,21 +21,12 @@ public class ReactionsController : ControllerBase
     [HttpPut("posts/{postId:guid}/[controller]")]
     public async Task<IActionResult> UpdatePostReaction(Guid editionId, Guid postId, [FromQuery] ReactionType? type)
     {
-        return Ok(ApiResponseHelper.Success(await _reactionService.UpdatePostReactionAsync(editionId, GetUserId(), postId, type)));
+        return Ok(ApiResponseHelper.Success(await _reactionService.UpdatePostReactionAsync(editionId, postId, type)));
     }
 
     [HttpPut("comments/{commentId:guid}/[controller]")]
     public async Task<IActionResult> UpdateCommentReaction(Guid editionId, Guid commentId, [FromQuery] ReactionType? type)
     {
-        return Ok(ApiResponseHelper.Success(await _reactionService.UpdateCommentReactionAsync(editionId, GetUserId(), commentId, type)));
-    }
-    
-    private string GetUserId()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null) 
-            throw new ArgumentException("Incorrect user id.");
-        
-        return userId;
+        return Ok(ApiResponseHelper.Success(await _reactionService.UpdateCommentReactionAsync(editionId, commentId, type)));
     }
 }

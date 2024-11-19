@@ -11,13 +11,13 @@ namespace LmsApplication.CourseBoardModule.Services.Services;
 
 public interface IPostService
 {
-    Task<CollectionResource<PostModel>> GetPostsAsync(Guid editionId, string userId, int page, int pageSize);
+    Task<CollectionResource<PostModel>> GetPostsAsync(Guid editionId, int page, int pageSize);
     
-    Task<PostModel> CreatePostAsync(Guid editionId, string userId, PostCreateModel postCreateModel);
+    Task<PostModel> CreatePostAsync(Guid editionId, PostCreateModel postCreateModel);
     
-    Task<PostModel> UpdatePostAsync(Guid editionId, string userId, Guid postId, PostUpdateModel postUpdateModel);
+    Task<PostModel> UpdatePostAsync(Guid editionId, Guid postId, PostUpdateModel postUpdateModel);
     
-    Task DeletePostAsync(Guid editionId, string userId, Guid postId);
+    Task DeletePostAsync(Guid editionId, Guid postId);
 }
 
 public class PostService : CourseBoardService, IPostService
@@ -25,21 +25,25 @@ public class PostService : CourseBoardService, IPostService
     private readonly IPostRepository _postRepository;
     private readonly IValidationService<PostCreateModel> _postCreateModelValidationService;
     private readonly IValidationService<PostUpdateModel> _postUpdateModelValidationService;
+    private readonly IUserProvider _userProvider;
 
     public PostService(
-        IPostRepository postRepository,
         ICourseEditionProvider courseEditionProvider,
-        IUserProvider userProvider,
+        IUserContext userContext,
+        IPostRepository postRepository,
         IValidationService<PostCreateModel> postCreateModelValidationService,
-        IValidationService<PostUpdateModel> postUpdateModelValidationService) : base(courseEditionProvider, userProvider)
+        IValidationService<PostUpdateModel> postUpdateModelValidationService,
+        IUserProvider userProvider) : base(courseEditionProvider, userContext)
     {
         _postRepository = postRepository;
         _postCreateModelValidationService = postCreateModelValidationService;
         _postUpdateModelValidationService = postUpdateModelValidationService;
+        _userProvider = userProvider;
     }
 
-    public async Task<CollectionResource<PostModel>> GetPostsAsync(Guid editionId, string userId, int page, int pageSize)
+    public async Task<CollectionResource<PostModel>> GetPostsAsync(Guid editionId, int page, int pageSize)
     {
+        var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
         
         var (totalCount, posts) = await _postRepository.GetPostsAsync(editionId, page, pageSize);
@@ -49,17 +53,18 @@ public class PostService : CourseBoardService, IPostService
             .Distinct()
             .ToList();
         
-        var users = await UserProvider.GetUsersByIdsAsync(userIds);
+        var users = await _userProvider.GetUsersByIdsAsync(userIds);
         var usernames = users.ToDictionary(x => x.Key, x => x.Value.Name + "" + x.Value.Surname);
         
         return new CollectionResource<PostModel>(posts.Select(x => x.ToModel(users[x.UserId], usernames, userId)), totalCount);
     }
 
-    public async Task<PostModel> CreatePostAsync(Guid editionId, string userId, PostCreateModel postCreateModel)
+    public async Task<PostModel> CreatePostAsync(Guid editionId, PostCreateModel postCreateModel)
     {
+        var userId = UserContext.GetUserId();
         await ValidateUserAccessToPostAsync(editionId, userId);
         
-        var user = await UserProvider.GetUserByIdAsync(userId);
+        var user = await _userProvider.GetUserByIdAsync(userId);
         if (user is null) 
             throw new KeyNotFoundException("User not found.");
         
@@ -77,12 +82,13 @@ public class PostService : CourseBoardService, IPostService
         return post.ToModel(user, [], userId);
     }
 
-    public async Task<PostModel> UpdatePostAsync(Guid editionId, string userId, Guid postId, PostUpdateModel model)
+    public async Task<PostModel> UpdatePostAsync(Guid editionId, Guid postId, PostUpdateModel model)
     {
+        var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
         
         var post = await _postRepository.GetPostByIdAsync(postId);
-        var user = await UserProvider.GetUserByIdAsync(userId);
+        var user = await _userProvider.GetUserByIdAsync(userId);
         
         var context = new ValidationContext<PostUpdateModel>(model)
         {
@@ -101,15 +107,16 @@ public class PostService : CourseBoardService, IPostService
         return post.ToModel(user!, [], userId);
     }
 
-    public async Task DeletePostAsync(Guid editionId, string userId, Guid postId)
+    public async Task DeletePostAsync(Guid editionId, Guid postId)
     {
+        var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
         
         var post = await _postRepository.GetPostByIdAsync(postId);
         if (post is null) 
             throw new KeyNotFoundException("Post not found.");
         
-        if (post.UserId != userId && !await UserProvider.IsUserAdminAsync(userId))
+        if (post.UserId != userId && UserContext.GetUserRole() is not UserRole.Admin)
             throw new UnauthorizedAccessException("User is not allowed to delete this post.");
         
         await _postRepository.DeletePostAsync(post);
@@ -117,15 +124,12 @@ public class PostService : CourseBoardService, IPostService
     
     private async Task ValidateUserAccessToPostAsync(Guid editionId, string userId)
     {
-        var user = await UserProvider.GetUserByIdAsync(userId);
-        if (user is null) 
-            throw new KeyNotFoundException("User not found.");
-        
-        if (user.Role is UserRole.Admin)
+        var userRole = UserContext.GetUserRole();
+        if (userRole is UserRole.Admin)
             return;
         
         var isRegistered = await CourseEditionProvider.IsUserRegisteredToCourseEditionAsync(editionId, userId);
-        if (user.Role is UserRole.Teacher && isRegistered)
+        if (userRole is UserRole.Teacher && isRegistered)
             return;
         
         var settings = await CourseEditionProvider.GetCourseEditionPublicSettingsAsync(editionId);

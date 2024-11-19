@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseBoardModule.Data.Models;
 using LmsApplication.CourseBoardModule.Services.Services;
@@ -22,34 +21,25 @@ public class PostsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPosts(Guid editionId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _postService.GetPostsAsync(editionId, GetUserId(), page, pageSize)));
+        return Ok(ApiResponseHelper.Success(await _postService.GetPostsAsync(editionId, page, pageSize)));
     }
     
     [HttpPost]
     public async Task<IActionResult> CreatePost(Guid editionId, [FromBody] PostCreateModel model)
     {
-        return Ok(ApiResponseHelper.Success(await _postService.CreatePostAsync(editionId, GetUserId(), model)));
+        return Ok(ApiResponseHelper.Success(await _postService.CreatePostAsync(editionId, model)));
     }
     
     [HttpPut("{postId:guid}")]
     public async Task<IActionResult> UpdatePost(Guid editionId, Guid postId, [FromBody] PostUpdateModel model)
     {
-        return Ok(ApiResponseHelper.Success(await _postService.UpdatePostAsync(editionId, GetUserId(), postId, model)));
+        return Ok(ApiResponseHelper.Success(await _postService.UpdatePostAsync(editionId, postId, model)));
     }
     
     [HttpDelete("{postId:guid}")]
     public async Task<IActionResult> DeletePost(Guid editionId, Guid postId)
     {
-        await _postService.DeletePostAsync(editionId, GetUserId(), postId);
+        await _postService.DeletePostAsync(editionId, postId);
         return Ok(ApiResponseHelper.Success());
-    }
-    
-    private string GetUserId()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null) 
-            throw new ArgumentException("Incorrect user id.");
-        
-        return userId;
     }
 }

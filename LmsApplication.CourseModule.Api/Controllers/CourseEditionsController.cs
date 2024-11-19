@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using LmsApplication.Core.Shared.Config;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Data.Courses;
@@ -23,29 +22,27 @@ public class CourseEditionsController : ControllerBase
     [HttpGet("all")]
     public async Task<IActionResult> GetAllCourseEditions()
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetAllCourseEditionsAsync(GetUserId())));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetAllCourseEditionsAsync()));
     }
     
     [HttpGet("by-course/{courseId}")]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetCourseEditionsByCourseId(Guid courseId)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByCourseIdAsync(courseId, GetUserId())));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByCourseIdAsync(courseId)));
     }
     
     [HttpPost]
     [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> CreateCourseEdition([FromBody] CourseEditionPostModel model)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.CreateCourseEditionAsync(model, GetUserId())));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.CreateCourseEditionAsync(model)));
     }
     
     [HttpPost("{courseEditionId}/register")]
     public async Task<IActionResult> RegisterToCourseEdition(Guid courseEditionId)
     {
-        var userId = GetUserId();
-        
-        await _courseEditionService.RegisterToCourseEditionAsync(courseEditionId, userId);
+        await _courseEditionService.RegisterToCourseEditionAsync(courseEditionId);
         return Ok(ApiResponseHelper.Success());
     }
     
@@ -68,35 +65,18 @@ public class CourseEditionsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCourseEditionById(Guid id)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionByIdAsync(id, GetUserId())));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionByIdAsync(id)));
     }
     
     [HttpGet("my-courses")]
     public async Task<IActionResult> GetMyCourses()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null) 
-            return BadRequest(ApiResponseHelper.Error("User not found."));
-        
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetUserCourseEditionsAsync(userId)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetUserCourseEditionsAsync()));
     }
     
     [HttpGet("registration-open")]
     public async Task<IActionResult> GetOpenRegistrations()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null) 
-            return BadRequest(ApiResponseHelper.Error("User not found."));
-        
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetEditionsWithRegistrationOpenAsync(userId)));
-    }
-    
-    private string GetUserId()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null) 
-            throw new ArgumentException("Incorrect user id.");
-        
-        return userId;
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetEditionsWithRegistrationOpenAsync()));
     }
 }

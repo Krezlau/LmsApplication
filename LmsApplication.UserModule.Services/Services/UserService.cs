@@ -13,13 +13,13 @@ namespace LmsApplication.UserModule.Services.Services;
 
 public interface IUserService
 {
-    Task<UserModel> GetUserAsync(string userId);
+    Task<UserModel> GetCurrentUserAsync();
     
     Task<UserModel> GetUserByEmailAsync(string userEmail);
     
     Task<List<UserModel>> GetUsersAsync();
     
-    Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId, string userId);
+    Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId);
 
     Task<List<UserModel>> SearchUsersByEmailAsync(string query);
     
@@ -34,21 +34,25 @@ public class UserService : IUserService
     private readonly UserManager<User> _userManager;
     private readonly ICourseEditionProvider _courseEditionProvider;
     private readonly IValidationService<UserUpdateModel> _validationService;
+    private readonly IUserContext _userContext;
 
     public UserService(
         UserDbContext userDbContext,
         UserManager<User> userManager,
         IValidationService<UserUpdateModel> validationService,
-        ICourseEditionProvider courseEditionProvider)
+        ICourseEditionProvider courseEditionProvider,
+        IUserContext userContext)
     {
         _userDbContext = userDbContext;
         _userManager = userManager;
         _validationService = validationService;
         _courseEditionProvider = courseEditionProvider;
+        _userContext = userContext;
     }
 
-    public async Task<UserModel> GetUserAsync(string userId)
+    public async Task<UserModel> GetCurrentUserAsync()
     {
+        var userId = _userContext.GetUserId();
         var user = await _userDbContext.Users
             .Include(x => x.Roles)
             .FirstOrDefaultAsync(x => x.Id == userId);
@@ -78,8 +82,9 @@ public class UserService : IUserService
         return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();
     }
 
-    public async Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId, string userId)
+    public async Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId)
     {
+        var userId = _userContext.GetUserId();
         var isAdmin = _userManager.IsInRoleAsync(new User {Id = userId }, "Admin");
         var isParticipant = _courseEditionProvider.IsUserRegisteredToCourseEditionAsync(courseEditionId, userId);
         

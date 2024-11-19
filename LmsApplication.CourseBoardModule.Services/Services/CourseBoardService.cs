@@ -1,24 +1,28 @@
+using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Providers;
+using LmsApplication.Core.Shared.Services;
 
 namespace LmsApplication.CourseBoardModule.Services.Services;
 
 public abstract class CourseBoardService
 {
     protected readonly ICourseEditionProvider CourseEditionProvider;
-    protected readonly IUserProvider UserProvider;
+    protected readonly IUserContext UserContext;
 
-    protected CourseBoardService(ICourseEditionProvider courseEditionProvider, IUserProvider userProvider)
+    protected CourseBoardService(ICourseEditionProvider courseEditionProvider, IUserContext userContext)
     {
         CourseEditionProvider = courseEditionProvider;
-        UserProvider = userProvider;
+        UserContext = userContext;
     }
     
     protected async Task ValidateUserAccessToEditionAsync(Guid editionId, string userId)
     {
-        var isAdmin = UserProvider.IsUserAdminAsync(userId);
-        var isRegistered = CourseEditionProvider.IsUserRegisteredToCourseEditionAsync(editionId, userId);
+        var isAdmin = UserContext.GetUserRole() is UserRole.Admin;
+        if (isAdmin)
+            return;
         
-        if (!await isRegistered && !await isAdmin)
+        var isRegistered = CourseEditionProvider.IsUserRegisteredToCourseEditionAsync(editionId, userId);
+        if (!await isRegistered)
             throw new UnauthorizedAccessException("User is not registered to course edition.");
     }
 }
