@@ -27,6 +27,10 @@ public interface ICourseEditionService
     Task<List<CourseEditionModel>> GetUserCourseEditionsAsync();
 
     Task<List<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync();
+    
+    Task<List<CourseEditionModel>> GetCourseEditionsByUserIdAsync(string userId);
+    
+    Task<List<CourseEditionModel>> GetMutualCourseEditionsAsync(string userId);
 }
 
 public class CourseEditionService : ICourseEditionService
@@ -171,6 +175,20 @@ public class CourseEditionService : ICourseEditionService
     {
         var userId = _userContext.GetUserId();
         var courseEditions = await _courseEditionRepository.GetEditionsWithRegistrationOpenAsync(userId);
+        
+        return courseEditions.Select(x => x.ToModel(userId)).ToList();
+    }
+
+    public async Task<List<CourseEditionModel>> GetCourseEditionsByUserIdAsync(string userId)
+    {
+        var courseEditions = await _courseEditionRepository.GetCourseEditionsByUserIdAsync(userId);
+        
+        return courseEditions.Select(x => x.ToModel(userId)).ToList();
+    }
+
+    public async Task<List<CourseEditionModel>> GetMutualCourseEditionsAsync(string userId)
+    {
+        var courseEditions = await _courseEditionRepository.GetMutualCourseEditionsAsync(userId, _userContext.GetUserId());
         
         return courseEditions.Select(x => x.ToModel(userId)).ToList();
     }

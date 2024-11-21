@@ -14,6 +14,10 @@ public interface ICourseEditionRepository
     Task<List<CourseEdition>> GetEditionsWithRegistrationOpenAsync(string userId);
     
     Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userId);
+    
+    Task<List<CourseEdition>> GetCourseEditionsByUserIdAsync(string userId);
+    
+    Task<List<CourseEdition>> GetMutualCourseEditionsAsync(string userId, string userId2);
 
     Task<CourseEdition?> GetCourseEditionByCourseIdAndTitleAsync(string title, Guid courseId);
     
@@ -90,6 +94,29 @@ public class CourseEditionRepository : ICourseEditionRepository
             .Include(x => x.Participants)
             .Include(x => x.Settings)
             .Where(x => x.EndDateUtc > DateTime.UtcNow && x.Participants.Any(p => p.ParticipantId == userId))
+            .ToListAsync();
+    }
+
+    public async Task<List<CourseEdition>> GetCourseEditionsByUserIdAsync(string userId)
+    {
+        // todo pagination
+        return await _context.CourseEditions
+            .Include(x => x.Course)
+            .Include(x => x.Participants)
+            .Include(x => x.Settings)
+            .Where(x => x.Participants.Any(p => p.ParticipantId == userId))
+            .ToListAsync();
+    }
+
+    public async Task<List<CourseEdition>> GetMutualCourseEditionsAsync(string userId, string userId2)
+    {
+        // todo pagination
+        return await _context.CourseEditions
+            .Include(x => x.Course)
+            .Include(x => x.Participants)
+            .Include(x => x.Settings)
+            .Where(x => x.Participants.Any(p => p.ParticipantId == userId) &&
+                        x.Participants.Any(p => p.ParticipantId == userId2))
             .ToListAsync();
     }
 

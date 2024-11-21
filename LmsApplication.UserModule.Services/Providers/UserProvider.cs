@@ -1,7 +1,6 @@
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.Core.Shared.Providers;
-using LmsApplication.UserModule.Data.Database;
 using LmsApplication.UserModule.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +10,10 @@ namespace LmsApplication.UserModule.Services.Providers;
 public class UserProvider : IUserProvider
 {
     private readonly UserManager<User> _userManager;
-    private readonly UserDbContext _dbContext;
 
-    public UserProvider(UserManager<User> userManager, UserDbContext dbContext)
+    public UserProvider(UserManager<User> userManager)
     {
         _userManager = userManager;
-        _dbContext = dbContext;
     }
 
     public async Task<UserExchangeModel?> GetUserByIdAsync(string id)
@@ -32,7 +29,7 @@ public class UserProvider : IUserProvider
 
     public async Task<Dictionary<string, UserExchangeModel>> GetUsersByIdsAsync(List<string> ids)
     {
-        var users = await _dbContext.Users
+        var users = await _userManager.Users
             .Include(x => x.Roles)
             .Where(x => ids.Contains(x.Id))
             .ToDictionaryAsync(x => x.Id, x => x);

@@ -20,6 +20,7 @@ public class CourseEditionsController : ControllerBase
     }
     
     [HttpGet("all")]
+    [Authorize(AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetAllCourseEditions()
     {
         return Ok(ApiResponseHelper.Success(await _courseEditionService.GetAllCourseEditionsAsync()));
@@ -78,5 +79,18 @@ public class CourseEditionsController : ControllerBase
     public async Task<IActionResult> GetOpenRegistrations()
     {
         return Ok(ApiResponseHelper.Success(await _courseEditionService.GetEditionsWithRegistrationOpenAsync()));
+    }
+    
+    [HttpGet("by-user/{userId}")]
+    [Authorize(AuthPolicies.AdminPolicy)]
+    public async Task<IActionResult> GetCourseEditionsByUserId(string userId)
+    {
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByUserIdAsync(userId)));
+    }
+    
+    [HttpGet("by-user/{userId}/mutual")]
+    public async Task<IActionResult> GetMutualCourseEditions(string userId)
+    {
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetMutualCourseEditionsAsync(userId)));
     }
 }
