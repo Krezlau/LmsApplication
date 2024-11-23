@@ -1,4 +1,4 @@
-namespace LmsApplication.Core.Shared.Providers;
+namespace LmsApplication.ResourceModule.Services.Providers;
 
 public interface ICourseProvider
 {

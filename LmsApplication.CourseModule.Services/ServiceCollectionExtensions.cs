@@ -1,9 +1,7 @@
 using FluentValidation;
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Services.Courses;
-using LmsApplication.CourseModule.Services.Providers;
 using LmsApplication.CourseModule.Services.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,9 +26,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<ICourseEditionRepository, CourseEditionRepository>();
         services.AddScoped<ICourseEditionSettingsRepository, CourseEditionSettingsRepository>();
-
-        services.AddScoped<ICourseEditionProvider, CourseEditionProvider>();
-        services.AddScoped<ICourseProvider, CourseProvider>();
         
         return services;
     }

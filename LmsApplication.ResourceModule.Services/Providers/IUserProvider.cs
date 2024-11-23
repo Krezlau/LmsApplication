@@ -1,6 +1,6 @@
 using LmsApplication.Core.Shared.Models;
 
-namespace LmsApplication.Core.Shared.Providers;
+namespace LmsApplication.ResourceModule.Services.Providers;
 
 public interface IUserProvider
 {

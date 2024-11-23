@@ -1,11 +1,11 @@
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Models;
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.ResourceModule.Data.Entities;
 using LmsApplication.ResourceModule.Data.Mapping;
 using LmsApplication.ResourceModule.Data.Models;
 using LmsApplication.ResourceModule.Services.BlobClients;
+using LmsApplication.ResourceModule.Services.Providers;
 using LmsApplication.ResourceModule.Services.Repositories;
 
 namespace LmsApplication.ResourceModule.Services.Services;

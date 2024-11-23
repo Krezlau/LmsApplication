@@ -1,7 +1,7 @@
 using FluentValidation;
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.ResourceModule.Data.Entities;
 using LmsApplication.ResourceModule.Data.Models;
+using LmsApplication.ResourceModule.Services.Providers;
 
 namespace LmsApplication.ResourceModule.Services.Validators;
 

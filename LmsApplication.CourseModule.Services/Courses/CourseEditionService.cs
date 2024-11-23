@@ -1,9 +1,9 @@
 using FluentValidation;
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Data.Mapping;
+using LmsApplication.CourseModule.Services.Providers;
 using LmsApplication.CourseModule.Services.Repositories;
 
 namespace LmsApplication.CourseModule.Services.Courses;

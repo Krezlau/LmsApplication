@@ -1,6 +1,6 @@
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
+using LmsApplication.CourseBoardModule.Services.Providers;
 using LmsApplication.CourseBoardModule.Services.Repositories;
 
 namespace LmsApplication.CourseBoardModule.Services.Services;

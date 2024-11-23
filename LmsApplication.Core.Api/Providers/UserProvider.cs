@@ -1,13 +1,15 @@
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Models;
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.UserModule.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace LmsApplication.UserModule.Services.Providers;
+namespace LmsApplication.Core.Api.Providers;
 
-public class UserProvider : IUserProvider
+public class UserProvider : 
+    CourseModule.Services.Providers.IUserProvider,
+    CourseBoardModule.Services.Providers.IUserProvider,
+    ResourceModule.Services.Providers.IUserProvider
 {
     private readonly UserManager<User> _userManager;
 

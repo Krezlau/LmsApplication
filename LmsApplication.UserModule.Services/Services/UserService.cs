@@ -1,11 +1,11 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.UserModule.Data.Database;
 using LmsApplication.UserModule.Data.Entities;
 using LmsApplication.UserModule.Data.Mapping;
 using LmsApplication.UserModule.Data.Models;
+using LmsApplication.UserModule.Services.Providers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

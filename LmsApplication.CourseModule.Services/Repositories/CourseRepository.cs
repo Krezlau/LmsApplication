@@ -16,6 +16,8 @@ public interface ICourseRepository
     
     Task<CourseCategory?> GetCategoryByIdAsync(Guid id);
     
+    Task<bool> CourseExistsAsync(Guid courseId);
+    
     Task CreateAsync(Course course);
     
     Task DeleteAsync(Course course);
@@ -67,6 +69,11 @@ public class CourseRepository : ICourseRepository
     public async Task<CourseCategory?> GetCategoryByIdAsync(Guid id)
     {
         return await _dbContext.CourseCategories.FirstOrDefaultAsync(x => x.Id == id);
+    }
+    
+    public async Task<bool> CourseExistsAsync(Guid courseId)
+    {
+        return await _dbContext.Courses.AnyAsync(x => x.Id == courseId);
     }
 
     public async Task CreateAsync(Course course)

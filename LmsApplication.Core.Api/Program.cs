@@ -1,4 +1,6 @@
 using LmsApplication.Core.Api.Middleware;
+using LmsApplication.Core.Api.Providers;
+using LmsApplication.Core.Shared.Config;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Api;
 using LmsApplication.CourseBoardModule.Data.Database;
@@ -9,6 +11,7 @@ using LmsApplication.ResourceModule.Data.Database;
 using LmsApplication.UserModule.Api;
 using LmsApplication.UserModule.Data.Database;
 using LmsApplication.UserModule.Data.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
@@ -35,11 +38,20 @@ builder.Services.AddHttpLogging(o => { });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IUserContext, UserContext>();
 
-builder.Services.AddCourseModuleApi(builder.Configuration);
-builder.Services.AddCourseBoardModuleApi(builder.Configuration);
-builder.Services.AddUserModuleApi(builder.Configuration);
-builder.Services.AddResourceModuleApi(builder.Configuration);
+builder.Services.AddCourseModuleApi<UserProvider>(builder.Configuration);
+builder.Services.AddCourseBoardModuleApi<UserProvider, CourseEditionProvider>(builder.Configuration);
+builder.Services.AddUserModuleApi<CourseEditionProvider>(builder.Configuration);
+builder.Services.AddResourceModuleApi<UserProvider, CourseProvider, CourseEditionProvider>(builder.Configuration);
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy(AuthPolicies.AdminPolicy, policy => policy.RequireRole("Admin"));
+    opt.AddPolicy(AuthPolicies.TeacherPolicy, policy => policy.RequireRole("Teacher"));
+    opt.AddPolicy(AuthPolicies.StudentPolicy, policy => policy.RequireAuthenticatedUser());
+    
+    opt.DefaultPolicy = opt.GetPolicy(AuthPolicies.StudentPolicy)!;
+});
 builder.Services.AddSwaggerGen(opt =>
 {
     opt.SwaggerDoc("v1", new() { Title = "LmsApplication.Api", Version = "v1" });

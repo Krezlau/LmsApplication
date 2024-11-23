@@ -1,6 +1,6 @@
 using LmsApplication.Core.Shared.Enums;
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
+using LmsApplication.CourseBoardModule.Services.Providers;
 
 namespace LmsApplication.CourseBoardModule.Services.Services;
 

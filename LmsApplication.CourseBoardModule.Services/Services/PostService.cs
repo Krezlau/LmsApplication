@@ -1,10 +1,10 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
-using LmsApplication.Core.Shared.Providers;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;
 using LmsApplication.CourseBoardModule.Data.Models;
+using LmsApplication.CourseBoardModule.Services.Providers;
 using LmsApplication.CourseBoardModule.Services.Repositories;
 
 namespace LmsApplication.CourseBoardModule.Services.Services;

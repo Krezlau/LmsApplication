@@ -22,6 +22,10 @@ public interface ICourseEditionRepository
     Task<CourseEdition?> GetCourseEditionByCourseIdAndTitleAsync(string title, Guid courseId);
     
     Task<CourseEdition?> GetCourseEditionByIdAsync(Guid id);
+
+    Task<bool> CourseEditionExistsAsync(Guid courseEditionId);
+    
+    Task<List<string>> GetCourseEditionParticipantIdsAsync(Guid courseEditionId);
     
     Task AddParticipantToCourseEditionAsync(Guid courseEditionId, string userId, UserRole userRole);
     
@@ -136,6 +140,19 @@ public class CourseEditionRepository : ICourseEditionRepository
             .Include(x => x.Participants)
             .Include(x => x.Settings)
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<bool> CourseEditionExistsAsync(Guid courseEditionId)
+    {
+        return await _context.CourseEditions.AnyAsync(x => x.Id == courseEditionId);
+    }
+
+    public async Task<List<string>> GetCourseEditionParticipantIdsAsync(Guid courseEditionId)
+    {
+        return await _context.CourseEditionParticipants
+            .Where(x => x.CourseEditionId == courseEditionId)
+            .Select(x => x.ParticipantId)
+            .ToListAsync();
     }
 
     public async Task AddParticipantToCourseEditionAsync(Guid courseEditionId, string userId, UserRole userRole)
