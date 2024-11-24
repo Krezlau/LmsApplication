@@ -21,6 +21,16 @@ public class CourseBoardDbContext : BaseDbContext
     
     public DbSet<CommentReaction> CommentReactions { get; set; } = null!;
     
+    public DbSet<GradesTableRowDefinition> GradesTableRowDefinitions { get; set; } = null!;
+    
+    public DbSet<GradesTableRowValue> GradesTableRowValues { get; set; } = null!;
+    
+    public DbSet<GradesTableRowTextValue> GradesTableRowTextValues { get; set; } = null!;
+    
+    public DbSet<GradesTableRowNumberValue> GradesTableRowNumberValues { get; set; } = null!;
+    
+    public DbSet<GradesTableRowBoolValue> GradesTableRowBoolValues { get; set; } = null!;
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CourseBoardDbContext).Assembly);

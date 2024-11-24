@@ -14,17 +14,21 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPostService, PostService>();
         services.AddScoped<IReactionService, ReactionService>();
         services.AddScoped<ICommentService, CommentService>();
+        services.AddScoped<IGradesTableRowDefinitionService, GradesTableRowDefinitionService>();
         
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IReactionRepository, ReactionRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<IGradesTableRowDefinitionRepository, GradesTableRowDefinitionRepository>();
         
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
         services.AddScoped<IValidationService<PostCreateModel>, ValidationService<PostCreateModel>>();
         services.AddScoped<IValidationService<PostUpdateModel>, ValidationService<PostUpdateModel>>();
         services.AddScoped<IValidationService<CommentCreateModel>, ValidationService<CommentCreateModel>>();
         services.AddScoped<IValidationService<CommentUpdateModel>, ValidationService<CommentUpdateModel>>();
-
+        services.AddScoped<IValidationService<GradesTableRowDefinitionUpdateModel>, ValidationService<GradesTableRowDefinitionUpdateModel>>();
+        services.AddScoped<IValidationService<GradesTableRowDefinitionCreateModel>, ValidationService<GradesTableRowDefinitionCreateModel>>();
+        
         return services;
     }
 }

@@ -4,6 +4,7 @@ using LmsApplication.CourseBoardModule.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LmsApplication.CourseBoardModule.Data.Migrations
 {
     [DbContext(typeof(CourseBoardDbContext))]
-    partial class CourseBoardDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241124115105_AddGradeTable")]
+    partial class AddGradeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,8 +264,13 @@ namespace LmsApplication.CourseBoardModule.Data.Migrations
                     b.HasBaseType("LmsApplication.CourseBoardModule.Data.Entities.GradesTableRowValue");
 
                     b.Property<bool>("Value")
-                        .HasColumnType("bit")
-                        .HasColumnName("BoolValue");
+                        .HasColumnType("bit");
+
+                    b.ToTable("GradesTableRowValues", t =>
+                        {
+                            t.Property("Value")
+                                .HasColumnName("GradesTableRowBoolValue_Value");
+                        });
 
                     b.HasDiscriminator().HasValue("Bool");
                 });
@@ -272,8 +280,13 @@ namespace LmsApplication.CourseBoardModule.Data.Migrations
                     b.HasBaseType("LmsApplication.CourseBoardModule.Data.Entities.GradesTableRowValue");
 
                     b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("NumberValue");
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToTable("GradesTableRowValues", t =>
+                        {
+                            t.Property("Value")
+                                .HasColumnName("GradesTableRowNumberValue_Value");
+                        });
 
                     b.HasDiscriminator().HasValue("Number");
                 });
@@ -284,8 +297,7 @@ namespace LmsApplication.CourseBoardModule.Data.Migrations
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("TextValue");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Text");
                 });
