@@ -19,7 +19,7 @@ public abstract class GradesTableRowValue : IAuditable
     
     public RowType RowType { get; set; }
     
-    public string TeacherComment { get; set; }
+    public string? TeacherComment { get; set; }
     
     public string TeacherId { get; set; }
     
