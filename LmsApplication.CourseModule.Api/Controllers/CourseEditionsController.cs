@@ -1,6 +1,7 @@
 using LmsApplication.Core.Shared.Config;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Data.Courses;
+using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Services.Courses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

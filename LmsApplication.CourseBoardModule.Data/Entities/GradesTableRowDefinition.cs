@@ -21,6 +21,8 @@ public class GradesTableRowDefinition : IAuditable
     public required RowType RowType { get; set; }
     
     public bool IsSummed { get; set; }
+
+    public virtual List<GradesTableRowValue> Values { get; set; } = null!;
     
     #region Audit
     

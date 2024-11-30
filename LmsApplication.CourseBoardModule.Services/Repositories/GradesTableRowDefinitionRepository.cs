@@ -7,8 +7,12 @@ namespace LmsApplication.CourseBoardModule.Services.Repositories;
 public interface IGradesTableRowDefinitionRepository
 {
     Task<List<GradesTableRowDefinition>> GetGradesTableRowDefinitionsAsync(Guid editionId);
+
+    Task<List<GradesTableRowDefinition>> GetGradesTableForUserAsync(Guid editionId, string userId);
     
     Task<GradesTableRowDefinition?> GetByIdAsync(Guid id);
+    
+    Task<GradesTableRowDefinition?> GetRowWithValuesAsync(Guid rowId);
     
     Task CreateAsync(GradesTableRowDefinition entity);
     
@@ -33,9 +37,24 @@ public class GradesTableRowDefinitionRepository : IGradesTableRowDefinitionRepos
             .ToListAsync();
     }
 
+    public async Task<List<GradesTableRowDefinition>> GetGradesTableForUserAsync(Guid editionId, string userId)
+    {
+        return await _dbContext.GradesTableRowDefinitions
+            .Include(x => x.Values.Where(v => v.UserId == userId))
+            .Where(x => x.CourseEditionId == editionId)
+            .ToListAsync();
+    }
+
     public async Task<GradesTableRowDefinition?> GetByIdAsync(Guid id)
     {
         return await _dbContext.GradesTableRowDefinitions.FindAsync(id);
+    }
+
+    public async Task<GradesTableRowDefinition?> GetRowWithValuesAsync(Guid rowId)
+    {
+        return await _dbContext.GradesTableRowDefinitions
+            .Include(x => x.Values)
+            .FirstOrDefaultAsync(x => x.Id == rowId);
     }
 
     public async Task CreateAsync(GradesTableRowDefinition entity)
