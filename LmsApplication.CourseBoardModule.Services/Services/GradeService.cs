@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;
@@ -24,8 +26,8 @@ public class GradeService : CourseBoardService, IGradeService
 {
     private readonly IGradesTableRowValueRepository _gradesTableRowValueRepository;
     private readonly IGradesTableRowDefinitionRepository _gradesTableRowDefinitionRepository;
-    private readonly IUserProvider _userProvider;
     private readonly IValidationService<UpdateRowValueModel> _updateRowValueModelValidationService;
+    private readonly IUserProvider _userProvider;
 
     public GradeService(
         ICourseEditionProvider courseEditionProvider,
@@ -64,7 +66,11 @@ public class GradeService : CourseBoardService, IGradeService
         if (row is null) 
             throw new KeyNotFoundException("Row not found.");
 
-        var users = await _userProvider.GetUsersByIdsAsync([]);
+        var userIds = row.Values.Select(x => x.UserId).ToList()
+            .Concat(row.Values.Select(x => x.TeacherId).ToList())
+            .Distinct()
+            .ToList();
+        var users = await _userProvider.GetUsersByIdsAsync(userIds);
         
         return new UserGradesModel
         {
@@ -83,6 +89,14 @@ public class GradeService : CourseBoardService, IGradeService
             throw new KeyNotFoundException("Row not found.");
         
         var grade = await _gradesTableRowValueRepository.GetGradesTableRowValueAsync(rowId, userId);
+        var context = new ValidationContext<UpdateRowValueModel>(model)
+        {
+            RootContextData =
+            {
+                {nameof(GradesTableRowValue), rowDefinition}
+            }
+        };
+        await _updateRowValueModelValidationService.ValidateAndThrowAsync(context);
 
         if (grade is null)
         {

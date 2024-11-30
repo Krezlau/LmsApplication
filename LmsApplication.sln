@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.AppHost", "LmsApplication\LmsApplication.AppHost\LmsApplication.AppHost.csproj", "{824C6495-F9B3-4E25-89FB-634616F9A722}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Core.Shared", "LmsApplication\LmsApplication.Core.Shared\LmsApplication.Core.Shared.csproj", "{9E1D5341-2978-48E3-8ECE-182EA75EDECC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LmsApplication.UserModule", "LmsApplication.UserModule", "{AA9C221C-4908-41EC-8E19-3D1D11E552C4}"
@@ -44,10 +42,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{824C6495-F9B3-4E25-89FB-634616F9A722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{824C6495-F9B3-4E25-89FB-634616F9A722}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{824C6495-F9B3-4E25-89FB-634616F9A722}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{824C6495-F9B3-4E25-89FB-634616F9A722}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E1D5341-2978-48E3-8ECE-182EA75EDECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E1D5341-2978-48E3-8ECE-182EA75EDECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E1D5341-2978-48E3-8ECE-182EA75EDECC}.Release|Any CPU.ActiveCfg = Release|Any CPU

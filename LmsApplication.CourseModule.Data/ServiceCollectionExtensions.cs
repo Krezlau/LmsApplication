@@ -9,7 +9,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCourseModuleData(this IServiceCollection services, IConfiguration config)
     {
-        services.AddDbContext<CourseDbContext>(opt => opt.UseSqlServer(config.GetConnectionString("course-db")));
+        services.AddDbContext<CourseDbContext>(opt => opt.UseSqlServer(config.GetConnectionString("CourseDb")));
 
         return services;
     }

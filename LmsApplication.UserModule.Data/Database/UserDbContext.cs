@@ -53,7 +53,7 @@ public class UserDbContext : IdentityDbContext<User>
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = _config.GetConnectionString("user-db");
+        var connectionString = _config.GetConnectionString("UserDb");
 
         optionsBuilder.UseSqlServer(connectionString, opt => opt.UseAzureSqlDefaults());
     }

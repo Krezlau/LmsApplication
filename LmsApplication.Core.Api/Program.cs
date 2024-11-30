@@ -22,12 +22,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Configuration.AddAzureAppConfiguration(c =>
-{
-    c.Connect(builder.Configuration.GetConnectionString("AppConfig"))
-        .Select(KeyFilter.Any);
-});
-
 builder.Services.AddControllers();
 
 builder.Logging.ClearProviders();
@@ -43,15 +37,6 @@ builder.Services.AddCourseBoardModuleApi<UserProvider, CourseEditionProvider>(bu
 builder.Services.AddUserModuleApi<CourseEditionProvider>(builder.Configuration);
 builder.Services.AddResourceModuleApi<UserProvider, CourseProvider, CourseEditionProvider>(builder.Configuration);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-builder.Services.AddAuthorization(opt =>
-{
-    opt.AddPolicy(AuthPolicies.AdminPolicy, policy => policy.RequireRole("Admin"));
-    opt.AddPolicy(AuthPolicies.TeacherPolicy, policy => policy.RequireRole("Teacher"));
-    opt.AddPolicy(AuthPolicies.StudentPolicy, policy => policy.RequireAuthenticatedUser());
-    
-    opt.DefaultPolicy = opt.GetPolicy(AuthPolicies.StudentPolicy)!;
-});
 builder.Services.AddSwaggerGen(opt =>
 {
     opt.SwaggerDoc("v1", new() { Title = "LmsApplication.Api", Version = "v1" });

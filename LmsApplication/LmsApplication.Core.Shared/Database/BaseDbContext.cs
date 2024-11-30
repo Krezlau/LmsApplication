@@ -46,7 +46,7 @@ public abstract class BaseDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = _config.GetConnectionString($"{DatabaseName}-db");
+        var connectionString = _config.GetConnectionString($"{DatabaseName}Db");
 
         optionsBuilder.UseSqlServer(connectionString, opt => opt.UseAzureSqlDefaults());
     }

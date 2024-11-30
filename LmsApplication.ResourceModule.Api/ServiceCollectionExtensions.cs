@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
         where TCourseProv : class, ICourseProvider
         where TCourseEditionProv: class, ICourseEditionProvider
     {
-        services.AddResourceModuleServices();
+        services.AddResourceModuleServices(config);
         services.AddResourceModuleData(config);
         
         services.AddScoped<IUserProvider, TUserProv>();

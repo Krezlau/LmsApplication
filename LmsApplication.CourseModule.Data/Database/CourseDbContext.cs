@@ -7,7 +7,7 @@ namespace LmsApplication.CourseModule.Data.Database;
 
 public class CourseDbContext : BaseDbContext
 {
-    public override string DatabaseName { get; } = "course";
+    public override string DatabaseName { get; } = "Course";
 
     public CourseDbContext(IConfiguration config) : base(config)
     {

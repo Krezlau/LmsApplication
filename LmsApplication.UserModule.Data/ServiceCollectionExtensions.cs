@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<UserDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("user-db"));
+            options.UseSqlServer(configuration.GetConnectionString("UserDb"));
         });
 
         services.AddIdentityApiEndpoints<User>(opt =>

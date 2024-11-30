@@ -7,7 +7,7 @@ namespace LmsApplication.ResourceModule.Data.Database;
 
 public class ResourceDbContext : BaseDbContext
 {
-    public override string DatabaseName { get; } = "resource";
+    public override string DatabaseName { get; } = "Resource";
     
     public ResourceDbContext(IConfiguration config) : base(config)
     {
