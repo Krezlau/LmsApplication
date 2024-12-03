@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-delete-modal',
   standalone: true,
   imports: [],
-  templateUrl: './delete-modal.component.html'
+  templateUrl: './delete-modal.component.html',
 })
 export class DeleteModalComponent {
-
+  @Output() delete = new EventEmitter<void>();
 }

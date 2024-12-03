@@ -28,7 +28,7 @@ public class GradesTableRowDefinitionCreateModelValidator: AbstractValidator<Gra
 
     private static bool IsSummedValid(GradesTableRowDefinitionCreateModel model)
     {
-        return model.RowType is not RowType.Number || !model.IsSummed;
+        return model.RowType is RowType.Number || !model.IsSummed;
     }
 
     private Task<bool> CourseEditionExistsAsync(Guid editionId, CancellationToken ct)

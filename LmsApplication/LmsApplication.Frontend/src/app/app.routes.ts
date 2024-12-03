@@ -12,6 +12,7 @@ import { CourseEditionMembersComponent } from './components/course-edition-membe
 import { CourseEditionSettingsComponent } from './components/course-edition-settings/course-edition-settings.component';
 import { CourseEditionBoardComponent } from './components/course-edition-board/course-edition-board.component';
 import { CourseEditionResourcesComponent } from './components/course-edition-resources/course-edition-resources.component';
+import { CourseEditionGradesComponent } from './components/course-edition-grades/course-edition-grades.component';
 
 export const routes: Routes = [
   {
@@ -65,6 +66,10 @@ export const routes: Routes = [
       {
         path: 'resources',
         component: CourseEditionResourcesComponent,
+      },
+      {
+        path: 'grades',
+        component: CourseEditionGradesComponent,
       },
     ],
   },

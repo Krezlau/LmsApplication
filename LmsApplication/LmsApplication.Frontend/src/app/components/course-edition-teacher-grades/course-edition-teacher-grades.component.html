@@ -1,0 +1,33 @@
+<h2 class="text-xl font-semibold mt-4">Grades Table Row Definitions</h2>
+<ul>
+  <div
+    style="grid-template-columns: 2fr 1fr 1fr 1fr 2fr"
+    class="grid border-b-2"
+  >
+    <h2 class="font-semibold">Title</h2>
+    <h2 class="font-semibold">Date</h2>
+    <h2 class="font-semibold">Type</h2>
+    <h2 class="font-semibold">Is Summed</h2>
+    <h2 class="font-semibold">Actions</h2>
+  </div>
+  <li
+    class="grid grid-cols-5 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300"
+    style="grid-template-columns: 2fr 1fr 1fr 1fr 2fr"
+    *ngFor="let row of rowDefinitions"
+  >
+    <h2 class="my-auto">{{ row.title }}</h2>
+    <h2 class="my-auto">{{ getRowDate(row) }}</h2>
+    <h2 class="my-auto">{{ getRowType(row) }}</h2>
+    <h2 class="my-auto">{{ row.isSummed ? "Yes" : "No" }}</h2>
+    <div class="flex flex-row gap-4">
+      <app-grade-row-definition-details-modal [row]="row"/>
+      <button class="btn btn-sm btn-info">Edit</button>
+      <app-grade-row-definition-delete-modal (delete)=deleteRow(row) />
+    </div>
+  </li>
+</ul>
+<div class="flex flex-row justify-end mt-2">
+  <app-grade-row-definition-add-form (added)="rowAdded($event)"/>
+</div>
+<h2 class="text-xl font-semibold mt-4">Students' Grades</h2>
+<ul></ul>
