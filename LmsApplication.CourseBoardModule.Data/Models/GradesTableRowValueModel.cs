@@ -15,11 +15,11 @@ public class GradesTableRowValueModel
 
 public class UserGradesTableRowValueModel
 {
-    public required Guid Id { get; set; }
+    public required Guid? Id { get; set; }
     
     public required string? TeacherComment { get; set; }
     
-    public required UserExchangeModel Teacher { get; set; }
+    public required UserExchangeModel? Teacher { get; set; }
     
     public required UserExchangeModel Student { get; set; }
     

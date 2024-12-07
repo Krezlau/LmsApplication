@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { env } from '../../env';
 import { ApiResponse } from '../types/api-response';
 import { GradesTableRowModel } from '../types/course-board/grades-table-row-model';
+import { UserGradesModel } from '../types/course-board/user-grades-model';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +55,73 @@ export class GradeService {
   public deleteRowDefinition(courseEditionId: string, rowId: string) {
     return this.http.delete<ApiResponse<null>>(
       `${env.apiUrl}/api/editions/${courseEditionId}/grades/rows/${rowId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  public editRowDefinition(
+    courseEditionId: string,
+    rowId: string,
+    title: string,
+    description: string | null,
+    date: Date | null,
+    isSummed: boolean,
+  ) {
+    return this.http.put<ApiResponse<GradesTableRowModel>>(
+      `${env.apiUrl}/api/editions/${courseEditionId}/grades/rows/${rowId}`,
+      {
+        title,
+        description,
+        date,
+        isSummed,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  public getUserGrades(courseEditionId: string, rowId: string) {
+    return this.http.get<ApiResponse<UserGradesModel>>(
+      `${env.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  public updateGrade(
+    courseEditionId: string,
+    rowId: string,
+    userId: string,
+    value: string,
+    teacherComment: string | null,
+  ) {
+    return this.http.put<ApiResponse<null>>(
+      `${env.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}?userId=${userId}`,
+      {
+        value: value?.toString() ?? null,
+        teacherComment,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  public deleteGrade(courseEditionId: string, rowId: string, userId: string) {
+    return this.http.delete<ApiResponse<null>>(
+      `${env.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}?userId=${userId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,

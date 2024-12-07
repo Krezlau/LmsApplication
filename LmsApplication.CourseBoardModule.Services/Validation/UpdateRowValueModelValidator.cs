@@ -14,18 +14,19 @@ public class UpdateRowValueModelValidator : AbstractValidator<UpdateRowValueMode
             .WithMessage("Value is not valid.");
     }
 
-    private static bool ValueValid(UpdateRowValueModel model, object value, ValidationContext<UpdateRowValueModel> context)
+    private static bool ValueValid(UpdateRowValueModel model, string value, ValidationContext<UpdateRowValueModel> context)
     {
-        if (!context.RootContextData.TryGetValue(nameof(GradesTableRowValue), out var rowValueObject) || rowValueObject is not GradesTableRowValue rowValue)
+        if (!context.RootContextData.TryGetValue(nameof(GradesTableRowDefinition), out var rowDefinitionObject) ||
+            rowDefinitionObject is not GradesTableRowDefinition rowDefinition)
         {
             return false;
         }
         
-        return rowValue.RowDefinition.RowType switch
+        return rowDefinition.RowType switch
         {
-            RowType.Text => value is string,
-            RowType.Number => value is int,
-            RowType.Bool => value is bool,
+            RowType.Text => true,
+            RowType.Number => decimal.TryParse((string)value, out _),
+            RowType.Bool => bool.TryParse((string)value, out _),
             RowType.None => false,
             _ => throw new ArgumentOutOfRangeException()
         };

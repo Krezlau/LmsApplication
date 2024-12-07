@@ -10,6 +10,7 @@ import { AlertService } from '../../services/alert.service';
 import { GradeRowDefinitionAddFormComponent } from '../grade-row-definition-add-form/grade-row-definition-add-form.component';
 import { GradeRowDefinitionDetailsModalComponent } from '../grade-row-definition-details-modal/grade-row-definition-details-modal.component';
 import { GradeRowDefinitionDeleteModalComponent } from '../grade-row-definition-delete-modal/grade-row-definition-delete-modal.component';
+import { GradeRowDefinitionEditModalComponent } from '../grade-row-definition-edit-modal/grade-row-definition-edit-modal.component';
 
 @Component({
   selector: 'app-course-edition-teacher-grades',
@@ -20,6 +21,7 @@ import { GradeRowDefinitionDeleteModalComponent } from '../grade-row-definition-
     GradeRowDefinitionAddFormComponent,
     GradeRowDefinitionDetailsModalComponent,
     GradeRowDefinitionDeleteModalComponent,
+    GradeRowDefinitionEditModalComponent,
   ],
   templateUrl: './course-edition-teacher-grades.component.html',
 })
@@ -55,6 +57,10 @@ export class CourseEditionTeacherGradesComponent implements OnInit, OnDestroy {
       default:
         return 'None';
     }
+  }
+
+  editRow(_: GradesTableRowModel) {
+    this.ngOnInit();
   }
 
   rowAdded(row: GradesTableRowModel) {

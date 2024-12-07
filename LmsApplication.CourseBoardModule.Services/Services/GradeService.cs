@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
@@ -65,17 +64,42 @@ public class GradeService : CourseBoardService, IGradeService
         var row = await _gradesTableRowDefinitionRepository.GetRowWithValuesAsync(rowId);
         if (row is null) 
             throw new KeyNotFoundException("Row not found.");
-
+        
+        var students = await CourseEditionProvider.GetCourseEditionStudentsAsync(editionId);
         var userIds = row.Values.Select(x => x.UserId).ToList()
             .Concat(row.Values.Select(x => x.TeacherId).ToList())
+            .Concat(students)
             .Distinct()
             .ToList();
         var users = await _userProvider.GetUsersByIdsAsync(userIds);
         
+        var grades = new List<UserGradesTableRowValueModel>();
+        foreach (var student in students)
+        {
+            var grade = row.Values.FirstOrDefault(x => x.UserId == student);
+            if (grade is null)
+            {
+                grades.Add(new UserGradesTableRowValueModel
+                {
+                    Id = null,
+                    Student = users[student],
+                    Teacher = null,
+                    Value = null,
+                    TeacherComment = null,
+                });
+            }
+
+            if (grade is not null)
+            {
+                grades.Add(grade.ToUserModel(users[grade.TeacherId], users[student], row.RowType));
+            }
+        }
+        
+        
         return new UserGradesModel
         {
             Row = row.ToModel(),
-            Values = row.Values.Select(value => value.ToUserModel(users[value.TeacherId], users[value.UserId], row.RowType)).ToList(),
+            Values = grades
         };
     }
 
@@ -93,11 +117,11 @@ public class GradeService : CourseBoardService, IGradeService
         {
             RootContextData =
             {
-                {nameof(GradesTableRowValue), rowDefinition}
+                {nameof(GradesTableRowDefinition), rowDefinition}
             }
         };
         await _updateRowValueModelValidationService.ValidateAndThrowAsync(context);
-
+        
         if (grade is null)
         {
             grade = CreateNewGrade(rowDefinition, rowId, userId, teacherId, model);
@@ -152,8 +176,8 @@ public class GradeService : CourseBoardService, IGradeService
                 RowDefinitionId = rowId,
                 RowType = RowType.Text,
                 TeacherId = teacherId,
-                TeacherComment = model.TeacherComment,
-                Value = (string)model.Value
+                TeacherComment = model.TeacherComment ?? "",
+                Value = model.Value
             },
             RowType.Number => new GradesTableRowNumberValue
             {
@@ -161,8 +185,8 @@ public class GradeService : CourseBoardService, IGradeService
                 RowDefinitionId = rowId,
                 RowType = RowType.Number,
                 TeacherId = teacherId,
-                TeacherComment = model.TeacherComment,
-                Value = (decimal)model.Value
+                TeacherComment = model.TeacherComment ?? "",
+                Value = decimal.Parse(model.Value)
             },
             RowType.Bool => new GradesTableRowBoolValue
             {
@@ -170,7 +194,8 @@ public class GradeService : CourseBoardService, IGradeService
                 RowDefinitionId = rowId,
                 RowType = RowType.Bool,
                 TeacherId = teacherId,
-                TeacherComment = model.TeacherComment,
+                TeacherComment = model.TeacherComment ?? "",
+                Value = bool.Parse(model.Value)
             },
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -178,18 +203,18 @@ public class GradeService : CourseBoardService, IGradeService
     
     private static void UpdateGrade(GradesTableRowValue grade, UpdateRowValueModel model)
     {
-        grade.TeacherComment = model.TeacherComment;
+        grade.TeacherComment = model.TeacherComment ?? "";
         
         switch (grade.RowType)
         {
             case RowType.Text:
-                ((GradesTableRowTextValue)grade).Value = (string)model.Value;
+                ((GradesTableRowTextValue)grade).Value = model.Value;
                 break;
             case RowType.Number:
-                ((GradesTableRowNumberValue)grade).Value = (decimal)model.Value;
+                ((GradesTableRowNumberValue)grade).Value = decimal.Parse(model.Value);
                 break;
             case RowType.Bool:
-                ((GradesTableRowBoolValue)grade).Value = (bool)model.Value;
+                ((GradesTableRowBoolValue)grade).Value = bool.Parse(model.Value);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

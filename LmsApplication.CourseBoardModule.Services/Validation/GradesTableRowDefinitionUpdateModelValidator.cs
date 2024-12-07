@@ -24,6 +24,6 @@ public class GradesTableRowDefinitionUpdateModelValidator : AbstractValidator<Gr
             return false;
         }
         
-        return row.RowType is not RowType.Number || !model.IsSummed;
+        return row.RowType is RowType.Number || !model.IsSummed;
     }
 }

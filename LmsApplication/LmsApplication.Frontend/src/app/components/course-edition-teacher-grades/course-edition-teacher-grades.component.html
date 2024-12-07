@@ -20,14 +20,14 @@
     <h2 class="my-auto">{{ getRowType(row) }}</h2>
     <h2 class="my-auto">{{ row.isSummed ? "Yes" : "No" }}</h2>
     <div class="flex flex-row gap-4">
-      <app-grade-row-definition-details-modal [row]="row"/>
-      <button class="btn btn-sm btn-info">Edit</button>
-      <app-grade-row-definition-delete-modal (delete)=deleteRow(row) />
+      <app-grade-row-definition-details-modal [row]="row" />
+      <app-grade-row-definition-edit-modal [row]="row" (edit)="editRow(row)" />
+      <app-grade-row-definition-delete-modal (delete)="deleteRow(row)" />
     </div>
   </li>
 </ul>
 <div class="flex flex-row justify-end mt-2">
-  <app-grade-row-definition-add-form (added)="rowAdded($event)"/>
+  <app-grade-row-definition-add-form (added)="rowAdded($event)" />
 </div>
 <h2 class="text-xl font-semibold mt-4">Students' Grades</h2>
 <ul></ul>

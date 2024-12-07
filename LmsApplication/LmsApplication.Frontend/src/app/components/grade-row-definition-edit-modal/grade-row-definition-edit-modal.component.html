@@ -1,0 +1,33 @@
+<button class="btn btn-sm btn-info" (click)="onEditClicked()">Edit</button>
+<dialog *ngIf="row" id="edit_modal" class="modal" #editModal>
+  <div class="modal-box">
+    <h1 class="text-lg font-bold text-center mb-4">Edit Row</h1>
+    <form class="flex flex-col justify-center" (submit)="onSubmit($event)">
+      <label class="block mt-2 text-lg">Title</label>
+      <input [formControl]="titleControl" class="input input-bordered block" />
+      <label class="block mt-2 text-lg">Description (optional)</label>
+      <input
+        [formControl]="descriptionControl"
+        class="input input-bordered block"
+      />
+      <label class="block mt-2 text-lg">Date (optional)</label>
+      <input
+        [formControl]="dateControl"
+        class="input input-bordered block"
+        type="date"
+      />
+      <label *ngIf="row.rowType === 2" class="label mt-2">
+        <span class="label-text text-lg">Is Summed</span>
+        <input
+          [formControl]="isSummedControl"
+          class="checkbox"
+          type="checkbox"
+        />
+      </label>
+      <button class="btn btn-success mt-2">Add</button>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

@@ -9,4 +9,6 @@ public interface ICourseEditionProvider
     Task<CourseEditionPublicSettingsModel> GetCourseEditionPublicSettingsAsync(Guid courseEditionId);
     
     Task<bool> CourseEditionExistsAsync(Guid courseEditionId);
+
+    Task<List<string>> GetCourseEditionStudentsAsync(Guid courseEditionId);
 }

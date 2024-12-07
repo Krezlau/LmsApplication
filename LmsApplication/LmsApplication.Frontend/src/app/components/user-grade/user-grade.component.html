@@ -1,0 +1,86 @@
+<ng-container *ngIf="grade && row">
+  <ng-container *ngIf="!editingEnabled">
+    <h2 class="p-1">{{ grade.student.name + " " + grade.student.surname }}</h2>
+    <h2 class="p-1">{{ getGradeValue() }}</h2>
+    <h2
+      [ngClass]="{ 'p-1': true, 'max-h-10 overflow-y-hidden': !commentVisible }"
+      (click)="toggleCommentVisible()"
+    >
+      {{ grade.teacherComment }}
+    </h2>
+    <h2 class="p-1">
+      {{
+        grade.teacher ? grade.teacher.name + " " + grade.teacher.surname : ""
+      }}
+    </h2>
+    <div class="flex flex-row gap-2">
+      <button class="btn btn-sm btn-info" (click)="enableEditing()">
+        Edit
+      </button>
+      <button
+        *ngIf="!deleteLoading && grade.id"
+        class="btn btn-sm btn-error"
+        (click)="deleteGrade()"
+      >
+        Delete
+      </button>
+      <button
+        *ngIf="deleteLoading"
+        class="btn btn-sm btn-error"
+        (click)="deleteGrade()"
+        disabled
+      >
+        Delete
+      </button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="editingEnabled">
+    <h2 class="p-1">{{ grade.student.name + " " + grade.student.surname }}</h2>
+    <input
+      *ngIf="row.rowType === 1"
+      class="mx-1 max-h-10"
+      [formControl]="gradeControl"
+    />
+    <input
+      *ngIf="row.rowType === 2"
+      type="number"
+      class="mx-2 max-h-10 w-3/4"
+      [formControl]="gradeControl"
+    />
+    <select
+      *ngIf="row.rowType === 3"
+      type="number"
+      class="mx-1 max-h-10 w-3/4"
+      [formControl]="gradeControl"
+    >
+      <option value="true">Yes</option>
+      <option value="false">No</option>
+    </select>
+    <textarea class="min-h-20 mx-1" [formControl]="commentControl"></textarea>
+    <h2>
+      {{
+        grade.teacher ? grade.teacher.name + " " + grade.teacher.surname : ""
+      }}
+    </h2>
+    <div class="flex flex-row gap-2">
+      <button class="btn btn-sm btn-error" (click)="disableEditing()">
+        Cancel
+      </button>
+      <button
+        *ngIf="!saveLoading"
+        class="btn btn-sm btn-success"
+        (click)="saveGrade()"
+      >
+        Save
+      </button>
+      <button
+        *ngIf="saveLoading"
+        class="btn btn-sm btn-success"
+        (click)="saveGrade()"
+        disabled
+      >
+        Save
+      </button>
+    </div>
+  </ng-container>
+</ng-container>

@@ -1,3 +1,4 @@
+using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Services.Repositories;
@@ -23,6 +24,11 @@ public class CourseEditionProvider :
     public async Task<bool> CourseEditionExistsAsync(Guid courseEditionId)
     {
         return await _courseEditionRepository.CourseEditionExistsAsync(courseEditionId);
+    }
+
+    public async Task<List<string>> GetCourseEditionStudentsAsync(Guid courseEditionId)
+    {
+        return await _courseEditionRepository.GetCourseEditionParticipantIdsAsync(courseEditionId, UserRole.Student);
     }
 
     public async Task<List<string>> GetCourseEditionParticipantsAsync(Guid courseEditionId)
