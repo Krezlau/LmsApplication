@@ -1,0 +1,18 @@
+<button class="btn btn-info btn-sm w-32" (click)="showGradesModal()">
+  Show Grades
+</button>
+<dialog *ngIf="user" id="grades_modal" class="modal" #gradesModal>
+  <div class="modal-box w-[50rem] max-w-full">
+    <h1 class="text-lg font-bold text-center mb-4">
+      {{ user.name + " " + user.surname }} Grades
+    </h1>
+    <app-user-grade-list
+      [grades]="grades"
+      [gradesLoading]="gradesLoading"
+      [user]="user"
+    />
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

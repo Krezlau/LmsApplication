@@ -38,6 +38,12 @@ export class CourseEditionListComponent implements OnDestroy {
 
   authState = this.authService.authState;
 
+  addEdition(edition: CourseEditionModel) {
+    if (this.courseEditions?.data) {
+      this.courseEditions.data = [...this.courseEditions.data, edition];
+    }
+  }
+
   navigateToEdition(edition: CourseEditionModel) {
     if (
       edition.isUserRegistered ||

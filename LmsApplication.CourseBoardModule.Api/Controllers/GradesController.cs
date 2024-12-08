@@ -43,8 +43,7 @@ public class GradesController : ControllerBase
     [Authorize(AuthPolicies.TeacherPolicy)]
     public async Task<IActionResult> UpdateRowValue(Guid editionId, Guid rowId, [FromQuery] string userId, UpdateRowValueModel model) 
     {
-        await _gradeService.UpdateRowValueAsync(editionId, rowId, userId, model);
-        return Ok(ApiResponseHelper.Success());
+        return Ok(ApiResponseHelper.Success(await _gradeService.UpdateRowValueAsync(editionId, rowId, userId, model)));
     }
     
     [HttpDelete("row/{rowId:guid}")]

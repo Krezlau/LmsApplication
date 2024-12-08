@@ -1,8 +1,10 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,6 +14,8 @@ import { CourseCategory } from '../../types/courses/course-category';
 import { Subscription, tap } from 'rxjs';
 import { NgForOf, NgIf } from '@angular/common';
 import { AlertService } from '../../services/alert.service';
+import { CourseModel } from '../../types/courses/course-model';
+import { ApiResponse } from '../../types/api-response';
 
 @Component({
   selector: 'app-course-add-form',
@@ -20,6 +24,8 @@ import { AlertService } from '../../services/alert.service';
   templateUrl: './course-add-form.component.html',
 })
 export class CourseAddFormComponent implements OnInit, OnDestroy {
+  @Output() added = new EventEmitter<CourseModel>();
+
   titleFormControl = new FormControl('');
   descriptionFormControl = new FormControl('');
   durationFormControl = new FormControl(CourseDuration.OneSemester);
@@ -76,13 +82,14 @@ export class CourseAddFormComponent implements OnInit, OnDestroy {
         })
         .pipe(
           tap({
-            next: () => {
+            next: (response: ApiResponse<CourseModel>) => {
               this.titleFormControl.setValue('');
               this.descriptionFormControl.setValue('');
               this.durationFormControl.setValue(CourseDuration.OneSemester);
               this.chosenCategories = [];
               this.createCourseLoading = false;
               this.dialogElement?.nativeElement.close();
+              this.added.emit(response.data!);
             },
             error: (error) => {
               this.alertService.show(error.error.message, 'error');

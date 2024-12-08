@@ -1,4 +1,12 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { UserListComponent } from '../user-list/user-list.component';
 import { UserService } from '../../services/user.service';
 import { UserModel } from '../../types/users/user-model';
@@ -15,6 +23,8 @@ import { CourseEditionService } from '../../services/course-edition.service';
 export class CourseEditionAddUserDialogComponent implements OnDestroy {
   @Input() courseEditionId: string = '';
   @Input() alreadyAddedUserIds: string[] = [];
+  @Output() added = new EventEmitter<UserModel>();
+  @ViewChild('dialog') dialog: ElementRef | undefined;
 
   constructor(
     private userService: UserService,
@@ -40,6 +50,7 @@ export class CourseEditionAddUserDialogComponent implements OnDestroy {
         .addUserToCourseEdition(this.courseEditionId, user.id)
         .subscribe((_) => {
           this.alreadyAddedUserIds = [...this.alreadyAddedUserIds, user.id];
+          this.added.emit(user);
         }),
     );
   }

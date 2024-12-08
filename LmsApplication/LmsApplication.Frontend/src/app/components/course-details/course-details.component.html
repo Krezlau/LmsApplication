@@ -1,9 +1,21 @@
 <div *ngIf="course">
-  <figure class="h-[250px] contain-content rounded-t-xl"><img class="absolute bottom-0" src="https://maths.mrpitts.co.uk/wp-content/uploads/2018/09/cropped-iStock-484064126.jpg" alt="Shoes" /></figure>
+  <figure class="h-[250px] contain-content rounded-t-xl">
+    <img
+      class="absolute bottom-0"
+      src="https://maths.mrpitts.co.uk/wp-content/uploads/2018/09/cropped-iStock-484064126.jpg"
+      alt="Shoes"
+    />
+  </figure>
   <div class="flex flex-row justify-between p-1">
-    <h1 class="text-4xl font-bold mb-4">{{course.data?.title}}</h1>
-    <button *ngIf="authState().userData?.role === UserRole.Admin" class="btn btn-error rounded-xl" (click)="deleteCourse()">Delete</button>
+    <h1 class="text-4xl font-bold mb-4">{{ course.data?.title }}</h1>
+    <app-grade-row-definition-delete-modal
+      *ngIf="authState().userData?.role === UserRole.Admin"
+      (delete)="deleteCourse()"
+      size="md"
+    />
   </div>
-  <p>{{course.data?.description}}</p>
+  <p>{{ course.data?.description }}</p>
 </div>
-<span *ngIf="!course" class="loading loading-spinner loading-lg mx-auto mt-20">Loading...</span>
+<span *ngIf="!course" class="loading loading-spinner loading-lg mx-auto mt-20"
+  >Loading...</span
+>

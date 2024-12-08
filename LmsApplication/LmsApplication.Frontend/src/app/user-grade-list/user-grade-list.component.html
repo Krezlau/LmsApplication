@@ -1,0 +1,98 @@
+<ul *ngIf="grades.length > 0 && !gradesLoading">
+  <th
+    *ngIf="user && !showSum"
+    class="grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 text-left"
+    style="grid-template-columns: 4fr 2fr 1fr 5fr 4fr 4fr"
+  >
+    <h2 class="font-semibold">Row</h2>
+    <h2 class="font-semibold">Grade</h2>
+    <h2 class="font-semibold">Sum</h2>
+    <h2 class="font-semibold">Comment</h2>
+    <h2 class="font-semibold">Teacher</h2>
+    <h2 class="font-semibold">Actions</h2>
+  </th>
+  <th
+    *ngIf="showSum"
+    class="grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 text-left"
+    style="grid-template-columns: 4fr 4fr 2fr 1fr 4fr 4fr"
+  >
+    <h2 class="font-semibold">Row</h2>
+    <h2 class="font-semibold">Description</h2>
+    <h2 class="font-semibold">Grade</h2>
+    <h2 class="font-semibold">Sum</h2>
+    <h2 class="font-semibold">Comment</h2>
+    <h2 class="font-semibold">Teacher</h2>
+  </th>
+  <th
+    *ngIf="!user && !showSum"
+    class="grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 text-left"
+    style="grid-template-columns: 4fr 4fr 2fr 4fr 4fr"
+  >
+    <h2 class="font-semibold">Row</h2>
+    <h2 class="font-semibold">Description</h2>
+    <h2 class="font-semibold">Grade</h2>
+    <h2 class="font-semibold">Comment</h2>
+    <h2 class="font-semibold">Teacher</h2>
+  </th>
+  <ng-container *ngIf="user && !showSum">
+    <li *ngFor="let grade of grades">
+      <app-user-grade
+        [grade]="
+          grade.value ?? {
+            id: null,
+            value: null,
+            teacher: null,
+            teacherComment: null,
+          }
+        "
+        [student]="user"
+        [row]="grade.row"
+        class="grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300"
+        style="grid-template-columns: 4fr 2fr 1fr 5fr 4fr 4fr"
+      />
+    </li>
+  </ng-container>
+  <ng-container *ngIf="showSum">
+    <li *ngFor="let grade of grades">
+      <app-user-grade
+        [grade]="
+          grade.value ?? {
+            id: null,
+            value: null,
+            teacher: null,
+            teacherComment: null,
+          }
+        "
+        [student]="user"
+        [row]="grade.row"
+        class="grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300"
+        style="grid-template-columns: 4fr 4fr 2fr 1fr 4fr 4fr"
+      />
+    </li>
+  </ng-container>
+  <ng-container *ngIf="!user && !showSum">
+    <li *ngFor="let grade of grades">
+      <app-user-grade
+        [grade]="
+          grade.value ?? {
+            id: null,
+            value: null,
+            teacher: null,
+            teacherComment: null,
+          }
+        "
+        [student]="user"
+        [row]="grade.row"
+        class="grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300"
+        style="grid-template-columns: 4fr 4fr 2fr 4fr 4fr"
+      />
+    </li>
+  </ng-container>
+  <div *ngIf="showSum || user" class="flex flex-row gap-4 mt-4">
+    <h2 class="text-lg font-semibold">Sum</h2>
+    <h2 class="p-1 w-8 h-8 rounded text-center bg-info font-bold">{{ getSum() }}</h2>
+  </div>
+</ul>
+<div *ngIf="gradesLoading" class="mt-10 flex flex-row justify-center">
+  <span class="loading loading-spinner loading-lg mx-auto">Loading...</span>
+</div>

@@ -4,7 +4,12 @@ import { AuthService } from './auth.service';
 import { env } from '../../env';
 import { ApiResponse } from '../types/api-response';
 import { GradesTableRowModel } from '../types/course-board/grades-table-row-model';
-import { UserGradesModel } from '../types/course-board/user-grades-model';
+import {
+  GradesTableRowValueModel,
+  UserGradesModel,
+  UserGradesTableRowValueModel,
+} from '../types/course-board/user-grades-model';
+import { GradeModel } from '../types/course-board/grade-model';
 
 @Injectable({
   providedIn: 'root',
@@ -105,7 +110,7 @@ export class GradeService {
     value: string,
     teacherComment: string | null,
   ) {
-    return this.http.put<ApiResponse<null>>(
+    return this.http.put<ApiResponse<GradesTableRowValueModel>>(
       `${env.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}?userId=${userId}`,
       {
         value: value?.toString() ?? null,
@@ -128,5 +133,17 @@ export class GradeService {
         },
       },
     );
+  }
+
+  public getUserGradesTable(courseEditionId: string, userId: string | null) {
+    const path = userId
+      ? `${env.apiUrl}/api/editions/${courseEditionId}/grades/user/${userId}`
+      : `${env.apiUrl}/api/editions/${courseEditionId}/grades/current`;
+
+    return this.http.get<ApiResponse<GradeModel[]>>(path, {
+      headers: {
+        Authorization: `Bearer ${this.authService.authState().accessToken}`,
+      },
+    });
   }
 }

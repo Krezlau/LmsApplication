@@ -1,10 +1,15 @@
-<button class="btn btn-sm btn-error" (click)="openModal()">Delete</button>
+<button
+  [ngClass]="{ 'btn btn-error': true, 'btn-sm': size === 'sm' }"
+  (click)="openModal()"
+>
+  Delete
+</button>
 <dialog id="delete_modal" class="modal" #deleteModal>
   <div class="modal-box">
     <h1 class="text-lg font-bold text-center mb-4">Are you sure?</h1>
     <div class="flex flex-row justify-around">
-      <button class="btn btn-sm btn-success w-32" (click)="deleteRow()">Yes</button>
-      <button class="btn btn-sm btn-neutral w-32" (click)="closeModal()">No</button>
+      <button class="btn btn-success w-32" (click)="deleteRow()">Yes</button>
+      <button class="btn btn-neutral w-32" (click)="closeModal()">No</button>
     </div>
   </div>
   <form method="dialog" class="modal-backdrop">

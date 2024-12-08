@@ -60,4 +60,15 @@ export class CourseService {
       },
     );
   }
+
+  public deleteCourse(courseId: string) {
+    return this.http.delete<ApiResponse<null>>(
+      `${env.apiUrl}/api/courses/${courseId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
 }

@@ -18,8 +18,10 @@
       <h2 class="font-semibold">Is Summed</h2>
       <h2>{{ row.isSummed ? "Yes" : "No" }}</h2>
     </div>
-    <h2 class="font-bold text-lg text-center mt-4">Grades</h2>
-    <ul *ngIf="userGrades">
+    <h2 *ngIf="row.rowType !== 0" class="font-bold text-lg text-center mt-4">
+      Grades
+    </h2>
+    <ul *ngIf="userGrades && row.rowType !== 0">
       <th
         class="grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300"
         style="grid-template-columns: 4fr 2fr 5fr 4fr 4fr"
@@ -34,6 +36,8 @@
         <app-user-grade
           [grade]="grade"
           [row]="row"
+          [student]="grade.student"
+          type="student"
           class="grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300"
           style="grid-template-columns: 4fr 2fr 5fr 4fr 4fr"
         />

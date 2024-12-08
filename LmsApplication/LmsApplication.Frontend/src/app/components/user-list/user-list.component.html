@@ -2,13 +2,17 @@
   <div
     [ngClass]="{
       'grid grid-cols-3 border-b-2': true,
-      'grid-cols-4': this.authState().userData?.role === 2,
+      'grid-cols-4':
+        this.authState().userData?.role === 2 && this.courseEditionId,
     }"
   >
     <h2 class="font-semibold">Full Name</h2>
     <h2 class="font-semibold">Email</h2>
     <h2 class="font-semibold">Role</h2>
-    <h2 *ngIf="this.authState().userData?.role === 2" class="font-semibold">
+    <h2
+      *ngIf="this.authState().userData?.role === 2 && this.courseEditionId"
+      class="font-semibold"
+    >
       Actions
     </h2>
   </div>
@@ -17,7 +21,8 @@
       *ngIf="user"
       [ngClass]="{
         'grid grid-cols-3 p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 cursor-pointer': true,
-        'grid-cols-4': this.authState().userData?.role === 2,
+        'grid-cols-4':
+          this.authState().userData?.role === 2 && this.courseEditionId,
       }"
     >
       <div
@@ -28,7 +33,9 @@
         <div
           class="w-8 h-8 my-auto rounded-full bg-neutral text-neutral-content mr-2"
         >
-          <span *ngIf="!user.photo" class="text">{{ user.name[0] + user.surname[0] }}</span>
+          <span *ngIf="!user.photo" class="text">{{
+            user.name[0] + user.surname[0]
+          }}</span>
         </div>
         <h2 class="my-auto">{{ user.name + " " + user.surname }}</h2>
       </div>
@@ -41,10 +48,22 @@
       <button
         class="btn btn-error btn-sm w-20"
         (click)="removeUser(user)"
-        *ngIf="courseEditionId && this.authState().userData?.role === 2"
+        *ngIf="
+          courseEditionId &&
+          this.authState().userData?.role === 2 &&
+          listType === 'users'
+        "
       >
         Remove
       </button>
+      <app-show-user-grades-modal
+        [user]="user"
+        *ngIf="
+          courseEditionId &&
+          this.authState().userData?.role === 2 &&
+          listType === 'grades'
+        "
+      />
     </div>
   </li>
 </ul>
@@ -52,12 +71,17 @@
   No users found.
 </p>
 <div
-  *ngIf="this.authState().userData?.role === 2 && courseEditionId"
+  *ngIf="
+    this.authState().userData?.role === 2 &&
+    courseEditionId &&
+    listType !== 'grades'
+  "
   class="mt-4 flex flex-row justify-end"
 >
   <app-course-edition-add-user-dialog
     [alreadyAddedUserIds]="getUserIds()"
     [courseEditionId]="courseEditionId"
+    (added)="userAdded($event)"
   />
 </div>
 <div *ngIf="usersLoading" class="flex flex-row justify-center">

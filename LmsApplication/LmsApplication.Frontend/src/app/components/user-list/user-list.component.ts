@@ -10,6 +10,7 @@ import { toHumanReadable } from '../../types/users/user-role';
 import { CourseEditionAddUserDialogComponent } from '../course-edition-add-user-dialog/course-edition-add-user-dialog.component';
 import { CourseEditionService } from '../../services/course-edition.service';
 import { AlertService } from '../../services/alert.service';
+import { ShowUserGradesModalComponent } from '../../show-user-grades-modal/show-user-grades-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -20,11 +21,13 @@ import { AlertService } from '../../services/alert.service';
     UserCardComponent,
     NgClass,
     CourseEditionAddUserDialogComponent,
+    ShowUserGradesModalComponent,
   ],
   templateUrl: './user-list.component.html',
 })
 export class UserListComponent implements OnInit, OnDestroy {
   @Input() courseEditionId: string | null = null;
+  @Input() listType = 'users';
   protected readonly toHumanReadable = toHumanReadable;
 
   users: UserModel[] = [];
@@ -46,6 +49,10 @@ export class UserListComponent implements OnInit, OnDestroy {
     if (user) {
       await this.router.navigate(['users', user.email]);
     }
+  }
+
+  userAdded(user: UserModel) {
+    this.users = [...this.users, user];
   }
 
   getUserIds() {
@@ -95,6 +102,9 @@ export class UserListComponent implements OnInit, OnDestroy {
           .getUsersByCourseEdition(this.courseEditionId)
           .subscribe((users) => {
             this.users = users!;
+            if (this.listType === 'grades') {
+              this.users = this.users.filter((user) => user.role === 0);
+            }
             this.usersLoading = false;
           }),
       );

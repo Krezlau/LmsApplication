@@ -1,7 +1,9 @@
+import { NgClass } from '@angular/common';
 import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -9,11 +11,13 @@ import {
 @Component({
   selector: 'app-grade-row-definition-delete-modal',
   standalone: true,
-  imports: [], templateUrl: './grade-row-definition-delete-modal.component.html',
+  imports: [NgClass],
+  templateUrl: './grade-row-definition-delete-modal.component.html',
 })
 export class GradeRowDefinitionDeleteModalComponent {
   @Output() delete = new EventEmitter();
   @ViewChild('deleteModal') deleteModal: ElementRef | undefined;
+  @Input() size: 'sm' | 'md' = 'sm';
 
   openModal() {
     this.deleteModal?.nativeElement.showModal();

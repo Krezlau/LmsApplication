@@ -1,5 +1,13 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import {
   FormControl,
   FormsModule,
@@ -10,6 +18,8 @@ import { CourseModel } from '../../types/courses/course-model';
 import { AlertService } from '../../services/alert.service';
 import { CourseEditionService } from '../../services/course-edition.service';
 import { Subscription, tap } from 'rxjs';
+import { CourseEditionModel } from '../../types/courses/course-edition-model';
+import { ApiResponse } from '../../types/api-response';
 
 @Component({
   selector: 'app-course-edition-add-form',
@@ -19,6 +29,7 @@ import { Subscription, tap } from 'rxjs';
 })
 export class CourseEditionAddFormComponent implements OnInit {
   @Input() course: CourseModel = {} as CourseModel;
+  @Output() added = new EventEmitter<CourseEditionModel>();
 
   constructor(
     private alertService: AlertService,
@@ -112,12 +123,13 @@ export class CourseEditionAddFormComponent implements OnInit {
         )
         .pipe(
           tap({
-            next: () => {
+            next: (response: ApiResponse<CourseEditionModel>) => {
               this.titleControl.reset();
               this.studentLimitControl.reset();
               this.startDateControl.reset();
               this.dialogElement?.nativeElement.close();
               this.createLoading = false;
+              this.added.emit(response.data!);
             },
             error: (error) => {
               if (error.error.message) {

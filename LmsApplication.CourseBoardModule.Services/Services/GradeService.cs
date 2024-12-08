@@ -16,7 +16,7 @@ public interface IGradeService
     
     Task<UserGradesModel> GetRowGradesAsync(Guid editionId, Guid rowId);
     
-    Task UpdateRowValueAsync(Guid editionId, Guid rowId, string userId, UpdateRowValueModel model);
+    Task<GradesTableRowValueModel> UpdateRowValueAsync(Guid editionId, Guid rowId, string userId, UpdateRowValueModel model);
     
     Task DeleteRowValueAsync(Guid editionId, Guid rowId, string userId);
 }
@@ -103,7 +103,7 @@ public class GradeService : CourseBoardService, IGradeService
         };
     }
 
-    public async Task UpdateRowValueAsync(Guid editionId, Guid rowId, string userId, UpdateRowValueModel model)
+    public async Task<GradesTableRowValueModel> UpdateRowValueAsync(Guid editionId, Guid rowId, string userId, UpdateRowValueModel model)
     {
         var teacherId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, teacherId);
@@ -111,6 +111,10 @@ public class GradeService : CourseBoardService, IGradeService
         var rowDefinition = await _gradesTableRowDefinitionRepository.GetByIdAsync(rowId);
         if (rowDefinition is null) 
             throw new KeyNotFoundException("Row not found.");
+        
+        var teacher = await _userProvider.GetUserByIdAsync(teacherId);
+        if (teacher is null)
+            throw new KeyNotFoundException("Teacher not found.");
         
         var grade = await _gradesTableRowValueRepository.GetGradesTableRowValueAsync(rowId, userId);
         var context = new ValidationContext<UpdateRowValueModel>(model)
@@ -134,6 +138,8 @@ public class GradeService : CourseBoardService, IGradeService
             
             await _gradesTableRowValueRepository.UpdateAsync(grade);
         }
+        
+        return grade.ToModel(teacher, rowDefinition.RowType);
     }
 
     public async Task DeleteRowValueAsync(Guid editionId, Guid rowId, string userId)

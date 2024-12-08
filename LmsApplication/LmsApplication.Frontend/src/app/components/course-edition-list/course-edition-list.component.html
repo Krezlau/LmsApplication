@@ -28,6 +28,6 @@
     </div>
   </li>
   <li *ngIf="(authState().userData?.role ?? 0) == 2 && course">
-    <app-course-edition-add-form [course]="course.data!" />
+    <app-course-edition-add-form [course]="course.data!" (added)="addEdition($event)"/>
   </li>
 </ul>

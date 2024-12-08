@@ -1,24 +1,47 @@
-<ng-container *ngIf="grade && row">
+<ng-container *ngIf="row">
   <ng-container *ngIf="!editingEnabled">
-    <h2 class="p-1">{{ grade.student.name + " " + grade.student.surname }}</h2>
+    <h2 class="p-1">{{ getFirstColumnValue() }}</h2>
+    <h2
+      *ngIf="!student"
+      [ngClass]="{
+        'p-1': true,
+        'max-h-10 overflow-y-hidden': !descriptionVisible,
+      }"
+      (click)="toggleDescriptionVisible()"
+    >
+      {{ row.description }}
+    </h2>
     <h2 class="p-1">{{ getGradeValue() }}</h2>
+    <input
+      *ngIf="type !== 'student'"
+      type="checkbox"
+      [checked]="row.isSummed"
+      disabled
+      class="checkbox"
+    />
     <h2
       [ngClass]="{ 'p-1': true, 'max-h-10 overflow-y-hidden': !commentVisible }"
       (click)="toggleCommentVisible()"
     >
-      {{ grade.teacherComment }}
+      {{ grade?.teacherComment ?? "" }}
     </h2>
     <h2 class="p-1">
       {{
-        grade.teacher ? grade.teacher.name + " " + grade.teacher.surname : ""
+        grade && grade.teacher
+          ? grade.teacher.name + " " + grade.teacher.surname
+          : ""
       }}
     </h2>
-    <div class="flex flex-row gap-2">
-      <button class="btn btn-sm btn-info" (click)="enableEditing()">
+    <div *ngIf="student" class="flex flex-row gap-2">
+      <button
+        *ngIf="row.rowType !== 0"
+        class="btn btn-sm btn-info"
+        (click)="enableEditing()"
+      >
         Edit
       </button>
       <button
-        *ngIf="!deleteLoading && grade.id"
+        *ngIf="!deleteLoading && grade?.id"
         class="btn btn-sm btn-error"
         (click)="deleteGrade()"
       >
@@ -35,10 +58,10 @@
     </div>
   </ng-container>
   <ng-container *ngIf="editingEnabled">
-    <h2 class="p-1">{{ grade.student.name + " " + grade.student.surname }}</h2>
+    <h2 class="p-1">{{ getFirstColumnValue() }}</h2>
     <input
       *ngIf="row.rowType === 1"
-      class="mx-1 max-h-10"
+      class="mx-1 max-h-10 w-3/4"
       [formControl]="gradeControl"
     />
     <input
@@ -53,13 +76,15 @@
       class="mx-1 max-h-10 w-3/4"
       [formControl]="gradeControl"
     >
-      <option value="true">Yes</option>
-      <option value="false">No</option>
+      <option [value]="true">Yes</option>
+      <option [value]="false">No</option>
     </select>
     <textarea class="min-h-20 mx-1" [formControl]="commentControl"></textarea>
     <h2>
       {{
-        grade.teacher ? grade.teacher.name + " " + grade.teacher.surname : ""
+        grade && grade.teacher
+          ? grade.teacher.name + " " + grade.teacher.surname
+          : ""
       }}
     </h2>
     <div class="flex flex-row gap-2">

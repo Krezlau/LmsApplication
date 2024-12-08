@@ -85,10 +85,10 @@ public class UserService : IUserService
     public async Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId)
     {
         var userId = _userContext.GetUserId();
-        var isAdmin = _userManager.IsInRoleAsync(new User {Id = userId }, "Admin");
-        var isParticipant = _courseEditionProvider.IsUserRegisteredToCourseEditionAsync(courseEditionId, userId);
+        var isAdmin = await _userManager.IsInRoleAsync(new User {Id = userId }, "Admin");
+        var isParticipant = await _courseEditionProvider.IsUserRegisteredToCourseEditionAsync(courseEditionId, userId);
         
-        if (!await isAdmin && !await isParticipant)
+        if (!isAdmin && !isParticipant)
         {
             throw new ValidationException("User is not registered to this course edition.");
         }

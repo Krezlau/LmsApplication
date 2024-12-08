@@ -13,3 +13,10 @@ export interface UserGradesTableRowValueModel {
   student: UserModel;
   value: any | null;
 }
+
+export interface GradesTableRowValueModel {
+  id: string | null;
+  teacherComment: string | null;
+  teacher: UserModel | null;
+  value: any | null;
+}

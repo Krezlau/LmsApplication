@@ -11,6 +11,7 @@ import { GradeRowDefinitionAddFormComponent } from '../grade-row-definition-add-
 import { GradeRowDefinitionDetailsModalComponent } from '../grade-row-definition-details-modal/grade-row-definition-details-modal.component';
 import { GradeRowDefinitionDeleteModalComponent } from '../grade-row-definition-delete-modal/grade-row-definition-delete-modal.component';
 import { GradeRowDefinitionEditModalComponent } from '../grade-row-definition-edit-modal/grade-row-definition-edit-modal.component';
+import { UserListComponent } from '../user-list/user-list.component';
 
 @Component({
   selector: 'app-course-edition-teacher-grades',
@@ -22,6 +23,7 @@ import { GradeRowDefinitionEditModalComponent } from '../grade-row-definition-ed
     GradeRowDefinitionDetailsModalComponent,
     GradeRowDefinitionDeleteModalComponent,
     GradeRowDefinitionEditModalComponent,
+    UserListComponent,
   ],
   templateUrl: './course-edition-teacher-grades.component.html',
 })

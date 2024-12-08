@@ -1,19 +1,39 @@
 <ul class="grid grid-cols-4 gap-4 mt-2">
-  <span *ngIf="!coursesLoading && courses.length === 0" class="text-center col-span-4">No courses found</span>
-  <span *ngIf="coursesLoading" class="loading loading-spinner loading-lg mx-auto col-span-4"></span>
+  <span
+    *ngIf="!coursesLoading && courses.length === 0"
+    class="text-center col-span-4"
+    >No courses found</span
+  >
+  <span
+    *ngIf="coursesLoading"
+    class="loading loading-spinner loading-lg mx-auto col-span-4"
+  ></span>
   <li *ngFor="let course of courses">
-    <div class="card card-compact bg-base-100 shadow-xl transition hover:scale-105 cursor-pointer" (click)="redirectToDetails(course.id)">
-      <figure><img src="https://maths.mrpitts.co.uk/wp-content/uploads/2018/09/cropped-iStock-484064126.jpg" alt="Shoes" /></figure>
+    <div
+      class="card card-compact bg-base-100 shadow-xl transition hover:scale-105 cursor-pointer"
+      (click)="redirectToDetails(course.id)"
+    >
+      <figure>
+        <img
+          src="https://maths.mrpitts.co.uk/wp-content/uploads/2018/09/cropped-iStock-484064126.jpg"
+          alt="Shoes"
+        />
+      </figure>
       <div class="card-body">
-        <h2 class="card-title">{{course.title}}</h2>
-        <p class="h-[52px] overflow-clip">{{course.description}}</p>
+        <h2 class="card-title">{{ course.title }}</h2>
+        <p class="h-[52px] overflow-clip">{{ course.description }}</p>
         <div>
-          <div *ngFor="let category of course.categories" class="badge badge-primary mx-1">{{category.name}}</div>
+          <div
+            *ngFor="let category of course.categories"
+            class="badge badge-primary mx-1"
+          >
+            {{ category.name }}
+          </div>
         </div>
       </div>
     </div>
   </li>
 </ul>
 <div *ngIf="!coursesLoading">
-  <app-course-add-form ></app-course-add-form>
+  <app-course-add-form (added)="addCourse($event)"></app-course-add-form>
 </div>

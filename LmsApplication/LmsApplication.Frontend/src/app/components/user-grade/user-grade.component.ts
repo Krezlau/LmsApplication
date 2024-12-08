@@ -1,6 +1,9 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component, Input, OnDestroy } from '@angular/core';
-import { UserGradesTableRowValueModel } from '../../types/course-board/user-grades-model';
+import {
+  GradesTableRowValueModel,
+  UserGradesTableRowValueModel,
+} from '../../types/course-board/user-grades-model';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GradeService } from '../../services/grade.service';
 import { AlertService } from '../../services/alert.service';
@@ -8,6 +11,7 @@ import { Router } from '@angular/router';
 import { Subscription, tap } from 'rxjs';
 import { GradesTableRowModel } from '../../types/course-board/grades-table-row-model';
 import { ApiResponse } from '../../types/api-response';
+import { UserModel } from '../../types/users/user-model';
 
 @Component({
   selector: 'app-user-grade',
@@ -16,8 +20,13 @@ import { ApiResponse } from '../../types/api-response';
   templateUrl: './user-grade.component.html',
 })
 export class UserGradeComponent implements OnDestroy {
-  @Input() grade: UserGradesTableRowValueModel | null = null;
+  @Input() grade:
+    | UserGradesTableRowValueModel
+    | GradesTableRowValueModel
+    | null = null;
   @Input() row: GradesTableRowModel | null = null;
+  @Input() student: UserModel | null = null;
+  @Input() type: 'student' | 'row' = 'row';
 
   constructor(
     private gradeService: GradeService,
@@ -29,11 +38,16 @@ export class UserGradeComponent implements OnDestroy {
   saveLoading = false;
   deleteLoading = false;
   commentVisible = false;
+  descriptionVisible = false;
 
   gradeControl = new FormControl('', [Validators.required]);
   commentControl = new FormControl('');
 
   sub = new Subscription();
+
+  toggleDescriptionVisible() {
+    this.descriptionVisible = !this.descriptionVisible;
+  }
 
   toggleCommentVisible() {
     this.commentVisible = !this.commentVisible;
@@ -51,13 +65,21 @@ export class UserGradeComponent implements OnDestroy {
     this.commentControl.reset();
   }
 
+  getFirstColumnValue() {
+    if (this.type === 'student') {
+      return this.student?.name + ' ' + this.student?.surname;
+    } else {
+      return this.row?.title;
+    }
+  }
+
   getGradeValue() {
     if (this.row?.rowType === 3) {
-      return this.grade?.value === true
-        ? 'Yes'
-        : this.grade?.value === false
-          ? 'No'
-          : '';
+      return this.grade?.value === null || this.grade?.value === undefined
+        ? ''
+        : this.grade?.value
+          ? 'Yes'
+          : 'No';
     }
 
     return this.grade?.value;
@@ -72,30 +94,33 @@ export class UserGradeComponent implements OnDestroy {
         .deleteGrade(
           this.router.url.split('/')[2],
           this.row!.id,
-          this.grade!.student.id,
+          this.student!.id,
         )
-        .pipe(tap({
-          next: (_: ApiResponse<null>) => {
-            this.deleteLoading = false;
-            this.grade!.id = null;
-            this.grade!.value = null;
-            this.grade!.teacher = null;
-            this.grade!.teacherComment = null;
-          },
-          error: (err) => {
-            if (err.error.message) {
-              this.alertService.show(err.error.message, 'error');
-            } else {
-              this.alertService.show('Something went wrong', 'error');
-            }
-            this.deleteLoading = false;
-          }
-        }))
+        .pipe(
+          tap({
+            next: (_: ApiResponse<null>) => {
+              this.deleteLoading = false;
+              this.grade!.id = null;
+              this.grade!.value = null;
+              this.grade!.teacher = null;
+              this.grade!.teacherComment = null;
+            },
+            error: (err) => {
+              if (err.error.message) {
+                this.alertService.show(err.error.message, 'error');
+              } else {
+                this.alertService.show('Something went wrong', 'error');
+              }
+              this.deleteLoading = false;
+            },
+          }),
+        )
         .subscribe(),
     );
   }
 
   saveGrade() {
+    console.log(this.grade);
     if (!this.grade || !this.row) return;
 
     if (this.gradeControl.invalid || !this.gradeControl.value) {
@@ -109,7 +134,7 @@ export class UserGradeComponent implements OnDestroy {
         .updateGrade(
           this.router.url.split('/')[2],
           this.row.id,
-          this.grade.student.id,
+          this.student!.id,
           this.gradeControl.value,
           this.commentControl.value?.length === 0
             ? null
@@ -117,12 +142,14 @@ export class UserGradeComponent implements OnDestroy {
         )
         .pipe(
           tap({
-            next: (_: ApiResponse<null>) => {
+            next: (response: ApiResponse<GradesTableRowValueModel>) => {
               this.alertService.show('Grade saved', 'success');
               this.saveLoading = false;
               this.editingEnabled = false;
-              this.grade!.value = this.gradeControl.value;
-              this.grade!.teacherComment = this.commentControl.value;
+              this.grade!.id = response.data!.id;
+              this.grade!.value = response.data!.value;
+              this.grade!.teacher = response.data!.teacher;
+              this.grade!.teacherComment = response.data!.teacherComment;
             },
             error: (err) => {
               if (err.error.message) {

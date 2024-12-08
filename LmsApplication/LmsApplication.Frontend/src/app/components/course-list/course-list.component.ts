@@ -34,6 +34,10 @@ export class CourseListComponent implements OnInit, OnDestroy {
     await this.router.navigate(['courses', courseId]);
   }
 
+  addCourse(course: CourseModel) {
+    this.courses = [...this.courses, course];
+  }
+
   ngOnInit() {
     this.coursesLoading = true;
     this.sub.add(
