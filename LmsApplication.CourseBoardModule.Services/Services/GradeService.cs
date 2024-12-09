@@ -32,7 +32,7 @@ public class GradeService : CourseBoardService, IGradeService
 {
     private readonly IGradesTableRowValueRepository _gradesTableRowValueRepository;
     private readonly IGradesTableRowDefinitionRepository _gradesTableRowDefinitionRepository;
-    private readonly IValidationService<UpdateRowValueModel> _updateRowValueModelValidationService;
+    private readonly IValidationService<UpdateRowValueValidationModel> _updateRowValueModelValidationService;
     private readonly IUserProvider _userProvider;
     private readonly IFinalGradeRepository _finalGradeRepository;
     private readonly IValidationService<UpdateFinalGradeValidationModel> _updateFinalGradeValidationService;
@@ -44,7 +44,7 @@ public class GradeService : CourseBoardService, IGradeService
         IGradesTableRowValueRepository gradesTableRowValueRepository,
         IGradesTableRowDefinitionRepository gradesTableRowDefinitionRepository,
         IUserProvider userProvider,
-        IValidationService<UpdateRowValueModel> updateRowValueModelValidationService,
+        IValidationService<UpdateRowValueValidationModel> updateRowValueModelValidationService,
         IFinalGradeRepository finalGradeRepository,
         IValidationService<UpdateFinalGradeValidationModel> updateFinalGradeValidationService,
         IValidationService<CreateFinalGradeValidationModel> createFinalGradeValidationService) : base(courseEditionProvider, userContext)
@@ -123,28 +123,22 @@ public class GradeService : CourseBoardService, IGradeService
     {
         var teacherId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, teacherId);
-
-        var rowDefinition = await _gradesTableRowDefinitionRepository.GetByIdAsync(rowId);
-        if (rowDefinition is null) 
-            throw new KeyNotFoundException("Row not found.");
         
-        var teacher = await _userProvider.GetUserByIdAsync(teacherId);
-        if (teacher is null)
-            throw new KeyNotFoundException("Teacher not found.");
+        var validationModel = new UpdateRowValueValidationModel
+        {
+            StudentId = userId,
+            CourseEditionId = editionId,
+            Value = model.Value,
+            TeacherComment = model.TeacherComment,
+            RowDefinition = await _gradesTableRowDefinitionRepository.GetByIdAsync(rowId),
+            Teacher = await _userProvider.GetUserByIdAsync(teacherId),
+        };
+        await _updateRowValueModelValidationService.ValidateAndThrowAsync(validationModel);
         
         var grade = await _gradesTableRowValueRepository.GetGradesTableRowValueAsync(rowId, userId);
-        var context = new ValidationContext<UpdateRowValueModel>(model)
-        {
-            RootContextData =
-            {
-                {nameof(GradesTableRowDefinition), rowDefinition}
-            }
-        };
-        await _updateRowValueModelValidationService.ValidateAndThrowAsync(context);
-        
         if (grade is null)
         {
-            grade = CreateNewGrade(rowDefinition, rowId, userId, teacherId, model);
+            grade = CreateNewGrade(validationModel.RowDefinition!, rowId, userId, teacherId, model);
             
             await _gradesTableRowValueRepository.AddAsync(grade);
         }
@@ -155,7 +149,7 @@ public class GradeService : CourseBoardService, IGradeService
             await _gradesTableRowValueRepository.UpdateAsync(grade);
         }
         
-        return grade.ToModel(teacher, rowDefinition.RowType);
+        return grade.ToModel(validationModel.Teacher!, validationModel.RowDefinition!.RowType);
     }
 
     public async Task DeleteRowValueAsync(Guid editionId, Guid rowId, string userId)

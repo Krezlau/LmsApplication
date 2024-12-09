@@ -1,6 +1,7 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Models;
+using LmsApplication.CourseBoardModule.Data.Models.Validation;
 using LmsApplication.CourseBoardModule.Services.Repositories;
 using LmsApplication.CourseBoardModule.Services.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<IGradesTableRowDefinitionRepository, GradesTableRowDefinitionRepository>();
         services.AddScoped<IGradesTableRowValueRepository, GradesTableRowValueRepository>();
+        services.AddScoped<IFinalGradeRepository, FinalGradeRepository>();
         
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
         services.AddScoped<IValidationService<PostCreateModel>, ValidationService<PostCreateModel>>();
@@ -30,7 +32,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IValidationService<CommentUpdateModel>, ValidationService<CommentUpdateModel>>();
         services.AddScoped<IValidationService<GradesTableRowDefinitionUpdateModel>, ValidationService<GradesTableRowDefinitionUpdateModel>>();
         services.AddScoped<IValidationService<GradesTableRowDefinitionCreateModel>, ValidationService<GradesTableRowDefinitionCreateModel>>();
-        services.AddScoped<IValidationService<UpdateRowValueModel>, ValidationService<UpdateRowValueModel>>();
+        services.AddScoped<IValidationService<UpdateRowValueValidationModel>, ValidationService<UpdateRowValueValidationModel>>();
+        services.AddScoped<IValidationService<UpdateFinalGradeValidationModel>, ValidationService<UpdateFinalGradeValidationModel>>();
+        services.AddScoped<IValidationService<CreateFinalGradeValidationModel>, ValidationService<CreateFinalGradeValidationModel>>();
         
         return services;
     }
