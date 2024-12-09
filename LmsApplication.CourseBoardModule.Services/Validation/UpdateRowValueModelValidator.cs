@@ -25,8 +25,8 @@ public class UpdateRowValueModelValidator : AbstractValidator<UpdateRowValueMode
         return rowDefinition.RowType switch
         {
             RowType.Text => true,
-            RowType.Number => decimal.TryParse((string)value, out _),
-            RowType.Bool => bool.TryParse((string)value, out _),
+            RowType.Number => decimal.TryParse(value, out _),
+            RowType.Bool => bool.TryParse(value, out _),
             RowType.None => false,
             _ => throw new ArgumentOutOfRangeException()
         };

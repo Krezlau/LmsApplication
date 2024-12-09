@@ -60,4 +60,14 @@ public static class GradesTableMappingService
             Student = student
         };
     }
+    
+    public static FinalGradeModel ToModel(this FinalGrade entity, UserExchangeModel teacher)
+    {
+        return new FinalGradeModel
+        {
+            Id = entity.Id,
+            Value = entity.Value,
+            Teacher = teacher
+        };
+    }
 }

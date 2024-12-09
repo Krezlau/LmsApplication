@@ -53,4 +53,26 @@ public class GradesController : ControllerBase
         await _gradeService.DeleteRowValueAsync(editionId, rowId, userId);
         return Ok(ApiResponseHelper.Success());
     }
+
+    [HttpPost("final")]
+    [Authorize(AuthPolicies.TeacherPolicy)]
+    public async Task<IActionResult> CreateFinalGrade(Guid editionId, [FromBody] FinalGradeCreateModel model)
+    {
+        return Ok(ApiResponseHelper.Success(await _gradeService.CreateFinalGradeAsync(editionId, model)));
+    }
+    
+    [HttpPut("final")]
+    [Authorize(AuthPolicies.TeacherPolicy)]
+    public async Task<IActionResult> UpdateFinalGrade(Guid editionId, [FromBody] FinalGradeCreateModel model)
+    {
+        return Ok(ApiResponseHelper.Success(await _gradeService.UpdateFinalGradeAsync(editionId, model)));
+    }
+    
+    [HttpDelete("final")]
+    [Authorize(AuthPolicies.TeacherPolicy)]
+    public async Task<IActionResult> DeleteFinalGrade(Guid editionId)
+    {
+        await _gradeService.DeleteFinalGradeAsync(editionId);
+        return Ok(ApiResponseHelper.Success());
+    }
 }

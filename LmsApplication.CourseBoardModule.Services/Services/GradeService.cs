@@ -3,6 +3,7 @@ using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;
 using LmsApplication.CourseBoardModule.Data.Models;
+using LmsApplication.CourseBoardModule.Data.Models.Validation;
 using LmsApplication.CourseBoardModule.Services.Providers;
 using LmsApplication.CourseBoardModule.Services.Repositories;
 
@@ -10,15 +11,21 @@ namespace LmsApplication.CourseBoardModule.Services.Services;
 
 public interface IGradeService
 {
-    Task<List<GradeModel>> GetCurrentUserGradesAsync(Guid editionId);
+    Task<UserGradesModel> GetCurrentUserGradesAsync(Guid editionId);
     
-    Task<List<GradeModel>> GetUserGradesAsync(Guid editionId, string userId);
+    Task<UserGradesModel> GetUserGradesAsync(Guid editionId, string userId);
     
-    Task<UserGradesModel> GetRowGradesAsync(Guid editionId, Guid rowId);
+    Task<RowGradesModel> GetRowGradesAsync(Guid editionId, Guid rowId);
     
     Task<GradesTableRowValueModel> UpdateRowValueAsync(Guid editionId, Guid rowId, string userId, UpdateRowValueModel model);
     
     Task DeleteRowValueAsync(Guid editionId, Guid rowId, string userId);
+    
+    Task<FinalGradeModel> CreateFinalGradeAsync(Guid editionId, FinalGradeCreateModel model);
+    
+    Task<FinalGradeModel> UpdateFinalGradeAsync(Guid editionId, FinalGradeCreateModel model);
+    
+    Task DeleteFinalGradeAsync(Guid editionId);
 }
 
 public class GradeService : CourseBoardService, IGradeService
@@ -27,6 +34,9 @@ public class GradeService : CourseBoardService, IGradeService
     private readonly IGradesTableRowDefinitionRepository _gradesTableRowDefinitionRepository;
     private readonly IValidationService<UpdateRowValueModel> _updateRowValueModelValidationService;
     private readonly IUserProvider _userProvider;
+    private readonly IFinalGradeRepository _finalGradeRepository;
+    private readonly IValidationService<UpdateFinalGradeValidationModel> _updateFinalGradeValidationService;
+    private readonly IValidationService<CreateFinalGradeValidationModel> _createFinalGradeValidationService;
 
     public GradeService(
         ICourseEditionProvider courseEditionProvider,
@@ -34,15 +44,21 @@ public class GradeService : CourseBoardService, IGradeService
         IGradesTableRowValueRepository gradesTableRowValueRepository,
         IGradesTableRowDefinitionRepository gradesTableRowDefinitionRepository,
         IUserProvider userProvider,
-        IValidationService<UpdateRowValueModel> updateRowValueModelValidationService) : base(courseEditionProvider, userContext)
+        IValidationService<UpdateRowValueModel> updateRowValueModelValidationService,
+        IFinalGradeRepository finalGradeRepository,
+        IValidationService<UpdateFinalGradeValidationModel> updateFinalGradeValidationService,
+        IValidationService<CreateFinalGradeValidationModel> createFinalGradeValidationService) : base(courseEditionProvider, userContext)
     {
         _gradesTableRowValueRepository = gradesTableRowValueRepository;
         _gradesTableRowDefinitionRepository = gradesTableRowDefinitionRepository;
         _userProvider = userProvider;
         _updateRowValueModelValidationService = updateRowValueModelValidationService;
+        _finalGradeRepository = finalGradeRepository;
+        _updateFinalGradeValidationService = updateFinalGradeValidationService;
+        _createFinalGradeValidationService = createFinalGradeValidationService;
     }
 
-    public async Task<List<GradeModel>> GetCurrentUserGradesAsync(Guid editionId)
+    public async Task<UserGradesModel> GetCurrentUserGradesAsync(Guid editionId)
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
@@ -50,14 +66,14 @@ public class GradeService : CourseBoardService, IGradeService
         return await GetUserGradesFromDbAsync(editionId, userId);
     }
 
-    public async Task<List<GradeModel>> GetUserGradesAsync(Guid editionId, string userId)
+    public async Task<UserGradesModel> GetUserGradesAsync(Guid editionId, string userId)
     {
         await ValidateUserAccessToEditionAsync(editionId, UserContext.GetUserId());
 
         return await GetUserGradesFromDbAsync(editionId, userId);
     }
 
-    public async Task<UserGradesModel> GetRowGradesAsync(Guid editionId, Guid rowId)
+    public async Task<RowGradesModel> GetRowGradesAsync(Guid editionId, Guid rowId)
     {
         await ValidateUserAccessToEditionAsync(editionId, UserContext.GetUserId());
 
@@ -96,7 +112,7 @@ public class GradeService : CourseBoardService, IGradeService
         }
         
         
-        return new UserGradesModel
+        return new RowGradesModel
         {
             Row = row.ToModel(),
             Values = grades
@@ -153,14 +169,78 @@ public class GradeService : CourseBoardService, IGradeService
         await _gradesTableRowValueRepository.DeleteAsync(grade);
     }
 
-    private async Task<List<GradeModel>> GetUserGradesFromDbAsync(Guid editionId, string userId)
+    public async Task<FinalGradeModel> CreateFinalGradeAsync(Guid editionId, FinalGradeCreateModel model)
+    {
+        var userId = UserContext.GetUserId();
+        await ValidateUserAccessToEditionAsync(editionId, userId);
+
+        var validationModel = new CreateFinalGradeValidationModel
+        {
+            CourseEditionId = editionId,
+            Value = model.Value,
+            Teacher = await _userProvider.GetUserByIdAsync(userId),
+            StudentId = model.UserId,
+        };
+        await _createFinalGradeValidationService.ValidateAndThrowAsync(validationModel);
+
+        var finalGrade = new FinalGrade
+        {
+            UserId = model.UserId,
+            Value = model.Value,
+            TeacherId = userId,
+            CourseEditionId = editionId,
+        };
+        
+        await _finalGradeRepository.CreateAsync(finalGrade);
+
+        return finalGrade.ToModel(validationModel.Teacher!);
+    }
+
+    public async Task<FinalGradeModel> UpdateFinalGradeAsync(Guid editionId, FinalGradeCreateModel model)
+    {
+        var userId = UserContext.GetUserId();
+        await ValidateUserAccessToEditionAsync(editionId, userId);
+
+        var validationModel = new UpdateFinalGradeValidationModel
+        {
+            FinalGrade = await _finalGradeRepository.GetFinalGradeAsync(editionId, model.UserId),
+            CourseEditionId = editionId,
+            Value = model.Value,
+            Teacher = await _userProvider.GetUserByIdAsync(userId),
+            StudentId = model.UserId,
+        };
+        await _updateFinalGradeValidationService.ValidateAndThrowAsync(validationModel);
+
+        validationModel.FinalGrade!.TeacherId = userId;
+        validationModel.FinalGrade!.Value = model.Value;
+        await _finalGradeRepository.UpdateAsync(validationModel.FinalGrade);
+
+        return validationModel.FinalGrade.ToModel(validationModel.Teacher!);
+    }
+
+    public async Task DeleteFinalGradeAsync(Guid editionId)
+    {
+        var userId = UserContext.GetUserId();
+        await ValidateUserAccessToEditionAsync(editionId, userId);
+
+        var finalGrade = await _finalGradeRepository.GetFinalGradeAsync(editionId, userId);
+        if (finalGrade is null)
+            throw new KeyNotFoundException("Final grade not found.");
+        
+        await _finalGradeRepository.DeleteAsync(finalGrade);
+    }
+
+    private async Task<UserGradesModel> GetUserGradesFromDbAsync(Guid editionId, string userId)
     {
         var rows = await _gradesTableRowDefinitionRepository.GetGradesTableForUserAsync(editionId, userId);
-        
-        var teachers = await _userProvider.GetUsersByIdsAsync(
-            rows.SelectMany(x => x.Values.Select(v => v.TeacherId)).Distinct().ToList());
+        var finalGrade = await _finalGradeRepository.GetFinalGradeAsync(editionId, userId);
 
-        return rows.Select(row =>
+        var teachersToGet = rows.SelectMany(x => x.Values.Select(v => v.TeacherId)).ToList();
+        if (finalGrade is not null) teachersToGet.Add(finalGrade.TeacherId);
+        
+        var teachers = await _userProvider.GetUsersByIdsAsync(teachersToGet.Distinct().ToList());
+
+        var grades = rows.Select(row =>
         {
             var value = row.Values.FirstOrDefault();
             return new GradeModel
@@ -169,6 +249,12 @@ public class GradeService : CourseBoardService, IGradeService
                 Value = value?.ToModel(teachers[value.TeacherId], row.RowType) ?? null,
             };
         }).ToList();
+
+        return new UserGradesModel
+        {
+            Grades = grades,
+            FinalGrade = finalGrade?.ToModel(teachers[finalGrade.TeacherId]),
+        };
     }
     
     private static GradesTableRowValue CreateNewGrade(GradesTableRowDefinition rowDefinition, Guid rowId, string userId,

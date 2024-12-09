@@ -30,6 +30,8 @@ public class CourseBoardDbContext : BaseDbContext
     public DbSet<GradesTableRowNumberValue> GradesTableRowNumberValues { get; set; } = null!;
     
     public DbSet<GradesTableRowBoolValue> GradesTableRowBoolValues { get; set; } = null!;
+
+    public DbSet<FinalGrade> CourseFinalGrades { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
