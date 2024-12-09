@@ -56,14 +56,17 @@
       >
         Remove
       </button>
-      <app-show-user-grades-modal
-        [user]="user"
+      <div
+        class="flex flex-row justify-between"
         *ngIf="
           courseEditionId &&
           this.authState().userData?.role === 2 &&
           listType === 'grades'
         "
-      />
+      >
+        <app-show-user-grades-modal [user]="user" />
+        <app-add-final-grade-modal [user]="user" />
+      </div>
     </div>
   </li>
 </ul>

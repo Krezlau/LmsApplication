@@ -1,0 +1,66 @@
+<button class="btn btn-info btn-sm w-28" (click)="showGradesModal()">
+  Final Grade
+</button>
+<dialog *ngIf="user" id="grades_modal" class="modal" #gradesModal>
+  <div class="modal-box cursor-default">
+    <h1 class="text-lg font-bold text-center mb-4">
+      {{ user.name + " " + user.surname }} Final Grade
+    </h1>
+    <div class="flex flex-row justify-between">
+      <div class="flex flex-row gap-4">
+        <h2 class="my-auto">Final Grade</h2>
+        <p
+          [ngClass]="{
+            'rounded bg-info text-info-content p-2': true,
+            'bg-error text-error-content': finalGrade && finalGrade.value < 3,
+            'bg-warning text-warning-content':
+              finalGrade && finalGrade.value >= 3 && finalGrade.value < 4,
+            'bg-success text-success-content':
+              finalGrade && finalGrade.value >= 4,
+          }"
+        >
+          {{ finalGrade?.value ?? "None" }}
+        </p>
+        <p *ngIf="finalGrade && finalGrade.teacher" class="my-auto">
+          by {{ finalGrade.teacher.name + " " + finalGrade.teacher.surname }}
+        </p>
+      </div>
+      <div class="flex flex-row gap-4">
+        <h2 class="my-auto">Points Sum</h2>
+        <h2 class="rounded bg-info text-info-content p-2">
+          {{ getSum() }}
+        </h2>
+      </div>
+    </div>
+    <div *ngIf="!finalGrade" class="mt-6 mb-2 text-center">
+      <h1 class="font-semibold">Give Final Grade</h1>
+      <p>
+        Note: After you submit the final grade, you can't update any of
+        student's grades.
+      </p>
+    </div>
+    <form
+      *ngIf="!finalGrade"
+      class="flex flex-row justify-center gap-4"
+      (submit)="submitFinalGrade($event)"
+    >
+      <select class="select select-bordered" [formControl]="finalGradeControl">
+        <option value="2.0" default>2.0</option>
+        <option value="3.0">3.0</option>
+        <option value="3.5">3.5</option>
+        <option value="4.0">4.0</option>
+        <option value="4.5">4.5</option>
+        <option value="5.0">5.0</option>
+      </select>
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+    <div *ngIf="finalGrade" class="font-semibold text-center mt-6">
+      <button class="btn btn-error" (click)="deleteFinalGrade()">
+        Delete Final Grade
+      </button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

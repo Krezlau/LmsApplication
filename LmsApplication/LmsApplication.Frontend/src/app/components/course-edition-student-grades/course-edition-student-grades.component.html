@@ -1,2 +1,23 @@
 <h1 class="mt-2 text-xl text-center mb-4">Your Grades</h1>
-<app-user-grade-list [showSum]="true" [grades]="grades" [gradesLoading]="gradesLoading"/>
+<app-user-grade-list
+  [showSum]="true"
+  [grades]="grades"
+  [gradesLoading]="gradesLoading"
+/>
+<div class="flex flex-row gap-4">
+  <h2 class="my-auto">Final Grade</h2>
+  <p
+    [ngClass]="{
+      'rounded bg-info text-info-content p-2': true,
+      'bg-error text-error-content': finalGrade && finalGrade.value < 3,
+      'bg-warning text-warning-content':
+        finalGrade && finalGrade.value >= 3 && finalGrade.value < 4,
+      'bg-success text-success-content': finalGrade && finalGrade.value >= 4,
+    }"
+  >
+    {{ finalGrade?.value ?? "None" }}
+  </p>
+  <p *ngIf="finalGrade && finalGrade.teacher" class="my-auto">
+    by {{ finalGrade.teacher.name + " " + finalGrade.teacher.surname }}
+  </p>
+</div>

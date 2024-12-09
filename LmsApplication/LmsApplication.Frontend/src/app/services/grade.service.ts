@@ -7,9 +7,11 @@ import { GradesTableRowModel } from '../types/course-board/grades-table-row-mode
 import {
   GradesTableRowValueModel,
   UserGradesModel,
-  UserGradesTableRowValueModel,
 } from '../types/course-board/user-grades-model';
-import { GradeModel } from '../types/course-board/grade-model';
+import {
+  FinalGradeModel,
+  UserGradeModel,
+} from '../types/course-board/grade-model';
 
 @Injectable({
   providedIn: 'root',
@@ -140,10 +142,33 @@ export class GradeService {
       ? `${env.apiUrl}/api/editions/${courseEditionId}/grades/user/${userId}`
       : `${env.apiUrl}/api/editions/${courseEditionId}/grades/current`;
 
-    return this.http.get<ApiResponse<GradeModel[]>>(path, {
+    return this.http.get<ApiResponse<UserGradeModel>>(path, {
       headers: {
         Authorization: `Bearer ${this.authService.authState().accessToken}`,
       },
     });
+  }
+
+  public addFinalGrade(courseEditionId: string, userId: string, value: number) {
+    return this.http.post<ApiResponse<FinalGradeModel>>(
+      `${env.apiUrl}/api/editions/${courseEditionId}/grades/final`,
+      { userId, value },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  public deleteFinalGrade(courseEditionId: string, userId: string) {
+    return this.http.delete<ApiResponse<null>>(
+      `${env.apiUrl}/api/editions/${courseEditionId}/grades/final?userId=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
   }
 }

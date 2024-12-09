@@ -1,4 +1,3 @@
-using FluentValidation;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;
@@ -25,7 +24,7 @@ public interface IGradeService
     
     Task<FinalGradeModel> UpdateFinalGradeAsync(Guid editionId, FinalGradeCreateModel model);
     
-    Task DeleteFinalGradeAsync(Guid editionId);
+    Task DeleteFinalGradeAsync(Guid editionId, string userId);
 }
 
 public class GradeService : CourseBoardService, IGradeService
@@ -212,10 +211,9 @@ public class GradeService : CourseBoardService, IGradeService
         return validationModel.FinalGrade.ToModel(validationModel.Teacher!);
     }
 
-    public async Task DeleteFinalGradeAsync(Guid editionId)
+    public async Task DeleteFinalGradeAsync(Guid editionId, string userId)
     {
-        var userId = UserContext.GetUserId();
-        await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateUserAccessToEditionAsync(editionId, UserContext.GetUserId());
 
         var finalGrade = await _finalGradeRepository.GetFinalGradeAsync(editionId, userId);
         if (finalGrade is null)

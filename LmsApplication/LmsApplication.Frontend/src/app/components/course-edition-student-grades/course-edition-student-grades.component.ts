@@ -2,15 +2,20 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GradeService } from '../../services/grade.service';
 import { Router } from '@angular/router';
 import { AlertService } from '../../services/alert.service';
-import { GradeModel } from '../../types/course-board/grade-model';
+import {
+    FinalGradeModel,
+  GradeModel,
+  UserGradeModel,
+} from '../../types/course-board/grade-model';
 import { Subscription, tap } from 'rxjs';
 import { ApiResponse } from '../../types/api-response';
 import { UserGradeListComponent } from '../../user-grade-list/user-grade-list.component';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-course-edition-student-grades',
   standalone: true,
-  imports: [UserGradeListComponent],
+  imports: [NgClass, NgIf, UserGradeListComponent],
   templateUrl: './course-edition-student-grades.component.html',
 })
 export class CourseEditionStudentGradesComponent implements OnInit, OnDestroy {
@@ -24,6 +29,7 @@ export class CourseEditionStudentGradesComponent implements OnInit, OnDestroy {
 
   grades: GradeModel[] = [];
   gradesLoading = false;
+  finalGrade: FinalGradeModel | null = null;
 
   ngOnInit(): void {
     this.gradesLoading = true;
@@ -32,9 +38,10 @@ export class CourseEditionStudentGradesComponent implements OnInit, OnDestroy {
         .getUserGradesTable(this.router.url.split('/')[2], null)
         .pipe(
           tap({
-            next: (response: ApiResponse<GradeModel[]>) => {
+            next: (response: ApiResponse<UserGradeModel>) => {
               this.gradesLoading = false;
-              this.grades = response.data!;
+              this.grades = response.data!.grades;
+              this.finalGrade = response.data!.finalGrade;
             },
             error: (_) => {
               this.gradesLoading = false;

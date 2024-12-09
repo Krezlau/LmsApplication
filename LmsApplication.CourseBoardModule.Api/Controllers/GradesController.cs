@@ -70,9 +70,9 @@ public class GradesController : ControllerBase
     
     [HttpDelete("final")]
     [Authorize(AuthPolicies.TeacherPolicy)]
-    public async Task<IActionResult> DeleteFinalGrade(Guid editionId)
+    public async Task<IActionResult> DeleteFinalGrade(Guid editionId, [FromQuery] string userId)
     {
-        await _gradeService.DeleteFinalGradeAsync(editionId);
+        await _gradeService.DeleteFinalGradeAsync(editionId, userId);
         return Ok(ApiResponseHelper.Success());
     }
 }

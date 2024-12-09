@@ -79,6 +79,13 @@
       <option [value]="true">Yes</option>
       <option [value]="false">No</option>
     </select>
+    <input
+      *ngIf="type !== 'student'"
+      type="checkbox"
+      [checked]="row.isSummed"
+      disabled
+      class="checkbox"
+    />
     <textarea class="min-h-20 mx-1" [formControl]="commentControl"></textarea>
     <h2>
       {{

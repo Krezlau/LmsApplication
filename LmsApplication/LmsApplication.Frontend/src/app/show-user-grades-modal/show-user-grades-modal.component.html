@@ -1,8 +1,8 @@
-<button class="btn btn-info btn-sm w-32" (click)="showGradesModal()">
+<button class="btn btn-info btn-sm w-28" (click)="showGradesModal()">
   Show Grades
 </button>
 <dialog *ngIf="user" id="grades_modal" class="modal" #gradesModal>
-  <div class="modal-box w-[50rem] max-w-full">
+  <div class="modal-box w-[50rem] max-w-full cursor-default">
     <h1 class="text-lg font-bold text-center mb-4">
       {{ user.name + " " + user.surname }} Grades
     </h1>
@@ -11,6 +11,24 @@
       [gradesLoading]="gradesLoading"
       [user]="user"
     />
+    <div class="flex flex-row gap-4">
+      <h2 class="my-auto">Final Grade</h2>
+      <p
+        [ngClass]="{
+          'rounded bg-info text-info-content p-2': true,
+          'bg-error text-error-content': finalGrade && finalGrade.value < 3,
+          'bg-warning text-warning-content':
+            finalGrade && finalGrade.value >= 3 && finalGrade.value < 4,
+          'bg-success text-success-content':
+            finalGrade && finalGrade.value >= 4,
+        }"
+      >
+        {{ finalGrade?.value ?? "None" }}
+      </p>
+      <p *ngIf="finalGrade && finalGrade.teacher" class="my-auto">
+        by {{ finalGrade.teacher.name + " " + finalGrade.teacher.surname }}
+      </p>
+    </div>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>

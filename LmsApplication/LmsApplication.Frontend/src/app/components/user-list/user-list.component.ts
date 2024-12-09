@@ -11,6 +11,7 @@ import { CourseEditionAddUserDialogComponent } from '../course-edition-add-user-
 import { CourseEditionService } from '../../services/course-edition.service';
 import { AlertService } from '../../services/alert.service';
 import { ShowUserGradesModalComponent } from '../../show-user-grades-modal/show-user-grades-modal.component';
+import { AddFinalGradeModalComponent } from '../add-final-grade-modal/add-final-grade-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -22,6 +23,7 @@ import { ShowUserGradesModalComponent } from '../../show-user-grades-modal/show-
     NgClass,
     CourseEditionAddUserDialogComponent,
     ShowUserGradesModalComponent,
+    AddFinalGradeModalComponent,
   ],
   templateUrl: './user-list.component.html',
 })

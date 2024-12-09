@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgIf, NgClass } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { UserGradeListComponent } from '../user-grade-list/user-grade-list.component';
-import { GradeModel } from '../types/course-board/grade-model';
+import { FinalGradeModel, GradeModel, UserGradeModel } from '../types/course-board/grade-model';
 import { GradeService } from '../services/grade.service';
 import { AlertService } from '../services/alert.service';
 import { ApiResponse } from '../types/api-response';
@@ -18,7 +18,7 @@ import { UserModel } from '../types/users/user-model';
 @Component({
   selector: 'app-show-user-grades-modal',
   standalone: true,
-  imports: [NgIf, UserGradeListComponent],
+  imports: [NgClass, NgIf, UserGradeListComponent],
   templateUrl: './show-user-grades-modal.component.html',
 })
 export class ShowUserGradesModalComponent implements OnDestroy {
@@ -34,6 +34,7 @@ export class ShowUserGradesModalComponent implements OnDestroy {
   sub = new Subscription();
 
   grades: GradeModel[] = [];
+  finalGrade: FinalGradeModel | null = null;
   gradesLoading = false;
 
   showGradesModal(): void {
@@ -44,9 +45,10 @@ export class ShowUserGradesModalComponent implements OnDestroy {
         .getUserGradesTable(this.router.url.split('/')[2], this.user!.id)
         .pipe(
           tap({
-            next: (response: ApiResponse<GradeModel[]>) => {
+            next: (response: ApiResponse<UserGradeModel>) => {
               this.gradesLoading = false;
-              this.grades = response.data!;
+              this.grades = response.data!.grades;
+              this.finalGrade = response.data!.finalGrade;
             },
             error: (_) => {
               this.gradesLoading = false;
