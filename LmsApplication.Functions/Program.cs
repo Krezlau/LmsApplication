@@ -17,7 +17,6 @@ var host = new HostBuilder()
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
         services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<IEmailCreateService, EmailCreateService>();
         services.AddScoped<SmtpClient>(_ => new SmtpClient
         {
             Host = context.Configuration.GetValue<string>("SmtpServer"),

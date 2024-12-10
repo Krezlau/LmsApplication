@@ -8,12 +8,12 @@ namespace LmsApplication.Functions.Functions;
 public class PostNotificationFunction
 {
     private readonly ILogger<PostNotificationFunction> _logger;
-    private readonly IEmailCreateService _emailCreateService;
+    private readonly IEmailService _emailService;
 
-    public PostNotificationFunction(ILogger<PostNotificationFunction> logger, IEmailCreateService emailCreateService)
+    public PostNotificationFunction(ILogger<PostNotificationFunction> logger, IEmailService emailService)
     {
         _logger = logger;
-        _emailCreateService = emailCreateService;
+        _emailService = emailService;
     }
 
     [Function(nameof(PostNotificationFunction))]
@@ -21,6 +21,6 @@ public class PostNotificationFunction
     {
         _logger.LogInformation($"C# Queue trigger function processed: {message.TimeStampUtc}");
         
-        _emailCreateService.CreateEmailAsync(message);
+        _emailService.CreateEmailAsync(message);
     }
 }

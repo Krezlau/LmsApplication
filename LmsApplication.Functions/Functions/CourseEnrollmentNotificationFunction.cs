@@ -8,12 +8,12 @@ namespace LmsApplication.Functions.Functions;
 public class CourseEnrollmentNotificationFunction
 {
     private readonly ILogger<CourseEnrollmentNotificationFunction> _logger;
-    private readonly IEmailCreateService _emailCreateService;
+    private readonly IEmailService _emailService;
 
-    public CourseEnrollmentNotificationFunction(ILogger<CourseEnrollmentNotificationFunction> logger, IEmailCreateService emailCreateService)
+    public CourseEnrollmentNotificationFunction(ILogger<CourseEnrollmentNotificationFunction> logger, IEmailService emailService)
     {
         _logger = logger;
-        _emailCreateService = emailCreateService;
+        _emailService = emailService;
     }
 
     [Function(nameof(CourseEnrollmentNotificationFunction))]
@@ -21,6 +21,6 @@ public class CourseEnrollmentNotificationFunction
     {
         _logger.LogInformation($"Queue trigger function processed: {message.User.Id}");
         
-        _emailCreateService.CreateEmailAsync(message);
+        _emailService.CreateEmailAsync(message);
     }
 }
