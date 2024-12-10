@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.ResourceModu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.ResourceModule.Services", "LmsApplication.ResourceModule.Services\LmsApplication.ResourceModule.Services.csproj", "{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Functions", "LmsApplication.Functions\LmsApplication.Functions.csproj", "{57016675-F6F1-4300-8D3A-3EA922755274}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +100,10 @@ Global
 		{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9F573FF-95C5-4258-A840-CD5EAC02C4D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57016675-F6F1-4300-8D3A-3EA922755274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57016675-F6F1-4300-8D3A-3EA922755274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57016675-F6F1-4300-8D3A-3EA922755274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57016675-F6F1-4300-8D3A-3EA922755274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FF65ADF2-0726-4FC5-ADD5-7E1623E497CB} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}

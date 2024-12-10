@@ -50,13 +50,7 @@ public class UpdateRowValueModelValidator : AbstractValidator<UpdateRowValueVali
 
     private static bool ValueValid(UpdateRowValueValidationModel model, string value, ValidationContext<UpdateRowValueValidationModel> context)
     {
-        if (!context.RootContextData.TryGetValue(nameof(GradesTableRowDefinition), out var rowDefinitionObject) ||
-            rowDefinitionObject is not GradesTableRowDefinition rowDefinition)
-        {
-            return false;
-        }
-        
-        return rowDefinition.RowType switch
+        return model.RowDefinition!.RowType switch
         {
             RowType.Text => true,
             RowType.Number => decimal.TryParse(value, out _),

@@ -1,6 +1,8 @@
 using LmsApplication.Core.Api.Middleware;
 using LmsApplication.Core.Api.Providers;
 using LmsApplication.Core.Shared.Config;
+using LmsApplication.Core.Shared.QueueClients;
+using LmsApplication.Core.Shared.QueueMessages;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Api;
 using LmsApplication.CourseBoardModule.Data.Database;
@@ -36,6 +38,14 @@ builder.Services.AddCourseModuleApi<UserProvider>(builder.Configuration);
 builder.Services.AddCourseBoardModuleApi<UserProvider, CourseEditionProvider>(builder.Configuration);
 builder.Services.AddUserModuleApi<CourseEditionProvider>(builder.Configuration);
 builder.Services.AddResourceModuleApi<UserProvider, CourseProvider, CourseEditionProvider>(builder.Configuration);
+
+var azureStorage = builder.Configuration.GetConnectionString("StorageConnection");
+builder.Services.AddSingleton<IQueueClient<PostNotificationQueueMessage>>(_ =>
+    new QueueClient<PostNotificationQueueMessage>(azureStorage, PostNotificationQueueMessage.QueueName));
+builder.Services.AddSingleton<IQueueClient<GradeNotificationQueueMessage>>(_ =>
+    new QueueClient<GradeNotificationQueueMessage>(azureStorage, GradeNotificationQueueMessage.QueueName));
+builder.Services.AddSingleton<IQueueClient<CourseEnrollmentNotificationQueueMessage>>(_ =>
+    new QueueClient<CourseEnrollmentNotificationQueueMessage>(azureStorage, CourseEnrollmentNotificationQueueMessage.QueueName));
 
 builder.Services.AddSwaggerGen(opt =>
 {

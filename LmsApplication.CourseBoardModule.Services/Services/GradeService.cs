@@ -1,3 +1,5 @@
+using LmsApplication.Core.Shared.QueueClients;
+using LmsApplication.Core.Shared.QueueMessages;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;
@@ -5,6 +7,7 @@ using LmsApplication.CourseBoardModule.Data.Models;
 using LmsApplication.CourseBoardModule.Data.Models.Validation;
 using LmsApplication.CourseBoardModule.Services.Providers;
 using LmsApplication.CourseBoardModule.Services.Repositories;
+using RowType = LmsApplication.CourseBoardModule.Data.Entities.RowType;
 
 namespace LmsApplication.CourseBoardModule.Services.Services;
 
@@ -36,6 +39,7 @@ public class GradeService : CourseBoardService, IGradeService
     private readonly IFinalGradeRepository _finalGradeRepository;
     private readonly IValidationService<UpdateFinalGradeValidationModel> _updateFinalGradeValidationService;
     private readonly IValidationService<CreateFinalGradeValidationModel> _createFinalGradeValidationService;
+    private readonly IQueueClient<GradeNotificationQueueMessage> _gradeNotificationQueueClient;
 
     public GradeService(
         ICourseEditionProvider courseEditionProvider,
@@ -46,7 +50,8 @@ public class GradeService : CourseBoardService, IGradeService
         IValidationService<UpdateRowValueValidationModel> updateRowValueModelValidationService,
         IFinalGradeRepository finalGradeRepository,
         IValidationService<UpdateFinalGradeValidationModel> updateFinalGradeValidationService,
-        IValidationService<CreateFinalGradeValidationModel> createFinalGradeValidationService) : base(courseEditionProvider, userContext)
+        IValidationService<CreateFinalGradeValidationModel> createFinalGradeValidationService,
+        IQueueClient<GradeNotificationQueueMessage> gradeNotificationQueueClient) : base(courseEditionProvider, userContext)
     {
         _gradesTableRowValueRepository = gradesTableRowValueRepository;
         _gradesTableRowDefinitionRepository = gradesTableRowDefinitionRepository;
@@ -55,6 +60,7 @@ public class GradeService : CourseBoardService, IGradeService
         _finalGradeRepository = finalGradeRepository;
         _updateFinalGradeValidationService = updateFinalGradeValidationService;
         _createFinalGradeValidationService = createFinalGradeValidationService;
+        _gradeNotificationQueueClient = gradeNotificationQueueClient;
     }
 
     public async Task<UserGradesModel> GetCurrentUserGradesAsync(Guid editionId)
@@ -147,6 +153,19 @@ public class GradeService : CourseBoardService, IGradeService
             
             await _gradesTableRowValueRepository.UpdateAsync(grade);
         }
+        
+        await _gradeNotificationQueueClient.EnqueueAsync(new GradeNotificationQueueMessage
+        {
+            User = await _userProvider.GetUserByIdAsync(userId),
+            CourseEditionId = editionId,
+            Grade = model.Value,
+            RowName = validationModel.RowDefinition!.Title,
+            RowType = Core.Shared.QueueMessages.RowType.Text,
+            Teacher = validationModel.Teacher!,
+            TeacherComment = model.TeacherComment,
+            TimeStampUtc = DateTime.UtcNow,
+            CourseEditionName = "course edition name"
+        });
         
         return grade.ToModel(validationModel.Teacher!, validationModel.RowDefinition!.RowType);
     }
