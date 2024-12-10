@@ -17,10 +17,10 @@ public class CourseEnrollmentNotificationFunction
     }
 
     [Function(nameof(CourseEnrollmentNotificationFunction))]
-    public void Run([QueueTrigger(CourseEnrollmentNotificationQueueMessage.QueueName, Connection = "StorageConnection")] CourseEnrollmentNotificationQueueMessage message)
+    public async Task Run([QueueTrigger(CourseEnrollmentNotificationQueueMessage.QueueName, Connection = "StorageConnection")] CourseEnrollmentNotificationQueueMessage message)
     {
         _logger.LogInformation($"Queue trigger function processed: {message.User.Id}");
         
-        _emailService.CreateEmailAsync(message);
+        await _emailService.CreateEmailAsync(message);
     }
 }

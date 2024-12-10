@@ -17,10 +17,10 @@ public class GradeNotificationFunction
     }
 
     [Function(nameof(GradeNotificationFunction))]
-    public void Run([QueueTrigger(GradeNotificationQueueMessage.QueueName, Connection = "StorageConnection")] GradeNotificationQueueMessage message)
+    public async Task Run([QueueTrigger(GradeNotificationQueueMessage.QueueName, Connection = "StorageConnection")] GradeNotificationQueueMessage message)
     {
         _logger.LogInformation($"C# Queue trigger function processed: {message.TimeStampUtc}");
         
-        _emailService.CreateEmailAsync(message);
+        await _emailService.CreateEmailAsync(message);
     }
 }

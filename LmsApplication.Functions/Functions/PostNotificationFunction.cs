@@ -17,10 +17,10 @@ public class PostNotificationFunction
     }
 
     [Function(nameof(PostNotificationFunction))]
-    public void Run([QueueTrigger(PostNotificationQueueMessage.QueueName, Connection = "StorageConnection")] PostNotificationQueueMessage message)
+    public async Task Run([QueueTrigger(PostNotificationQueueMessage.QueueName, Connection = "StorageConnection")] PostNotificationQueueMessage message)
     {
         _logger.LogInformation($"C# Queue trigger function processed: {message.TimeStampUtc}");
         
-        _emailService.CreateEmailAsync(message);
+        await _emailService.CreateEmailAsync(message);
     }
 }
