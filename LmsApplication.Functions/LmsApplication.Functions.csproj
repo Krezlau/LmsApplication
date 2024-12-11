@@ -28,9 +28,8 @@
         <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext"/>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Data\" />
-    </ItemGroup>
-    <ItemGroup>
+      <ProjectReference Include="..\LmsApplication.CourseModule.Services\LmsApplication.CourseModule.Services.csproj" />
+      <ProjectReference Include="..\LmsApplication.UserModule.Data\LmsApplication.UserModule.Data.csproj" />
       <ProjectReference Include="..\LmsApplication\LmsApplication.Core.Shared\LmsApplication.Core.Shared.csproj" />
     </ItemGroup>
 </Project>

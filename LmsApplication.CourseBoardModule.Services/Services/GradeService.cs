@@ -131,8 +131,8 @@ public class GradeService : CourseBoardService, IGradeService
         
         var validationModel = new UpdateRowValueValidationModel
         {
-            StudentId = userId,
-            CourseEditionId = editionId,
+            Student = await _userProvider.GetUserByIdAsync(userId),
+            CourseEdition = await CourseEditionProvider.GetCourseEditionAsync(editionId),
             Value = model.Value,
             TeacherComment = model.TeacherComment,
             RowDefinition = await _gradesTableRowDefinitionRepository.GetByIdAsync(rowId),
@@ -154,18 +154,7 @@ public class GradeService : CourseBoardService, IGradeService
             await _gradesTableRowValueRepository.UpdateAsync(grade);
         }
         
-        await _gradeNotificationQueueClient.EnqueueAsync(new GradeNotificationQueueMessage
-        {
-            User = await _userProvider.GetUserByIdAsync(userId),
-            CourseEditionId = editionId,
-            Grade = model.Value,
-            RowName = validationModel.RowDefinition!.Title,
-            RowType = Core.Shared.QueueMessages.RowType.Text,
-            Teacher = validationModel.Teacher!,
-            TeacherComment = model.TeacherComment,
-            TimeStampUtc = DateTime.UtcNow,
-            CourseEditionName = "course edition name"
-        });
+        await SendGradeNotificationAsync(validationModel, model);
         
         return grade.ToModel(validationModel.Teacher!, validationModel.RowDefinition!.RowType);
     }
@@ -322,5 +311,31 @@ public class GradeService : CourseBoardService, IGradeService
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+    
+    private async Task SendGradeNotificationAsync(UpdateRowValueValidationModel validationModel, UpdateRowValueModel model)
+    {
+        var rowType = validationModel.RowDefinition!.RowType switch
+        {
+            RowType.Text => Core.Shared.QueueMessages.RowType.Text,
+            RowType.Number => Core.Shared.QueueMessages.RowType.Number,
+            RowType.Bool => Core.Shared.QueueMessages.RowType.Bool,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        var message = new GradeNotificationQueueMessage
+        {
+            User = validationModel.Student!,
+            CourseEditionId = validationModel.CourseEdition!.Id,
+            Grade = model.Value,
+            RowName = validationModel.RowDefinition!.Title,
+            RowType = rowType,
+            Teacher = validationModel.Teacher!,
+            TeacherComment = model.TeacherComment,
+            TimeStampUtc = DateTime.UtcNow,
+            CourseEditionName = validationModel.CourseEdition!.Name,
+        };
+        
+        await _gradeNotificationQueueClient.EnqueueAsync(message);
     }
 }

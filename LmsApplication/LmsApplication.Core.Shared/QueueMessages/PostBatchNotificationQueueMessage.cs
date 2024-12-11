@@ -1,14 +1,12 @@
-using System.Text.Json.Serialization;
 using LmsApplication.Core.Shared.Models;
+using Newtonsoft.Json;
 
 namespace LmsApplication.Core.Shared.QueueMessages;
 
-public class PostNotificationQueueMessage
+public class PostBatchNotificationQueueMessage
 {
     [JsonIgnore]
-    public const string QueueName = "post-notification-queue";
-    
-    public required UserExchangeModel User { get; set; }
+    public const string QueueName = "post-batch-notification-queue";
     
     public required UserExchangeModel Poster { get; set; }
     

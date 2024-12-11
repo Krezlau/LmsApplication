@@ -1,5 +1,7 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.QueueClients;
+using LmsApplication.Core.Shared.QueueMessages;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;
@@ -26,6 +28,7 @@ public class PostService : CourseBoardService, IPostService
     private readonly IValidationService<PostCreateModel> _postCreateModelValidationService;
     private readonly IValidationService<PostUpdateModel> _postUpdateModelValidationService;
     private readonly IUserProvider _userProvider;
+    private readonly IQueueClient<PostBatchNotificationQueueMessage> _postBatchNotificationQueueClient;
 
     public PostService(
         ICourseEditionProvider courseEditionProvider,
@@ -33,12 +36,14 @@ public class PostService : CourseBoardService, IPostService
         IPostRepository postRepository,
         IValidationService<PostCreateModel> postCreateModelValidationService,
         IValidationService<PostUpdateModel> postUpdateModelValidationService,
-        IUserProvider userProvider) : base(courseEditionProvider, userContext)
+        IUserProvider userProvider,
+        IQueueClient<PostBatchNotificationQueueMessage> postBatchNotificationQueueClient) : base(courseEditionProvider, userContext)
     {
         _postRepository = postRepository;
         _postCreateModelValidationService = postCreateModelValidationService;
         _postUpdateModelValidationService = postUpdateModelValidationService;
         _userProvider = userProvider;
+        _postBatchNotificationQueueClient = postBatchNotificationQueueClient;
     }
 
     public async Task<CollectionResource<PostModel>> GetPostsAsync(Guid editionId, int page, int pageSize)
@@ -78,6 +83,15 @@ public class PostService : CourseBoardService, IPostService
         };
 
         await _postRepository.CreatePostAsync(post);
+        
+        await _postBatchNotificationQueueClient.EnqueueAsync(new PostBatchNotificationQueueMessage
+        {
+            CourseEditionId = editionId,
+            Poster = user,
+            PostBody = post.Content,
+            TimeStampUtc = DateTime.UtcNow,
+            CourseEditionName = (await CourseEditionProvider.GetCourseEditionAsync(editionId))!.Name,
+        });
 
         return post.ToModel(user, [], userId);
     }

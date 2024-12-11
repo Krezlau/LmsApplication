@@ -1,54 +1,36 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
-using LmsApplication.Core.Shared.Models;
-using LmsApplication.CourseModule.Data.Courses;
-using LmsApplication.CourseModule.Services.Repositories;
+using LmsApplication.CourseModule.Data.Courses.Validation;
 
 namespace LmsApplication.CourseModule.Services.Validation;
 
-public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditionAddUserModel>
+public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditionAddUserValidationModel>
 {
-    private readonly ICourseEditionRepository _courseEditionRepository;
-    
-    public CourseEditionAddUserModelValidator(ICourseEditionRepository courseEditionRepository)
+    public CourseEditionAddUserModelValidator()
     {
-        _courseEditionRepository = courseEditionRepository;
-
-        RuleFor(x => x.UserId)
-            .NotEmpty();
+        RuleFor(x => x.User)
+            .NotNull()
+            .WithMessage("Could not find user.");
 
         RuleFor(x => x)
-            .CustomAsync(UserValidAsync);
+            .Custom(UserValid);
     }
 
-    private async Task UserValidAsync(CourseEditionAddUserModel model, ValidationContext<CourseEditionAddUserModel> context, CancellationToken ct)
+    private static void UserValid(CourseEditionAddUserValidationModel model, ValidationContext<CourseEditionAddUserValidationModel> context)
     {
-        Guid courseId;
-        if (!context.RootContextData.TryGetValue(nameof(courseId), out var value) || !Guid.TryParse(value?.ToString(), out courseId))
+        var courseEdition = model.CourseEdition;
+        if (courseEdition is null)
         {
             context.AddFailure("Course does not exist.");
             return;
         }
         
-        var course = await _courseEditionRepository.GetCourseEditionByIdAsync(courseId);
-        if (course is null)
+        switch (model.User?.Role)
         {
-            context.AddFailure("Course does not exist.");
-            return;
-        }
-
-        if (!context.RootContextData.TryGetValue("user", out var userValue) || userValue is not UserExchangeModel user)
-        {
-            context.AddFailure("Could not find user.");
-            return;
-        }
-        
-        switch (user.Role)
-        {
-            case UserRole.Teacher when course.TeacherEmails.Contains(model.UserId):
+            case UserRole.Teacher when courseEdition.TeacherEmails.Contains(model.User!.Id):
                 context.AddFailure("User is already a teacher of this course.");
                 break;
-            case UserRole.Student when course.StudentEmails.Contains(model.UserId):
+            case UserRole.Student when courseEdition.StudentEmails.Contains(model.User!.Id):
                 context.AddFailure("User is already a student of this course.");
                 break;
         }

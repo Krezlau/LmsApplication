@@ -35,7 +35,7 @@ public class EmailService : IEmailService
         var recipient = "krzysztof.andrzej.jurkowski@gmail.com";
         var title = $"You have been enrolled in a \"{message.CourseName}\" course!";
         var body = $"You have been enrolled in the course " +
-               $"<a href=\"{_appUrl}/editions/{message.CourseEditionId}\">{message.CourseEditionName}</a>" +
+               $"<a href=\"{_appUrl}/editions/{message.CourseEditionId}\">{message.CourseEditionName}</a> " +
                $"at {message.TimeStampUtc:f} UTC.";
 
         await SendEmailAsync(recipient, title, body);

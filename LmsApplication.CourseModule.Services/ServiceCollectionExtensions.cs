@@ -1,6 +1,7 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
+using LmsApplication.CourseModule.Data.Courses.Validation;
 using LmsApplication.CourseModule.Services.Courses;
 using LmsApplication.CourseModule.Services.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IValidationService<CategoryPostModel>, ValidationService<CategoryPostModel>>();
         services.AddScoped<IValidationService<CoursePostModel>, ValidationService<CoursePostModel>>();
         services.AddScoped<IValidationService<CourseEditionPostModel>, ValidationService<CourseEditionPostModel>>();
-        services.AddScoped<IValidationService<CourseEditionAddUserModel>, ValidationService<CourseEditionAddUserModel>>();
+        services.AddScoped<IValidationService<CourseEditionAddUserValidationModel>, ValidationService<CourseEditionAddUserValidationModel>>();
         services.AddScoped<IValidationService<CourseEditionRegisterModel>, ValidationService<CourseEditionRegisterModel>>();
         services.AddScoped<IValidationService<CourseEditionRemoveUserModel>, ValidationService<CourseEditionRemoveUserModel>>();
 

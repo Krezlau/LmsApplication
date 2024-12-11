@@ -12,7 +12,7 @@ public class CourseEnrollmentNotificationQueueMessage
     
     public required string CourseEditionName { get; set; }
     
-    public required string CourseEditionId { get; set; }
+    public required Guid CourseEditionId { get; set; }
     
     public required string CourseName { get; set; }
     

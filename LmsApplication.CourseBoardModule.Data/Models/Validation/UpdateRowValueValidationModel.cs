@@ -9,9 +9,9 @@ public class UpdateRowValueValidationModel
     
     public required UserExchangeModel? Teacher { get; set; }
     
-    public required string StudentId { get; set; }
+    public required UserExchangeModel? Student { get; set; }
     
-    public required Guid CourseEditionId { get; set; }
+    public required CourseEditionModel? CourseEdition { get; set; }
     
     public required string Value { get; set; }
     

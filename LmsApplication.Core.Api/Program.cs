@@ -42,6 +42,8 @@ builder.Services.AddResourceModuleApi<UserProvider, CourseProvider, CourseEditio
 var azureStorage = builder.Configuration.GetConnectionString("StorageConnection");
 builder.Services.AddSingleton<IQueueClient<PostNotificationQueueMessage>>(_ =>
     new QueueClient<PostNotificationQueueMessage>(azureStorage, PostNotificationQueueMessage.QueueName));
+builder.Services.AddSingleton<IQueueClient<PostBatchNotificationQueueMessage>>(_ =>
+    new QueueClient<PostBatchNotificationQueueMessage>(azureStorage, PostBatchNotificationQueueMessage.QueueName));
 builder.Services.AddSingleton<IQueueClient<GradeNotificationQueueMessage>>(_ =>
     new QueueClient<GradeNotificationQueueMessage>(azureStorage, GradeNotificationQueueMessage.QueueName));
 builder.Services.AddSingleton<IQueueClient<CourseEnrollmentNotificationQueueMessage>>(_ =>

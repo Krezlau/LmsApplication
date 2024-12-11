@@ -1,5 +1,5 @@
-using System.Text.Json;
 using Azure.Storage.Queues;
+using Newtonsoft.Json;
 
 namespace LmsApplication.Core.Shared.QueueClients;
 
@@ -19,6 +19,9 @@ public class QueueClient<T> : IQueueClient<T>
 
    public async Task EnqueueAsync(T message)
    {
-      await _queueClient.SendMessageAsync(JsonSerializer.Serialize(message));
+      var json = JsonConvert.SerializeObject(message);
+      var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+      var base64 = Convert.ToBase64String(bytes);
+      await _queueClient.SendMessageAsync(base64);
    }
 }
