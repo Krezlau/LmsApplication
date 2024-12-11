@@ -4,8 +4,8 @@ import { AuthService } from './auth.service';
 import { ApiResponse } from '../types/api-response';
 import { PostModel } from '../types/course-board/post-model';
 import { CollectionResource } from '../types/collection-resource';
-import { env } from '../../env';
 import { PostCreateModel } from '../types/course-board/post-create-model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class PostService {
 
   public getPosts(editionId: string, page: number, size: number) {
     return this.http.get<ApiResponse<CollectionResource<PostModel>>>(
-      `${env.apiUrl}/api/editions/${editionId}/posts?page=${page}&pageSize=${size}`,
+      `${environment.apiUrl}/api/editions/${editionId}/posts?page=${page}&pageSize=${size}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -29,7 +29,7 @@ export class PostService {
 
   public createPost(editionId: string, createModel: PostCreateModel) {
     return this.http.post<ApiResponse<PostModel>>(
-      `${env.apiUrl}/api/editions/${editionId}/posts`,
+      `${environment.apiUrl}/api/editions/${editionId}/posts`,
       createModel,
       {
         headers: {
@@ -45,7 +45,7 @@ export class PostService {
     updateModel: PostCreateModel,
   ) {
     return this.http.put<ApiResponse<PostModel>>(
-      `${env.apiUrl}/api/editions/${editionId}/posts/${postId}`,
+      `${environment.apiUrl}/api/editions/${editionId}/posts/${postId}`,
       updateModel,
       {
         headers: {
@@ -57,7 +57,7 @@ export class PostService {
 
   public deletePost(editionId: string, postId: string) {
     return this.http.delete<ApiResponse<null>>(
-      `${env.apiUrl}/api/editions/${editionId}/posts/${postId}`,
+      `${environment.apiUrl}/api/editions/${editionId}/posts/${postId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,

@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { ReactionType } from '../types/course-board/reaction-type';
 import { finalize } from 'rxjs/operators';
-import { env } from '../../env';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +32,7 @@ export class ReactionService {
 
     return this.http
       .put<ReactionType | null>(
-        `${env.apiUrl}/api/editions/${editionId}/${contentType}s/${contentId}/reactions?${
+        `${environment.apiUrl}/api/editions/${editionId}/${contentType}s/${contentId}/reactions?${
           reactionToSend !== null ? 'type=' + reactionToSend : ''
         }`,
         {},

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CourseEditionModel } from '../types/courses/course-edition-model';
 import { AuthService } from './auth.service';
 import { ApiResponse } from '../types/api-response';
-import { env } from '../../env';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class CourseEditionService {
 
   getMyCourseEditions() {
     return this.http.get<ApiResponse<CourseEditionModel[]>>(
-      `${env.apiUrl}/api/courses/editions/my-courses`,
+      `${environment.apiUrl}/api/courses/editions/my-courses`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -27,7 +27,7 @@ export class CourseEditionService {
 
   getOpenRegistrationCourseEditions() {
     return this.http.get<ApiResponse<CourseEditionModel[]>>(
-      `${env.apiUrl}/api/courses/editions/registration-open`,
+      `${environment.apiUrl}/api/courses/editions/registration-open`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -38,7 +38,7 @@ export class CourseEditionService {
 
   getCourseEditionsByCourseId(courseId: string) {
     return this.http.get<ApiResponse<CourseEditionModel[]>>(
-      `${env.apiUrl}/api/courses/editions/by-course/${courseId}`,
+      `${environment.apiUrl}/api/courses/editions/by-course/${courseId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -49,7 +49,7 @@ export class CourseEditionService {
 
   getCourseEditionById(editionId: string) {
     return this.http.get<ApiResponse<CourseEditionModel>>(
-      `${env.apiUrl}/api/courses/editions/${editionId}`,
+      `${environment.apiUrl}/api/courses/editions/${editionId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -67,7 +67,7 @@ export class CourseEditionService {
     registrationEndDateUtc: Date | null = null,
   ) {
     return this.http.post<ApiResponse<CourseEditionModel>>(
-      `${env.apiUrl}/api/courses/editions`,
+      `${environment.apiUrl}/api/courses/editions`,
       {
         courseId,
         title,
@@ -86,7 +86,7 @@ export class CourseEditionService {
 
   registerForCourseEdition(editionId: string) {
     return this.http.post<ApiResponse<null>>(
-      `${env.apiUrl}/api/courses/editions/${editionId}/register`,
+      `${environment.apiUrl}/api/courses/editions/${editionId}/register`,
       {},
       {
         headers: {
@@ -98,7 +98,7 @@ export class CourseEditionService {
 
   addUserToCourseEdition(editionId: string, userId: string) {
     return this.http.post<ApiResponse<null>>(
-      `${env.apiUrl}/api/courses/editions/${editionId}/add-user`,
+      `${environment.apiUrl}/api/courses/editions/${editionId}/add-user`,
       { userId },
       {
         headers: {
@@ -110,7 +110,7 @@ export class CourseEditionService {
 
   removeUserFromCourseEdition(editionId: string, userId: string) {
     return this.http.post<ApiResponse<null>>(
-      `${env.apiUrl}/api/courses/editions/${editionId}/remove-user`,
+      `${environment.apiUrl}/api/courses/editions/${editionId}/remove-user`,
       { userId },
       {
         headers: {

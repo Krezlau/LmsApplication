@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-import { env } from '../../env';
 import { ApiResponse } from '../types/api-response';
 import { GradesTableRowModel } from '../types/course-board/grades-table-row-model';
 import {
@@ -12,6 +11,7 @@ import {
   FinalGradeModel,
   UserGradeModel,
 } from '../types/course-board/grade-model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,7 @@ export class GradeService {
 
   public getRowDefinitions(courseEditionId: string) {
     return this.http.get<ApiResponse<GradesTableRowModel[]>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/rows`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/rows`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -42,7 +42,7 @@ export class GradeService {
     isSummed: boolean,
   ) {
     return this.http.post<ApiResponse<GradesTableRowModel>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/rows`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/rows`,
       {
         courseEditionId,
         title,
@@ -61,7 +61,7 @@ export class GradeService {
 
   public deleteRowDefinition(courseEditionId: string, rowId: string) {
     return this.http.delete<ApiResponse<null>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/rows/${rowId}`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/rows/${rowId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -79,7 +79,7 @@ export class GradeService {
     isSummed: boolean,
   ) {
     return this.http.put<ApiResponse<GradesTableRowModel>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/rows/${rowId}`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/rows/${rowId}`,
       {
         title,
         description,
@@ -96,7 +96,7 @@ export class GradeService {
 
   public getUserGrades(courseEditionId: string, rowId: string) {
     return this.http.get<ApiResponse<UserGradesModel>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -113,7 +113,7 @@ export class GradeService {
     teacherComment: string | null,
   ) {
     return this.http.put<ApiResponse<GradesTableRowValueModel>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}?userId=${userId}`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}?userId=${userId}`,
       {
         value: value?.toString() ?? null,
         teacherComment,
@@ -128,7 +128,7 @@ export class GradeService {
 
   public deleteGrade(courseEditionId: string, rowId: string, userId: string) {
     return this.http.delete<ApiResponse<null>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}?userId=${userId}`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/row/${rowId}?userId=${userId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -139,8 +139,8 @@ export class GradeService {
 
   public getUserGradesTable(courseEditionId: string, userId: string | null) {
     const path = userId
-      ? `${env.apiUrl}/api/editions/${courseEditionId}/grades/user/${userId}`
-      : `${env.apiUrl}/api/editions/${courseEditionId}/grades/current`;
+      ? `${environment.apiUrl}/api/editions/${courseEditionId}/grades/user/${userId}`
+      : `${environment.apiUrl}/api/editions/${courseEditionId}/grades/current`;
 
     return this.http.get<ApiResponse<UserGradeModel>>(path, {
       headers: {
@@ -151,7 +151,7 @@ export class GradeService {
 
   public addFinalGrade(courseEditionId: string, userId: string, value: number) {
     return this.http.post<ApiResponse<FinalGradeModel>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/final`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/final`,
       { userId, value },
       {
         headers: {
@@ -163,7 +163,7 @@ export class GradeService {
 
   public deleteFinalGrade(courseEditionId: string, userId: string) {
     return this.http.delete<ApiResponse<null>>(
-      `${env.apiUrl}/api/editions/${courseEditionId}/grades/final?userId=${userId}`,
+      `${environment.apiUrl}/api/editions/${courseEditionId}/grades/final?userId=${userId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,

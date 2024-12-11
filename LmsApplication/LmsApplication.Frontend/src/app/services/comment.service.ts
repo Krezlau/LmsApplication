@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { CollectionResource } from '../types/collection-resource';
 import { CommentModel } from '../types/course-board/comment-model';
-import { env } from '../../env';
 import { ApiResponse } from '../types/api-response';
 import { CommentCreateModel } from '../types/course-board/comment-create-model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class CommentService {
     pageSize: number,
   ) {
     return this.http.get<ApiResponse<CollectionResource<CommentModel>>>(
-      `${env.apiUrl}/api/editions/${editionId}/posts/${postId}/comments?page=${page}&pageSize=${pageSize}`,
+      `${environment.apiUrl}/api/editions/${editionId}/posts/${postId}/comments?page=${page}&pageSize=${pageSize}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -34,7 +34,7 @@ export class CommentService {
 
   public deleteComment(editionId: string, postId: string, commentId: string) {
     return this.http.delete<ApiResponse<null>>(
-      `${env.apiUrl}/api/editions/${editionId}/posts/${postId}/comments/${commentId}`,
+      `${environment.apiUrl}/api/editions/${editionId}/posts/${postId}/comments/${commentId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -49,7 +49,7 @@ export class CommentService {
     model: CommentCreateModel,
   ) {
     return this.http.post<ApiResponse<CommentModel>>(
-      `${env.apiUrl}/api/editions/${editionId}/posts/${postId}/comments`,
+      `${environment.apiUrl}/api/editions/${editionId}/posts/${postId}/comments`,
       model,
       {
         headers: {
@@ -66,7 +66,7 @@ export class CommentService {
     model: CommentCreateModel,
   ) {
     return this.http.put<ApiResponse<CommentModel>>(
-      `${env.apiUrl}/api/editions/${editionId}/posts/${postId}/comments/${commentId}`,
+      `${environment.apiUrl}/api/editions/${editionId}/posts/${postId}/comments/${commentId}`,
       model,
       {
         headers: {

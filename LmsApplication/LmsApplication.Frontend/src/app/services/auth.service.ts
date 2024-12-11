@@ -1,9 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { AuthState } from '../types/users/auth-state';
 import { HttpClient } from '@angular/common/http';
-import { env } from '../../env';
 import { LoginResponse } from '../types/users/login-response';
 import { UserModel } from '../types/users/user-model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   public login(email: string, password: string) {
-    return this.http.post<LoginResponse>(`${env.apiUrl}/login`, { email, password });
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/login`, { email, password });
   }
 
   public loadState(accessToken: string, refreshToken: string, userData: UserModel) {

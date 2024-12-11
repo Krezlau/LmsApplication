@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserModel } from '../types/users/user-model';
 import { AuthService } from './auth.service';
-import { env } from '../../env';
 import { UserRole } from '../types/users/user-role';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class UserService {
     surname: string,
     password: string,
   ) {
-    return this.http.post<any>(`${env.apiUrl}/register`, {
+    return this.http.post<any>(`${environment.apiUrl}/register`, {
       email,
       name: firstName,
       surname,
@@ -29,7 +29,7 @@ export class UserService {
   }
 
   public getMe(token?: string) {
-    return this.http.get<UserModel>(`${env.apiUrl}/api/users/current`, {
+    return this.http.get<UserModel>(`${environment.apiUrl}/api/users/current`, {
       headers: {
         Authorization: `Bearer ${token ?? this.authService.authState().accessToken}`,
       },
@@ -37,7 +37,7 @@ export class UserService {
   }
 
   public getUser(email: string) {
-    return this.http.get<UserModel>(`${env.apiUrl}/api/users/${email}`, {
+    return this.http.get<UserModel>(`${environment.apiUrl}/api/users/${email}`, {
       headers: {
         Authorization: `Bearer ${this.authService.authState().accessToken}`,
       },
@@ -45,7 +45,7 @@ export class UserService {
   }
 
   public getUsers() {
-    return this.http.get<UserModel[]>(`${env.apiUrl}/api/users`, {
+    return this.http.get<UserModel[]>(`${environment.apiUrl}/api/users`, {
       headers: {
         Authorization: `Bearer ${this.authService.authState().accessToken}`,
       },
@@ -54,7 +54,7 @@ export class UserService {
 
   public updateUser(name: string, surname: string, bio: string | null) {
     return this.http.put<UserModel>(
-      `${env.apiUrl}/api/users/current`,
+      `${environment.apiUrl}/api/users/current`,
       { name, surname, bio },
       {
         headers: {
@@ -66,7 +66,7 @@ export class UserService {
 
   public getUsersByCourseEdition(courseEditionId: string) {
     return this.http.get<UserModel[]>(
-      `${env.apiUrl}/api/users/by-course-edition/${courseEditionId}`,
+      `${environment.apiUrl}/api/users/by-course-edition/${courseEditionId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -77,7 +77,7 @@ export class UserService {
 
   public searchUsersByEmail(email: string) {
     return this.http.get<UserModel[]>(
-      `${env.apiUrl}/api/users/search/${email}`,
+      `${environment.apiUrl}/api/users/search/${email}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -88,7 +88,7 @@ export class UserService {
 
   public updateUserRole(userId: string, role: UserRole) {
     return this.http.put<null>(
-      `${env.apiUrl}/api/users/${userId}/role`,
+      `${environment.apiUrl}/api/users/${userId}/role`,
       { role: +role },
       {
         headers: {

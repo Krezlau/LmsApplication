@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { ResourceMetadataModel } from '../types/resources/resource-metadata-model';
-import { env } from '../../env';
 import { ApiResponse } from '../types/api-response';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class CourseResourceService {
     parentId: string,
   ) {
     return this.http.get<ApiResponse<ResourceMetadataModel[]>>(
-      `${env.apiUrl}/api/resources/metadatas/${resourceType}s/${parentId}`,
+      `${environment.apiUrl}/api/resources/metadatas/${resourceType}s/${parentId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -29,7 +29,7 @@ export class CourseResourceService {
   }
 
   public downloadResource(resourceId: string): any {
-    return this.http.get(`${env.apiUrl}/api/resources/${resourceId}`, {
+    return this.http.get(`${environment.apiUrl}/api/resources/${resourceId}`, {
       responseType: 'blob' as 'json',
       headers: {
         Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -39,7 +39,7 @@ export class CourseResourceService {
 
   public deleteResource(resourceId: string) {
     return this.http.delete<ApiResponse<null>>(
-      `${env.apiUrl}/api/resources/${resourceId}`,
+      `${environment.apiUrl}/api/resources/${resourceId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -60,7 +60,7 @@ export class CourseResourceService {
     formData.append('parentId', parentId);
     formData.append('type', resourceType);
     return this.http.post<ApiResponse<ResourceMetadataModel>>(
-      `${env.apiUrl}/api/resources/upload`,
+      `${environment.apiUrl}/api/resources/upload`,
       formData,
       {
         headers: {

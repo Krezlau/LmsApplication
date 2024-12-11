@@ -5,7 +5,7 @@ import { CoursePostModel } from '../types/courses/course-post-model';
 import { AuthService } from './auth.service';
 import { CourseCategory } from '../types/courses/course-category';
 import { ApiResponse } from '../types/api-response';
-import { env } from '../../env';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class CourseService {
 
   public getAllCourses() {
     return this.http.get<ApiResponse<CourseModel[]>>(
-      `${env.apiUrl}/api/courses`,
+      `${environment.apiUrl}/api/courses`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -29,7 +29,7 @@ export class CourseService {
 
   public getCourseById(courseId: string) {
     return this.http.get<ApiResponse<CourseModel>>(
-      `${env.apiUrl}/api/courses/${courseId}`,
+      `${environment.apiUrl}/api/courses/${courseId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -40,7 +40,7 @@ export class CourseService {
 
   public createCourse(course: CoursePostModel) {
     return this.http.post<ApiResponse<CourseModel>>(
-      `${env.apiUrl}/api/courses`,
+      `${environment.apiUrl}/api/courses`,
       course,
       {
         headers: {
@@ -52,7 +52,7 @@ export class CourseService {
 
   public getCategories() {
     return this.http.get<ApiResponse<CourseCategory[]>>(
-      `${env.apiUrl}/api/courses/categories`,
+      `${environment.apiUrl}/api/courses/categories`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -63,7 +63,7 @@ export class CourseService {
 
   public deleteCourse(courseId: string) {
     return this.http.delete<ApiResponse<null>>(
-      `${env.apiUrl}/api/courses/${courseId}`,
+      `${environment.apiUrl}/api/courses/${courseId}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
