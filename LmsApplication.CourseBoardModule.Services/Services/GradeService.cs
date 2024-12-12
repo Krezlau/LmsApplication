@@ -126,6 +126,7 @@ public class GradeService : CourseBoardService, IGradeService
     {
         var teacherId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, teacherId);
+        await ValidateWriteAccessToEditionAsync(editionId);
         
         var validationModel = new UpdateRowValueValidationModel
         {
@@ -160,6 +161,7 @@ public class GradeService : CourseBoardService, IGradeService
     public async Task DeleteRowValueAsync(Guid editionId, Guid rowId, string userId)
     {
         await ValidateUserAccessToEditionAsync(editionId, UserContext.GetUserId());
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var grade = await _gradesTableRowValueRepository.GetGradesTableRowValueAsync(rowId, userId);
         if (grade is null)
@@ -172,6 +174,7 @@ public class GradeService : CourseBoardService, IGradeService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var validationModel = new CreateFinalGradeValidationModel
         {
@@ -208,6 +211,7 @@ public class GradeService : CourseBoardService, IGradeService
     public async Task DeleteFinalGradeAsync(Guid editionId, string userId)
     {
         await ValidateUserAccessToEditionAsync(editionId, UserContext.GetUserId());
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var finalGrade = await _finalGradeRepository.GetFinalGradeAsync(editionId, userId);
         if (finalGrade is null)

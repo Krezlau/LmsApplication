@@ -49,6 +49,7 @@ public class GradesTableRowDefinitionService : CourseBoardService, IGradesTableR
     public async Task<GradesTableRowDefinitionModel> CreateGradesTableRowDefinitionAsync(Guid editionId, GradesTableRowDefinitionCreateModel model)
     {
         await ValidateUserAccessToEditionAsync(editionId, UserContext.GetUserId());
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         await _createValidationService.ValidateAndThrowAsync(model);
         
@@ -70,6 +71,7 @@ public class GradesTableRowDefinitionService : CourseBoardService, IGradesTableR
     public async Task<GradesTableRowDefinitionModel> UpdateGradesTableRowDefinitionAsync(Guid editionId, Guid rowId, GradesTableRowDefinitionUpdateModel model)
     {
         await ValidateUserAccessToEditionAsync(editionId, UserContext.GetUserId());
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var validationModel = new UpdateRowDefinitionValidationModel
         {
@@ -95,6 +97,7 @@ public class GradesTableRowDefinitionService : CourseBoardService, IGradesTableR
     public async Task DeleteGradesTableRowDefinitionAsync(Guid editionId, Guid rowId)
     {
         await ValidateUserAccessToEditionAsync(editionId, UserContext.GetUserId());
+        await ValidateWriteAccessToEditionAsync(editionId);
         
         var entity = await _gradesTableRowDefinitionRepository.GetByIdAsync(rowId);
         if (entity is null) 

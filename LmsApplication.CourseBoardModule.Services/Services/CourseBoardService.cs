@@ -33,6 +33,6 @@ public abstract class CourseBoardService
             throw new KeyNotFoundException("Course edition not found.");
         
         if (courseEdition.Status is not CourseEditionStatus.InProgress)
-            throw new InvalidOperationException("Cannot modify course edition that is not in progress.");
+            throw new ArgumentException("Cannot modify course edition that is not in progress.");
     }
 }
