@@ -6,6 +6,7 @@ using LmsApplication.CourseModule.Data;
 using LmsApplication.CourseModule.Services;
 using LmsApplication.Functions.Services;
 using LmsApplication.UserModule.Data;
+using LmsApplication.UserModule.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -19,11 +20,13 @@ var host = new HostBuilder()
         
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
+        
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ICourseEditionParticipantsProviderService, CourseEditionParticipantsProviderService>();
-        services.AddCourseModuleData(context.Configuration);
-        services.AddCourseModuleServices();
-        services.AddUserModuleData(context.Configuration);
+        
+        services.AddCourseModuleRepositoriesAndData(context.Configuration);
+        services.AddUserModuleRepositoriesAndData(context.Configuration);
+        
         services.AddScoped<SmtpClient>(_ => new SmtpClient
         {
             Host = context.Configuration.GetValue<string>("SmtpServer"),
@@ -32,6 +35,7 @@ var host = new HostBuilder()
                 context.Configuration.GetValue<string>("SmtpPassword")),
             EnableSsl = true
         });
+        
         services.AddSingleton<IQueueClient<PostNotificationQueueMessage>>(_ =>
             new QueueClient<PostNotificationQueueMessage>(azureStorage, PostNotificationQueueMessage.QueueName));
     })

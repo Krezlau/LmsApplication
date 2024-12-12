@@ -1,9 +1,7 @@
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Services.Repositories;
-using LmsApplication.UserModule.Data.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using LmsApplication.UserModule.Services.Repositories;
 
 namespace LmsApplication.Functions.Services;
 
@@ -15,12 +13,14 @@ public interface ICourseEditionParticipantsProviderService
 public class CourseEditionParticipantsProviderService : ICourseEditionParticipantsProviderService
 {
     private readonly ICourseEditionRepository _courseEditionRepository;
-    private readonly UserManager<User> _userManager;
+    private readonly IUserRepository _userRepository;
 
-    public CourseEditionParticipantsProviderService(ICourseEditionRepository courseEditionRepository, UserManager<User> userManager)
+    public CourseEditionParticipantsProviderService(
+        ICourseEditionRepository courseEditionRepository,
+        IUserRepository userRepository)
     {
         _courseEditionRepository = courseEditionRepository;
-        _userManager = userManager;
+        _userRepository = userRepository;
     }
 
     public async Task<List<UserExchangeModel>> GetCourseEditionParticipantsAsync(Guid courseEditionId)
@@ -32,20 +32,12 @@ public class CourseEditionParticipantsProviderService : ICourseEditionParticipan
         var studentIds = courseEdition.Participants.Where(x => x.ParticipantRole == UserRole.Student)
             .Select(x => x.ParticipantId)
             .ToList();
-        var participants = await _userManager.Users.Where(x => studentIds.Contains(x.Id))
-            .Select(x => new
-            {
-                Id = x.Id,
-                Email = x.Email!,
-                Name = x.Name,
-                Surname = x.Surname,
-            })
-            .ToListAsync();
+        var participants = await _userRepository.GetUsersByIdsAsync(studentIds);
         
         return participants.Select(x => new UserExchangeModel
         {
             Id = x.Id,
-            Email = x.Email,
+            Email = x.Email!,
             Name = x.Name,
             Surname = x.Surname,
             Role = UserRole.Student

@@ -1,8 +1,7 @@
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.UserModule.Data.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using LmsApplication.UserModule.Services.Repositories;
 
 namespace LmsApplication.Core.Api.Providers;
 
@@ -11,30 +10,24 @@ public class UserProvider :
     CourseBoardModule.Services.Providers.IUserProvider,
     ResourceModule.Services.Providers.IUserProvider
 {
-    private readonly UserManager<User> _userManager;
+    private readonly IUserRepository _userRepository;
 
-    public UserProvider(UserManager<User> userManager)
+    public UserProvider(IUserRepository userRepository)
     {
-        _userManager = userManager;
+        _userRepository = userRepository;
     }
 
     public async Task<UserExchangeModel?> GetUserByIdAsync(string id)
     {
-        var user = await _userManager.Users
-            .Include(x => x.Roles)
-            .FirstOrDefaultAsync(x => x.Id == id);
-        if (user is null)
-            return null;
+        var user = await _userRepository.GetUserByIdAsync(id);
+        if (user is null) return null;
 
         return MapUserExchangeModel(user, user.Roles.Select(r => r.Name!).ToList());
     }
 
     public async Task<Dictionary<string, UserExchangeModel>> GetUsersByIdsAsync(List<string> ids)
     {
-        var users = await _userManager.Users
-            .Include(x => x.Roles)
-            .Where(x => ids.Contains(x.Id))
-            .ToDictionaryAsync(x => x.Id, x => x);
+        var users = await _userRepository.GetUserDictionaryByIdsAsync(ids);
         
         return users.ToDictionary(x => x.Key,
             x => MapUserExchangeModel(x.Value, x.Value.Roles.Select(r => r.Name!).ToList()));

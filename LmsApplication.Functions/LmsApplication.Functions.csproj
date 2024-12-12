@@ -30,6 +30,7 @@
     <ItemGroup>
       <ProjectReference Include="..\LmsApplication.CourseModule.Services\LmsApplication.CourseModule.Services.csproj" />
       <ProjectReference Include="..\LmsApplication.UserModule.Data\LmsApplication.UserModule.Data.csproj" />
+      <ProjectReference Include="..\LmsApplication.UserModule.Services\LmsApplication.UserModule.Services.csproj" />
       <ProjectReference Include="..\LmsApplication\LmsApplication.Core.Shared\LmsApplication.Core.Shared.csproj" />
     </ItemGroup>
 </Project>

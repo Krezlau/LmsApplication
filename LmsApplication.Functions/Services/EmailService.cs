@@ -12,6 +12,8 @@ public interface IEmailService
     Task CreateEmailAsync(GradeNotificationQueueMessage message);
     
     Task CreateEmailAsync(PostNotificationQueueMessage message);
+    
+    Task CreateEmailAsync(FinalGradeNotificationQueueMessage message);
 }
 
 public class EmailService : IEmailService
@@ -77,6 +79,19 @@ public class EmailService : IEmailService
                $"by {message.Poster.Name} {message.Poster.Surname} at {message.TimeStampUtc:f} UTC. <br />" +
                $"\"{message.PostBody}\"";
 
+        await SendEmailAsync(recipient, title, body);
+    }
+
+    public async Task CreateEmailAsync(FinalGradeNotificationQueueMessage message)
+    {
+        //var recipient = message.User.Email,
+        var recipient = "krzysztof.andrzej.jurkowski@gmail.com";
+        var title = $"{message.CourseEditionName}: You received a final grade from the course!";
+        var body = $"You have received a final grade for the course" +
+                   $" <a href=\"{_appUrl}/editions/{message.CourseEditionId}\">{message.CourseEditionName}</a>.<br />" +
+                   $"Your final grade: \"{message.Grade}\"" +
+                   $" by {message.Teacher.Name} {message.Teacher.Surname} at {message.TimeStampUtc:f} UTC. <br />";
+        
         await SendEmailAsync(recipient, title, body);
     }
 

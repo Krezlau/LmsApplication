@@ -25,8 +25,6 @@ public interface IGradeService
     
     Task<FinalGradeModel> CreateFinalGradeAsync(Guid editionId, FinalGradeCreateModel model);
     
-    Task<FinalGradeModel> UpdateFinalGradeAsync(Guid editionId, FinalGradeCreateModel model);
-    
     Task DeleteFinalGradeAsync(Guid editionId, string userId);
 }
 
@@ -37,9 +35,9 @@ public class GradeService : CourseBoardService, IGradeService
     private readonly IValidationService<UpdateRowValueValidationModel> _updateRowValueModelValidationService;
     private readonly IUserProvider _userProvider;
     private readonly IFinalGradeRepository _finalGradeRepository;
-    private readonly IValidationService<UpdateFinalGradeValidationModel> _updateFinalGradeValidationService;
     private readonly IValidationService<CreateFinalGradeValidationModel> _createFinalGradeValidationService;
     private readonly IQueueClient<GradeNotificationQueueMessage> _gradeNotificationQueueClient;
+    private readonly IQueueClient<FinalGradeNotificationQueueMessage> _finalGradeNotificationQueueClient;
 
     public GradeService(
         ICourseEditionProvider courseEditionProvider,
@@ -49,18 +47,18 @@ public class GradeService : CourseBoardService, IGradeService
         IUserProvider userProvider,
         IValidationService<UpdateRowValueValidationModel> updateRowValueModelValidationService,
         IFinalGradeRepository finalGradeRepository,
-        IValidationService<UpdateFinalGradeValidationModel> updateFinalGradeValidationService,
         IValidationService<CreateFinalGradeValidationModel> createFinalGradeValidationService,
-        IQueueClient<GradeNotificationQueueMessage> gradeNotificationQueueClient) : base(courseEditionProvider, userContext)
+        IQueueClient<GradeNotificationQueueMessage> gradeNotificationQueueClient,
+        IQueueClient<FinalGradeNotificationQueueMessage> finalGradeNotificationQueueClient) : base(courseEditionProvider, userContext)
     {
         _gradesTableRowValueRepository = gradesTableRowValueRepository;
         _gradesTableRowDefinitionRepository = gradesTableRowDefinitionRepository;
         _userProvider = userProvider;
         _updateRowValueModelValidationService = updateRowValueModelValidationService;
         _finalGradeRepository = finalGradeRepository;
-        _updateFinalGradeValidationService = updateFinalGradeValidationService;
         _createFinalGradeValidationService = createFinalGradeValidationService;
         _gradeNotificationQueueClient = gradeNotificationQueueClient;
+        _finalGradeNotificationQueueClient = finalGradeNotificationQueueClient;
     }
 
     public async Task<UserGradesModel> GetCurrentUserGradesAsync(Guid editionId)
@@ -177,10 +175,10 @@ public class GradeService : CourseBoardService, IGradeService
 
         var validationModel = new CreateFinalGradeValidationModel
         {
-            CourseEditionId = editionId,
+            CourseEdition = await CourseEditionProvider.GetCourseEditionAsync(editionId),
             Value = model.Value,
             Teacher = await _userProvider.GetUserByIdAsync(userId),
-            StudentId = model.UserId,
+            Student = await _userProvider.GetUserByIdAsync(model.UserId),
         };
         await _createFinalGradeValidationService.ValidateAndThrowAsync(validationModel);
 
@@ -194,29 +192,17 @@ public class GradeService : CourseBoardService, IGradeService
         
         await _finalGradeRepository.CreateAsync(finalGrade);
 
-        return finalGrade.ToModel(validationModel.Teacher!);
-    }
-
-    public async Task<FinalGradeModel> UpdateFinalGradeAsync(Guid editionId, FinalGradeCreateModel model)
-    {
-        var userId = UserContext.GetUserId();
-        await ValidateUserAccessToEditionAsync(editionId, userId);
-
-        var validationModel = new UpdateFinalGradeValidationModel
+        await _finalGradeNotificationQueueClient.EnqueueAsync(new FinalGradeNotificationQueueMessage
         {
-            FinalGrade = await _finalGradeRepository.GetFinalGradeAsync(editionId, model.UserId),
+            User = validationModel.Student!,
             CourseEditionId = editionId,
-            Value = model.Value,
-            Teacher = await _userProvider.GetUserByIdAsync(userId),
-            StudentId = model.UserId,
-        };
-        await _updateFinalGradeValidationService.ValidateAndThrowAsync(validationModel);
-
-        validationModel.FinalGrade!.TeacherId = userId;
-        validationModel.FinalGrade!.Value = model.Value;
-        await _finalGradeRepository.UpdateAsync(validationModel.FinalGrade);
-
-        return validationModel.FinalGrade.ToModel(validationModel.Teacher!);
+            Grade = model.Value,
+            Teacher = validationModel.Teacher!,
+            TimeStampUtc = DateTime.UtcNow,
+            CourseEditionName = validationModel.CourseEdition!.Name,
+        });
+        
+        return finalGrade.ToModel(validationModel.Teacher!);
     }
 
     public async Task DeleteFinalGradeAsync(Guid editionId, string userId)

@@ -48,6 +48,8 @@ builder.Services.AddSingleton<IQueueClient<GradeNotificationQueueMessage>>(_ =>
     new QueueClient<GradeNotificationQueueMessage>(azureStorage, GradeNotificationQueueMessage.QueueName));
 builder.Services.AddSingleton<IQueueClient<CourseEnrollmentNotificationQueueMessage>>(_ =>
     new QueueClient<CourseEnrollmentNotificationQueueMessage>(azureStorage, CourseEnrollmentNotificationQueueMessage.QueueName));
+builder.Services.AddSingleton<IQueueClient<FinalGradeNotificationQueueMessage>>(_ =>
+    new QueueClient<FinalGradeNotificationQueueMessage>(azureStorage, FinalGradeNotificationQueueMessage.QueueName));
 
 builder.Services.AddSwaggerGen(opt =>
 {

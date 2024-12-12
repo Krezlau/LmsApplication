@@ -1,4 +1,5 @@
 using FluentValidation;
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseBoardModule.Data.Models.Validation;
 using LmsApplication.CourseBoardModule.Services.Providers;
 using LmsApplication.CourseBoardModule.Services.Repositories;
@@ -21,11 +22,15 @@ public class CreateFinalGradeValidator : AbstractValidator<CreateFinalGradeValid
             .MustAsync(DoesNotYetHaveFinalGradeAsync)
             .WithMessage("Student already has a final grade.");
 
-        RuleFor(x => x.CourseEditionId)
-            .MustAsync(CourseEditionExistsAsync)
+        RuleFor(x => x.CourseEdition)
+            .NotNull()
             .WithMessage("Could not find course edition.");
         
-        RuleFor(x => x.StudentId)
+        RuleFor(x => x.Student)
+            .NotNull()
+            .WithMessage("Could not find student.");
+        
+        RuleFor(x => x.Student)
             .MustAsync(StudentIsEnrolledAsync)
             .WithMessage("Student is not enrolled in this course edition.");
 
@@ -40,17 +45,18 @@ public class CreateFinalGradeValidator : AbstractValidator<CreateFinalGradeValid
 
     private async Task<bool> DoesNotYetHaveFinalGradeAsync(CreateFinalGradeValidationModel model, CancellationToken ct)
     {
-        return !await _finalGradeRepository.GradeExistsAsync(model.CourseEditionId, model.StudentId);
+        if (model.CourseEdition is null || model.Student is null) 
+            return false;
+        
+        return !await _finalGradeRepository.GradeExistsAsync(model.CourseEdition.Id, model.Student.Id);
     }
 
-    private Task<bool> StudentIsEnrolledAsync(CreateFinalGradeValidationModel model, string userId, CancellationToken ct)
+    private async Task<bool> StudentIsEnrolledAsync(CreateFinalGradeValidationModel model, UserExchangeModel? student, CancellationToken ct)
     {
-        return _courseEditionProvider.IsUserRegisteredToCourseEditionAsync(model.CourseEditionId, userId);
-    }
-
-    private async Task<bool> CourseEditionExistsAsync(Guid courseEditionId, CancellationToken ct)
-    {
-        return await _courseEditionProvider.CourseEditionExistsAsync(courseEditionId);
+        if (model.CourseEdition is null || student is null) 
+            return false;
+        
+        return await _courseEditionProvider.IsUserRegisteredToCourseEditionAsync(model.CourseEdition.Id, student.Id);
     }
 
     private static bool ValueValid(decimal arg)

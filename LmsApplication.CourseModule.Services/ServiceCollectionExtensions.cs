@@ -1,9 +1,11 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Services;
+using LmsApplication.CourseModule.Data;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Courses.Validation;
 using LmsApplication.CourseModule.Services.Courses;
 using LmsApplication.CourseModule.Services.Repositories;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LmsApplication.CourseModule.Services;
@@ -31,4 +33,14 @@ public static class ServiceCollectionExtensions
         return services;
     }
     
+    public static IServiceCollection AddCourseModuleRepositoriesAndData(this IServiceCollection services, IConfiguration config)
+    {
+        services.AddCourseModuleData(config);
+        
+        services.AddScoped<ICourseRepository, CourseRepository>();
+        services.AddScoped<ICourseEditionRepository, CourseEditionRepository>();
+        services.AddScoped<ICourseEditionSettingsRepository, CourseEditionSettingsRepository>();
+        
+        return services;
+    }
 }

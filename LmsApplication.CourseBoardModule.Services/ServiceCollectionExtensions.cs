@@ -33,7 +33,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IValidationService<GradesTableRowDefinitionUpdateModel>, ValidationService<GradesTableRowDefinitionUpdateModel>>();
         services.AddScoped<IValidationService<GradesTableRowDefinitionCreateModel>, ValidationService<GradesTableRowDefinitionCreateModel>>();
         services.AddScoped<IValidationService<UpdateRowValueValidationModel>, ValidationService<UpdateRowValueValidationModel>>();
-        services.AddScoped<IValidationService<UpdateFinalGradeValidationModel>, ValidationService<UpdateFinalGradeValidationModel>>();
         services.AddScoped<IValidationService<CreateFinalGradeValidationModel>, ValidationService<CreateFinalGradeValidationModel>>();
         
         return services;
