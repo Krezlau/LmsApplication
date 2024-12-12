@@ -45,7 +45,7 @@ export class AuthService {
 
   public loadState(accessToken: string, refreshToken: string, userData: UserModel) {
     const validUntil = new Date();
-    validUntil.setSeconds(validUntil.getSeconds() + (3600 * 60) - 360);
+    validUntil.setSeconds(validUntil.getSeconds() + 3600);
 
     const authState: AuthState = {
       isAuthenticated: true,

@@ -26,7 +26,7 @@ export class CommentService {
       `${environment.apiUrl}/api/editions/${editionId}/posts/${postId}/comments?page=${page}&pageSize=${pageSize}`,
       {
         headers: {
-          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+          //Authorization: `Bearer ${this.authService.authState().accessToken}`,
         },
       },
     );

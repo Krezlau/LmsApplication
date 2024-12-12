@@ -41,9 +41,13 @@
     <p class="badge badge-primary mr-2">Email</p>
     <p class="inline-block">{{ user.email }}</p>
   </div>
-  <div *ngIf="!isLoggedInUser()">
+  <div *ngIf="!isLoggedInUser() && authState().userData?.role !== 2">
     <h2 class="mt-6 text-2xl">Mutual courses</h2>
-    <div>TODO</div>
+    <app-course-edition-list type="mutual" [userId]="user.id"></app-course-edition-list>
+  </div>
+  <div *ngIf="!isLoggedInUser() && authState().userData?.role === 2">
+    <h2 class="mt-6 text-2xl">User courses</h2>
+    <app-course-edition-list type="user" [userId]="user.id"></app-course-edition-list>
   </div>
 </div>
 <dialog id="my_modal_2" class="modal" #dialogElement>

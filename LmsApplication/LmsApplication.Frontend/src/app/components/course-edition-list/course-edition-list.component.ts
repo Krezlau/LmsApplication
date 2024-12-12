@@ -29,7 +29,8 @@ import { CollectionResource } from '../../types/collection-resource';
 })
 export class CourseEditionListComponent implements OnDestroy {
   @Input() course: ApiResponse<CourseModel> | null = null;
-  @Input() type: 'all' | 'my' | 'open-registration' = 'all';
+  @Input() userId: string = '';
+  @Input() type: 'all' | 'my' | 'open-registration' | 'mutual' | 'user' = 'all';
 
   sub = new Subscription();
 
@@ -105,6 +106,32 @@ export class CourseEditionListComponent implements OnDestroy {
         this.sub.add(
           this.courseEditionService
             .getOpenRegistrationCourseEditions(this.page + 1, this.pageSize)
+            .subscribe(
+              (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
+                this.courseEditions = [...this.courseEditions, ...data.data!.items];
+                this.page++;
+                this.nextPage = data.data?.totalCount! > this.page * this.pageSize;
+              },
+            ),
+        );
+      }
+      if (this.type === 'mutual') {
+        this.sub.add(
+          this.courseEditionService
+            .getMutualCourseEditions(this.userId, this.page + 1, this.pageSize)
+            .subscribe(
+              (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
+                this.courseEditions = [...this.courseEditions, ...data.data!.items];
+                this.page++;
+                this.nextPage = data.data?.totalCount! > this.page * this.pageSize;
+              },
+            ),
+        );
+      }
+      if (this.type === 'user') {
+        this.sub.add(
+          this.courseEditionService
+            .getUserCourseEditions(this.userId, this.page + 1, this.pageSize)
             .subscribe(
               (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
                 this.courseEditions = [...this.courseEditions, ...data.data!.items];

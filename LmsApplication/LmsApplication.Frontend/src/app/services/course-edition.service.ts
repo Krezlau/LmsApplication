@@ -48,6 +48,28 @@ export class CourseEditionService {
     );
   }
 
+  getMutualCourseEditions(userId: string, page: number = 1, pageSize: number = 10) {
+    return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
+      `${environment.apiUrl}/api/courses/editions/by-user/${userId}/mutual?page=${page}&pageSize=${pageSize}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  getUserCourseEditions(userId: string, page: number = 1, pageSize: number = 10) {
+    return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
+      `${environment.apiUrl}/api/courses/editions/by-user/${userId}?page=${page}&pageSize=${pageSize}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
   getCourseEditionById(editionId: string) {
     return this.http.get<ApiResponse<CourseEditionModel>>(
       `${environment.apiUrl}/api/courses/editions/${editionId}`,

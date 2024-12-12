@@ -14,11 +14,12 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Subscription, tap } from 'rxjs';
 import { AlertService } from '../../services/alert.service';
+import { CourseEditionListComponent } from '../course-edition-list/course-edition-list.component';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [NgIf, RouterLink, ReactiveFormsModule],
+  imports: [NgIf, RouterLink, ReactiveFormsModule, CourseEditionListComponent],
   templateUrl: './user-profile.component.html',
 })
 export class UserProfileComponent implements OnDestroy {
