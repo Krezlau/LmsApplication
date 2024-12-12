@@ -1,13 +1,11 @@
 using FluentValidation;
-using LmsApplication.CourseModule.Data.Courses;
-using LmsApplication.CourseModule.Data.Entities;
+using LmsApplication.CourseModule.Data.Courses.Validation;
 using LmsApplication.CourseModule.Services.Repositories;
 
 namespace LmsApplication.CourseModule.Services.Validation;
 
-public class CourseEditionPostModelValidator : AbstractValidator<CourseEditionPostModel>
+public class CourseEditionPostModelValidator : AbstractValidator<CreateCourseEditionValidationModel>
 {
-    private const string CourseDoesNotExistMessage = "Course does not exist.";
     private const string TitleUniqueMessage = "Title must be unique.";
     
     private readonly ICourseEditionRepository _courseEditionRepository;
@@ -15,6 +13,10 @@ public class CourseEditionPostModelValidator : AbstractValidator<CourseEditionPo
     public CourseEditionPostModelValidator(ICourseEditionRepository courseEditionRepository)
     {
         _courseEditionRepository = courseEditionRepository;
+
+        RuleFor(x => x.Course)
+            .NotNull()
+            .WithMessage("Course not found.");
         
         RuleFor(x => x.Title)
             .NotEmpty();
@@ -35,14 +37,10 @@ public class CourseEditionPostModelValidator : AbstractValidator<CourseEditionPo
             .GreaterThan(0);
 
         RuleFor(x => x)
-            .Must(CourseExists)
-            .WithMessage(CourseDoesNotExistMessage);
-
-        RuleFor(x => x)
             .Custom(RegistrationPeriodValid);
     }
 
-    private void RegistrationPeriodValid(CourseEditionPostModel model, ValidationContext<CourseEditionPostModel> context)
+    private void RegistrationPeriodValid(CreateCourseEditionValidationModel model, ValidationContext<CreateCourseEditionValidationModel> context)
     {
         if (model.RegistrationStartDateUtc is null && model.RegistrationEndDateUtc is null)
         {
@@ -72,13 +70,8 @@ public class CourseEditionPostModelValidator : AbstractValidator<CourseEditionPo
         }
     }
 
-    private async Task<bool> TitleUniqueAsync(CourseEditionPostModel model, CancellationToken ct)
+    private async Task<bool> TitleUniqueAsync(CreateCourseEditionValidationModel model, CancellationToken ct)
     {
         return await _courseEditionRepository.GetCourseEditionByCourseIdAndTitleAsync(model.Title, model.CourseId) is null;
-    }
-
-    private bool CourseExists(CourseEditionPostModel _, CourseEditionPostModel __, ValidationContext<CourseEditionPostModel> context)
-    {
-        return context.RootContextData.TryGetValue(nameof(Course), out var value) && value is Course _;
     }
 }

@@ -6,6 +6,7 @@ using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;
 using LmsApplication.CourseBoardModule.Data.Models;
+using LmsApplication.CourseBoardModule.Data.Models.Validation;
 using LmsApplication.CourseBoardModule.Services.Providers;
 using LmsApplication.CourseBoardModule.Services.Repositories;
 
@@ -25,8 +26,8 @@ public interface IPostService
 public class PostService : CourseBoardService, IPostService
 {
     private readonly IPostRepository _postRepository;
-    private readonly IValidationService<PostCreateModel> _postCreateModelValidationService;
-    private readonly IValidationService<PostUpdateModel> _postUpdateModelValidationService;
+    private readonly IValidationService<CreatePostValidationModel> _postCreateModelValidationService;
+    private readonly IValidationService<UpdatePostValidationModel> _postUpdateModelValidationService;
     private readonly IUserProvider _userProvider;
     private readonly IQueueClient<PostBatchNotificationQueueMessage> _postBatchNotificationQueueClient;
 
@@ -34,8 +35,8 @@ public class PostService : CourseBoardService, IPostService
         ICourseEditionProvider courseEditionProvider,
         IUserContext userContext,
         IPostRepository postRepository,
-        IValidationService<PostCreateModel> postCreateModelValidationService,
-        IValidationService<PostUpdateModel> postUpdateModelValidationService,
+        IValidationService<CreatePostValidationModel> postCreateModelValidationService,
+        IValidationService<UpdatePostValidationModel> postUpdateModelValidationService,
         IUserProvider userProvider,
         IQueueClient<PostBatchNotificationQueueMessage> postBatchNotificationQueueClient) : base(courseEditionProvider, userContext)
     {
@@ -68,12 +69,13 @@ public class PostService : CourseBoardService, IPostService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToPostAsync(editionId, userId);
-        
-        var user = await _userProvider.GetUserByIdAsync(userId);
-        if (user is null) 
-            throw new KeyNotFoundException("User not found.");
-        
-        await _postCreateModelValidationService.ValidateAndThrowAsync(postCreateModel);
+
+        var validationModel = new CreatePostValidationModel
+        {
+            Content = postCreateModel.Content,
+            User = await _userProvider.GetUserByIdAsync(userId),
+        };
+        await _postCreateModelValidationService.ValidateAndThrowAsync(validationModel);
 
         var post = new Post
         {
@@ -87,13 +89,13 @@ public class PostService : CourseBoardService, IPostService
         await _postBatchNotificationQueueClient.EnqueueAsync(new PostBatchNotificationQueueMessage
         {
             CourseEditionId = editionId,
-            Poster = user,
+            Poster = validationModel.User!,
             PostBody = post.Content,
             TimeStampUtc = DateTime.UtcNow,
             CourseEditionName = (await CourseEditionProvider.GetCourseEditionAsync(editionId))!.Name,
         });
 
-        return post.ToModel(user, [], userId);
+        return post.ToModel(validationModel.User!, [], userId);
     }
 
     public async Task<PostModel> UpdatePostAsync(Guid editionId, Guid postId, PostUpdateModel model)
@@ -101,24 +103,19 @@ public class PostService : CourseBoardService, IPostService
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
         
-        var post = await _postRepository.GetPostByIdAsync(postId);
-        var user = await _userProvider.GetUserByIdAsync(userId);
-        
-        var context = new ValidationContext<PostUpdateModel>(model)
+        var validationModel = new UpdatePostValidationModel
         {
-            RootContextData = 
-            {
-                { nameof(Post), post },
-                { nameof(user), user },
-            }
+            Content = model.Content,
+            Post = await _postRepository.GetPostByIdAsync(postId),
+            User = await _userProvider.GetUserByIdAsync(userId),
         };
-        await _postUpdateModelValidationService.ValidateAndThrowAsync(context);
+        await _postUpdateModelValidationService.ValidateAndThrowAsync(validationModel);
         
-        post!.Content = model.Content;
+        validationModel.Post!.Content = model.Content;
         
-        await _postRepository.UpdatePostAsync(post);
+        await _postRepository.UpdatePostAsync(validationModel.Post);
         
-        return post.ToModel(user!, [], userId);
+        return validationModel.Post.ToModel(validationModel.User!, [], userId);
     }
 
     public async Task DeletePostAsync(Guid editionId, Guid postId)

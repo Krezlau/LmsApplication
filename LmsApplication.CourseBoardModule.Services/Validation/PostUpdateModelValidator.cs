@@ -1,12 +1,10 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
-using LmsApplication.Core.Shared.Models;
-using LmsApplication.CourseBoardModule.Data.Entities;
-using LmsApplication.CourseBoardModule.Data.Models;
+using LmsApplication.CourseBoardModule.Data.Models.Validation;
 
 namespace LmsApplication.CourseBoardModule.Services.Validation;
 
-public class PostUpdateModelValidator : AbstractValidator<PostUpdateModel>
+public class PostUpdateModelValidator : AbstractValidator<UpdatePostValidationModel>
 {
     public PostUpdateModelValidator()
     {
@@ -14,25 +12,23 @@ public class PostUpdateModelValidator : AbstractValidator<PostUpdateModel>
             .NotEmpty()
             .MaximumLength(1000);
 
+        RuleFor(x => x.Post)
+            .NotNull()
+            .WithMessage("Post not found.");
+
+        RuleFor(x => x.User)
+            .NotNull()
+            .WithMessage("User not found.");
+        
         RuleFor(x => x)
             .Custom(UserValid);
     }
 
-    private void UserValid(PostUpdateModel model, ValidationContext<PostUpdateModel> context)
+    private void UserValid(UpdatePostValidationModel model, ValidationContext<UpdatePostValidationModel> context)
     {
-        if (!context.RootContextData.TryGetValue(nameof(Post), out var value) || value is not Post post)
-        {
-            context.AddFailure("Comment not found.");
-            return;
-        }
+        if (model.Post is null || model.User is null) return;
         
-        if (!context.RootContextData.TryGetValue("user", out var userVal) || userVal is not UserExchangeModel user)
-        {
-            context.AddFailure("User not found.");
-            return;
-        }
-        
-        if (post.UserId != user.Id && user.Role is not UserRole.Admin)
+        if (model.Post.UserId != model.User.Id && model.User.Role is not UserRole.Admin)
         {
             context.AddFailure("You are not allowed to update this comment.");
         }

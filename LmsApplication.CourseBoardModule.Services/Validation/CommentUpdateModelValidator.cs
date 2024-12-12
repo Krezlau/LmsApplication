@@ -1,12 +1,10 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
-using LmsApplication.Core.Shared.Models;
-using LmsApplication.CourseBoardModule.Data.Entities;
-using LmsApplication.CourseBoardModule.Data.Models;
+using LmsApplication.CourseBoardModule.Data.Models.Validation;
 
 namespace LmsApplication.CourseBoardModule.Services.Validation;
 
-public class CommentUpdateModelValidator : AbstractValidator<CommentUpdateModel>
+public class CommentUpdateModelValidator : AbstractValidator<UpdateCommentValidationModel>
 {
     public CommentUpdateModelValidator()
     {
@@ -14,25 +12,23 @@ public class CommentUpdateModelValidator : AbstractValidator<CommentUpdateModel>
             .NotEmpty()
             .MaximumLength(1000);
 
+        RuleFor(x => x.Comment)
+            .NotNull()
+            .WithMessage("Comment not found.");
+        
+        RuleFor(x => x.User)
+            .NotNull()
+            .WithMessage("User not found.");
+        
         RuleFor(x => x)
             .Custom(UserValid);
     }
 
-    private void UserValid(CommentUpdateModel model, ValidationContext<CommentUpdateModel> context)
+    private static void UserValid(UpdateCommentValidationModel model, ValidationContext<UpdateCommentValidationModel> context)
     {
-        if (!context.RootContextData.TryGetValue(nameof(Comment), out var value) || value is not Comment comment)
-        {
-            context.AddFailure("Comment not found.");
-            return;
-        }
+        if (model.Comment is null || model.User is null) return;
         
-        if (!context.RootContextData.TryGetValue("user", out var userVal) || userVal is not UserExchangeModel user)
-        {
-            context.AddFailure("User not found.");
-            return;
-        }
-        
-        if (comment.UserId != user.Id && user.Role is not UserRole.Admin)
+        if (model.Comment.UserId != model.User.Id && model.User.Role is not UserRole.Admin)
         {
             context.AddFailure("You are not allowed to update this comment.");
         }

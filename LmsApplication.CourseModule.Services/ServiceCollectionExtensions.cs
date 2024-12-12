@@ -21,10 +21,10 @@ public static class ServiceCollectionExtensions
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
         services.AddScoped<IValidationService<CategoryPostModel>, ValidationService<CategoryPostModel>>();
         services.AddScoped<IValidationService<CoursePostModel>, ValidationService<CoursePostModel>>();
-        services.AddScoped<IValidationService<CourseEditionPostModel>, ValidationService<CourseEditionPostModel>>();
+        services.AddScoped<IValidationService<CreateCourseEditionValidationModel>, ValidationService<CreateCourseEditionValidationModel>>();
         services.AddScoped<IValidationService<CourseEditionAddUserValidationModel>, ValidationService<CourseEditionAddUserValidationModel>>();
         services.AddScoped<IValidationService<CourseEditionRegisterModel>, ValidationService<CourseEditionRegisterModel>>();
-        services.AddScoped<IValidationService<CourseEditionRemoveUserModel>, ValidationService<CourseEditionRemoveUserModel>>();
+        services.AddScoped<IValidationService<CourseEditionRemoveUserValidationModel>, ValidationService<CourseEditionRemoveUserValidationModel>>();
 
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<ICourseEditionRepository, CourseEditionRepository>();

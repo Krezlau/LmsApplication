@@ -40,10 +40,10 @@ public class CourseEditionService : ICourseEditionService
 {
     private readonly ICourseEditionRepository _courseEditionRepository;
     private readonly ICourseRepository _courseRepository;
-    private readonly IValidationService<CourseEditionPostModel> _courseEditionPostModelValidationService;
+    private readonly IValidationService<CreateCourseEditionValidationModel> _courseEditionPostModelValidationService;
     private readonly IValidationService<CourseEditionAddUserValidationModel> _courseEditionAddUserModelValidationService;
     private readonly IValidationService<CourseEditionRegisterModel> _courseEditionRegisterModelValidationService;
-    private readonly IValidationService<CourseEditionRemoveUserModel> _courseEditionRemoveUserModelValidationService;
+    private readonly IValidationService<CourseEditionRemoveUserValidationModel> _courseEditionRemoveUserModelValidationService;
     private readonly IUserProvider _userProvider;
     private readonly IUserContext _userContext;
     private readonly IQueueClient<CourseEnrollmentNotificationQueueMessage> _queueClient;
@@ -51,11 +51,11 @@ public class CourseEditionService : ICourseEditionService
     public CourseEditionService(
         ICourseEditionRepository courseEditionRepository,
         ICourseRepository courseRepository,
-        IValidationService<CourseEditionPostModel> courseEditionPostModelValidationService,
+        IValidationService<CreateCourseEditionValidationModel> courseEditionPostModelValidationService,
         IValidationService<CourseEditionAddUserValidationModel> courseEditionAddUserModelValidationService,
         IValidationService<CourseEditionRegisterModel> courseEditionRegisterModelValidationService,
         IUserProvider userProvider,
-        IValidationService<CourseEditionRemoveUserModel> courseEditionRemoveUserModelValidationService,
+        IValidationService<CourseEditionRemoveUserValidationModel> courseEditionRemoveUserModelValidationService,
         IUserContext userContext,
         IQueueClient<CourseEnrollmentNotificationQueueMessage> queueClient)
     {
@@ -95,16 +95,18 @@ public class CourseEditionService : ICourseEditionService
 
     public async Task<CourseEditionModel> CreateCourseEditionAsync(CourseEditionPostModel model)
     {
-        var course = await _courseRepository.GetCourseByIdAsync(model.CourseId);
-        
-        var context = new ValidationContext<CourseEditionPostModel>(model)
+        var validationModel = new CreateCourseEditionValidationModel
         {
-            RootContextData =
-            {
-                [nameof(Course)] = course
-            }
+            Title = model.Title,
+            CourseId = model.CourseId,
+            StartDateUtc = model.StartDateUtc,
+            StudentLimit = model.StudentLimit,
+            RegistrationStartDateUtc = model.RegistrationStartDateUtc,
+            RegistrationEndDateUtc = model.RegistrationEndDateUtc,
+            Course = await _courseRepository.GetCourseByIdAsync(model.CourseId),
         };
-        await _courseEditionPostModelValidationService.ValidateAndThrowAsync(context);
+        
+        await _courseEditionPostModelValidationService.ValidateAndThrowAsync(validationModel);
         
         var courseEdition = new CourseEdition
         {
@@ -114,8 +116,8 @@ public class CourseEditionService : ICourseEditionService
             StudentLimit = model.StudentLimit,
             RegistrationStartDateUtc = model.RegistrationStartDateUtc,
             RegistrationEndDateUtc = model.RegistrationEndDateUtc,
-            Duration = course!.Duration,
-            Course = course,
+            Duration = validationModel.Course!.Duration,
+            Course = validationModel.Course,
         };
         
         await _courseEditionRepository.CreateAsync(courseEdition);
@@ -170,18 +172,14 @@ public class CourseEditionService : ICourseEditionService
 
     public async Task RemoveUserFromCourseEditionAsync(Guid courseId, CourseEditionRemoveUserModel model)
     {
-        var user = await _userProvider.GetUserByIdAsync(model.UserId);
-        var context = new ValidationContext<CourseEditionRemoveUserModel>(model)
+        var validationModel = new CourseEditionRemoveUserValidationModel
         {
-            RootContextData =
-            {
-                [nameof(courseId)] = courseId,
-                [nameof(user)] = user,
-            }
+            CourseEdition = await _courseEditionRepository.GetCourseEditionByIdAsync(courseId),
+            User = await _userProvider.GetUserByIdAsync(model.UserId),
         };
-        await _courseEditionRemoveUserModelValidationService.ValidateAndThrowAsync(context);
+        await _courseEditionRemoveUserModelValidationService.ValidateAndThrowAsync(validationModel);
         
-        await _courseEditionRepository.RemoveParticipantFromCourseEditionAsync(courseId, user!.Id);
+        await _courseEditionRepository.RemoveParticipantFromCourseEditionAsync(courseId, validationModel.User!.Id);
     }
 
     public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync()

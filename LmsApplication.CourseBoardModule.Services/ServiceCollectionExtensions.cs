@@ -26,11 +26,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IFinalGradeRepository, FinalGradeRepository>();
         
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
-        services.AddScoped<IValidationService<PostCreateModel>, ValidationService<PostCreateModel>>();
-        services.AddScoped<IValidationService<PostUpdateModel>, ValidationService<PostUpdateModel>>();
-        services.AddScoped<IValidationService<CommentCreateModel>, ValidationService<CommentCreateModel>>();
-        services.AddScoped<IValidationService<CommentUpdateModel>, ValidationService<CommentUpdateModel>>();
-        services.AddScoped<IValidationService<GradesTableRowDefinitionUpdateModel>, ValidationService<GradesTableRowDefinitionUpdateModel>>();
+        services.AddScoped<IValidationService<CreatePostValidationModel>, ValidationService<CreatePostValidationModel>>();
+        services.AddScoped<IValidationService<UpdatePostValidationModel>, ValidationService<UpdatePostValidationModel>>();
+        services.AddScoped<IValidationService<CreateCommentValidationModel>, ValidationService<CreateCommentValidationModel>>();
+        services.AddScoped<IValidationService<UpdateCommentValidationModel>, ValidationService<UpdateCommentValidationModel>>();
+        services.AddScoped<IValidationService<UpdateRowDefinitionValidationModel>, ValidationService<UpdateRowDefinitionValidationModel>>();
         services.AddScoped<IValidationService<GradesTableRowDefinitionCreateModel>, ValidationService<GradesTableRowDefinitionCreateModel>>();
         services.AddScoped<IValidationService<UpdateRowValueValidationModel>, ValidationService<UpdateRowValueValidationModel>>();
         services.AddScoped<IValidationService<CreateFinalGradeValidationModel>, ValidationService<CreateFinalGradeValidationModel>>();
