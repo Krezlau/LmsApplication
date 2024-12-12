@@ -6,6 +6,7 @@ import { CourseEditionService } from '../../services/course-edition.service';
 import { CourseEditionModel } from '../../types/courses/course-edition-model';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { CollectionResource } from '../../types/collection-resource';
 
 @Component({
   selector: 'app-home-page',
@@ -18,9 +19,9 @@ export class HomePageComponent {
 
   authState = this.authService.authState;
 
-  courseList$: Observable<ApiResponse<CourseEditionModel[]>> =
+  courseList$: Observable<ApiResponse<CollectionResource<CourseEditionModel>>> =
     this.courseEditionService.getMyCourseEditions();
 
-  openRegistrationList$: Observable<ApiResponse<CourseEditionModel[]>> =
+  openRegistrationList$: Observable<ApiResponse<CollectionResource<CourseEditionModel>>> =
     this.courseEditionService.getOpenRegistrationCourseEditions();
 }

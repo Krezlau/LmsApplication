@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { CourseCategory } from '../types/courses/course-category';
 import { ApiResponse } from '../types/api-response';
 import { environment } from '../../environments/environment';
+import { CollectionResource } from '../types/collection-resource';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,9 @@ export class CourseService {
     private authService: AuthService,
   ) {}
 
-  public getAllCourses() {
-    return this.http.get<ApiResponse<CourseModel[]>>(
-      `${environment.apiUrl}/api/courses`,
+  public getAllCourses(page: number = 1, pageSize: number = 8) {
+    return this.http.get<ApiResponse<CollectionResource<CourseModel>>>(
+      `${environment.apiUrl}/api/courses?page=${page}&pageSize=${pageSize}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,

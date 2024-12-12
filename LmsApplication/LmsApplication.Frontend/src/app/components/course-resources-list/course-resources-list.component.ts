@@ -15,6 +15,7 @@ import { ResourceMetadataModel } from '../../types/resources/resource-metadata-m
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { DateFormatting } from '../../helpers/date-formatter';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CollectionResource } from '../../types/collection-resource';
 
 @Component({
   selector: 'app-course-resources-list',
@@ -42,6 +43,10 @@ export class CourseResourcesListComponent implements OnInit, OnDestroy {
   resources: ResourceMetadataModel[] = [];
   resourcesLoading = false;
   uploadLoading = false;
+
+  page = 0;
+  pageSize = 10;
+  nextPage = true;
 
   nameControl = new FormControl('', [
     Validators.required,
@@ -169,11 +174,15 @@ export class CourseResourcesListComponent implements OnInit, OnDestroy {
     this.resourcesLoading = true;
     this.sub.add(
       this.resourceService
-        .getResourceMetadatas(this.type, this.id)
+        .getResourceMetadatas(this.type, this.id, this.page + 1, this.pageSize)
         .pipe(
           tap({
-            next: (res: ApiResponse<ResourceMetadataModel[]>) => {
-              this.resources = res.data!;
+            next: (
+              res: ApiResponse<CollectionResource<ResourceMetadataModel>>,
+            ) => {
+              this.resources = [...this.resources, ...res.data!.items];
+              this.page++;
+              this.nextPage = res.data?.totalCount! > this.page * this.pageSize;
               this.resourcesLoading = false;
             },
             error: (err) => {

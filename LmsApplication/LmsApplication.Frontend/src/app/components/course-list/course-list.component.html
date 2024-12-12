@@ -34,6 +34,9 @@
     </div>
   </li>
 </ul>
-<div *ngIf="!coursesLoading">
+<div *ngIf="nextPage" class="mt-3 flex flex-row justify-end" >
+  <button class="btn btn-sm btn-info" (click)="ngOnInit()"> Load More </button>
+</div>
+<div class="mt-3" *ngIf="!coursesLoading">
   <app-course-add-form (added)="addCourse($event)"></app-course-add-form>
 </div>

@@ -4,6 +4,7 @@ import { CourseEditionModel } from '../types/courses/course-edition-model';
 import { AuthService } from './auth.service';
 import { ApiResponse } from '../types/api-response';
 import { environment } from '../../environments/environment';
+import { CollectionResource } from '../types/collection-resource';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +15,9 @@ export class CourseEditionService {
     private authService: AuthService,
   ) {}
 
-  getMyCourseEditions() {
-    return this.http.get<ApiResponse<CourseEditionModel[]>>(
-      `${environment.apiUrl}/api/courses/editions/my-courses`,
+  getMyCourseEditions(page: number = 1, pageSize: number = 10) {
+    return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
+      `${environment.apiUrl}/api/courses/editions/my-courses?page=${page}&pageSize=${pageSize}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -25,9 +26,9 @@ export class CourseEditionService {
     );
   }
 
-  getOpenRegistrationCourseEditions() {
-    return this.http.get<ApiResponse<CourseEditionModel[]>>(
-      `${environment.apiUrl}/api/courses/editions/registration-open`,
+  getOpenRegistrationCourseEditions(page: number = 1, pageSize: number = 10) {
+    return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
+      `${environment.apiUrl}/api/courses/editions/registration-open?page=${page}&pageSize=${pageSize}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
@@ -36,9 +37,9 @@ export class CourseEditionService {
     );
   }
 
-  getCourseEditionsByCourseId(courseId: string) {
-    return this.http.get<ApiResponse<CourseEditionModel[]>>(
-      `${environment.apiUrl}/api/courses/editions/by-course/${courseId}`,
+  getCourseEditionsByCourseId(courseId: string, page: number = 1, pageSize: number = 10) {
+    return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
+      `${environment.apiUrl}/api/courses/editions/by-course/${courseId}?page=${page}&pageSize=${pageSize}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,

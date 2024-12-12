@@ -43,13 +43,13 @@ public class CourseRepository : ICourseRepository
         var query = _dbContext.Courses
             .Include(x => x.Categories);
         
-        var totalCount = query.CountAsync();
+        var totalCount = await query.CountAsync();
         var courses = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
         
-        return (await totalCount, courses);
+        return (totalCount, courses);
     }
 
     public async Task<Course?> GetCourseByIdAsync(Guid id)

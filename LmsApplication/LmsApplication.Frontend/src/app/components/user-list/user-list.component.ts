@@ -38,6 +38,9 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   usersLoading = false;
   authState = this.authService.authState;
+  page = 0;
+  pageSize = 10;
+  nextPage = false;
 
   constructor(
     private userService: UserService,
@@ -93,17 +96,27 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.usersLoading = true;
     if (!this.courseEditionId) {
       this.sub.add(
-        this.userService.getUsers().subscribe((users) => {
-          this.users = users!;
-          this.usersLoading = false;
-        }),
+        this.userService
+          .getUsers(this.page + 1, this.pageSize)
+          .subscribe((users) => {
+            this.users = [...this.users, ...users!.items];
+            this.page++;
+            this.nextPage = users.totalCount! > this.page * this.pageSize;
+            this.usersLoading = false;
+          }),
       );
     } else {
       this.sub.add(
         this.userService
-          .getUsersByCourseEdition(this.courseEditionId)
+          .getUsersByCourseEdition(
+            this.courseEditionId,
+            this.page + 1,
+            this.pageSize,
+          )
           .subscribe((users) => {
-            this.users = users!;
+            this.users = [...this.users, ...users!.items];
+            this.page++;
+            this.nextPage = users.totalCount! > this.page * this.pageSize;
             if (this.listType === 'grades') {
               this.users = this.users.filter((user) => user.role === 0);
             }

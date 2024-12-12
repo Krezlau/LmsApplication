@@ -39,7 +39,7 @@ export class CourseEditionAddUserDialogComponent implements OnDestroy {
     this.searchUser = event.target.value;
     this.sub.add(
       this.userService.searchUsersByEmail(this.searchUser).subscribe((res) => {
-        this.userList = res;
+        this.userList = res.items;
       }),
     );
   }

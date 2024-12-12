@@ -70,6 +70,9 @@
     </div>
   </li>
 </ul>
+<div *ngIf="nextPage" class="flex flex-row justify-end mt-2">
+  <button class="btn btn-sm btn-info" (click)="ngOnInit()">Load more</button>
+</div>
 <p *ngIf="users && users.length === 0" class="italic text-gray-500">
   No users found.
 </p>

@@ -67,13 +67,15 @@ public class UserRepository : IUserRepository
 
     public async Task<List<User>> GetUsersByIdsAsync(List<string> studentIds)
     {
-        return await _userManager.Users.Where(x => studentIds.Contains(x.Id))
+        return await _userManager.Users.Include(x => x.Roles).Where(x => studentIds.Contains(x.Id))
             .ToListAsync();
     }
     
     public async Task<(int totalCount, List<User> data)> GetUsersByIdsAsync(List<string> studentIds, int page, int pageSize)
     {
-        var query = _userManager.Users.Where(x => studentIds.Contains(x.Id));
+        var query = _userManager.Users
+            .Include(x => x.Roles)
+            .Where(x => studentIds.Contains(x.Id));
         
         var totalCount = await query.CountAsync();
         var data = await query

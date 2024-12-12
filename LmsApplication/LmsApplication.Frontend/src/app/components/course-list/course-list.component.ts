@@ -22,6 +22,9 @@ export class CourseListComponent implements OnInit, OnDestroy {
   sub = new Subscription();
 
   coursesLoading = false;
+  page = 0;
+  pageSize = 8;
+  nextPage = true;
 
   constructor(
     private authService: AuthService,
@@ -42,11 +45,13 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this.coursesLoading = true;
     this.sub.add(
       this.courseService
-        .getAllCourses()
+        .getAllCourses(this.page + 1, this.pageSize)
         .pipe(
           tap({
             next: (courses) => {
-              this.courses = courses.data!;
+              this.courses = [...this.courses, ...courses.data?.items!];
+              this.page++;
+              this.nextPage = courses.data?.totalCount! > this.page * this.pageSize;
               this.coursesLoading = false;
             },
             error: (err) => {

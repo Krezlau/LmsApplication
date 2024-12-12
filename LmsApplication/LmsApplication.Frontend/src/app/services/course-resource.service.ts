@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { ResourceMetadataModel } from '../types/resources/resource-metadata-model';
 import { ApiResponse } from '../types/api-response';
 import { environment } from '../../environments/environment';
+import { CollectionResource } from '../types/collection-resource';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +18,11 @@ export class CourseResourceService {
   public getResourceMetadatas(
     resourceType: 'course' | 'edition',
     parentId: string,
+    page: number = 1,
+    pageSize: number = 10,
   ) {
-    return this.http.get<ApiResponse<ResourceMetadataModel[]>>(
-      `${environment.apiUrl}/api/resources/metadatas/${resourceType}s/${parentId}`,
+    return this.http.get<ApiResponse<CollectionResource<ResourceMetadataModel>>>(
+      `${environment.apiUrl}/api/resources/metadatas/${resourceType}s/${parentId}?page=${page}&pageSize=${pageSize}`,
       {
         headers: {
           Authorization: `Bearer ${this.authService.authState().accessToken}`,
