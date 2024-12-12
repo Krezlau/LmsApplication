@@ -7,17 +7,17 @@ namespace LmsApplication.CourseModule.Services.Repositories;
 
 public interface ICourseEditionRepository
 {
-    Task<List<CourseEdition>> GetAllCourseEditionsAsync();
+    Task<(int totalCount, List<CourseEdition> data)> GetAllCourseEditionsAsync(int page, int pageSize);
     
-    Task<List<CourseEdition>> GetCourseEditionsByCourseIdAsync(Guid courseId);
+    Task<(int totalCount, List<CourseEdition> data)> GetCourseEditionsByCourseIdAsync(Guid courseId, int page, int pageSize);
 
-    Task<List<CourseEdition>> GetEditionsWithRegistrationOpenAsync(string userId);
+    Task<(int totalCount, List<CourseEdition> data)> GetEditionsWithRegistrationOpenAsync(string userId, int page, int pageSize);
     
-    Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userId);
+    Task<(int totalCount, List<CourseEdition> data)> GetUserCourseEditionsAsync(string userId, int page, int pageSize);
     
-    Task<List<CourseEdition>> GetCourseEditionsByUserIdAsync(string userId);
+    Task<(int totalCount, List<CourseEdition> data)> GetCourseEditionsByUserIdAsync(string userId, int page, int pageSize);
     
-    Task<List<CourseEdition>> GetMutualCourseEditionsAsync(string userId, string userId2);
+    Task<(int totalCount, List<CourseEdition> data)> GetMutualCourseEditionsAsync(string userId, string userId2, int page, int pageSize);
 
     Task<CourseEdition?> GetCourseEditionByCourseIdAndTitleAsync(string title, Guid courseId);
     
@@ -49,28 +49,40 @@ public class CourseEditionRepository : ICourseEditionRepository
         _context = context;
     }
 
-    public async Task<List<CourseEdition>> GetAllCourseEditionsAsync()
+    public async Task<(int totalCount, List<CourseEdition> data)> GetAllCourseEditionsAsync(int page, int pageSize)
     {
-        // todo pagination
-        return await _context.CourseEditions
+        var query = _context.CourseEditions
+            .Include(x => x.Course)
+            .Include(x => x.Participants)
+            .Include(x => x.Settings);
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        return (totalCount, data);
+    }
+
+    public async Task<(int totalCount, List<CourseEdition> data)> GetCourseEditionsByCourseIdAsync(Guid courseId, int page, int pageSize)
+    {
+        var query = _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
             .Include(x => x.Settings)
+            .Where(x => x.CourseId == courseId);
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (totalCount, data);
     }
 
-    public async Task<List<CourseEdition>> GetCourseEditionsByCourseIdAsync(Guid courseId)
-    {
-        // todo pagination
-        return await _context.CourseEditions
-            .Include(x => x.Course)
-            .Include(x => x.Participants)
-            .Include(x => x.Settings)
-            .Where(x => x.CourseId == courseId)
-            .ToListAsync();
-    }
-
-    public async Task<List<CourseEdition>> GetEditionsWithRegistrationOpenAsync(string userId)
+    public async Task<(int totalCount, List<CourseEdition> data)> GetEditionsWithRegistrationOpenAsync(string userId, int page, int pageSize)
     {
         var userFinishedCourses = await _context.CourseEditions
             .Include(x => x.Participants)
@@ -79,7 +91,7 @@ public class CourseEditionRepository : ICourseEditionRepository
             .ToListAsync();
 
         var now = DateTime.UtcNow;
-        return await _context.CourseEditions
+        var query = _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
             .Include(x => x.Settings)
@@ -88,42 +100,67 @@ public class CourseEditionRepository : ICourseEditionRepository
                         x.RegistrationStartDateUtc != null &&
                         x.RegistrationStartDateUtc < now &&
                         !userFinishedCourses.Contains(x.CourseId) &&
-                        x.Participants.Count < x.StudentLimit)
+                        x.Participants.Count < x.StudentLimit);
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (totalCount, data);
     }
 
-    public async Task<List<CourseEdition>> GetUserCourseEditionsAsync(string userId)
+    public async Task<(int totalCount, List<CourseEdition> data)> GetUserCourseEditionsAsync(string userId, int page, int pageSize)
     {
-        // todo pagination
-        return await _context.CourseEditions
+        var query = _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
             .Include(x => x.Settings)
-            .Where(x => x.EndDateUtc > DateTime.UtcNow && x.Participants.Any(p => p.ParticipantId == userId))
+            .Where(x => x.EndDateUtc > DateTime.UtcNow && x.Participants.Any(p => p.ParticipantId == userId));
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (totalCount, data);
     }
 
-    public async Task<List<CourseEdition>> GetCourseEditionsByUserIdAsync(string userId)
+    public async Task<(int totalCount, List<CourseEdition> data)> GetCourseEditionsByUserIdAsync(string userId, int page, int pageSize)
     {
-        // todo pagination
-        return await _context.CourseEditions
+        var query = _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
             .Include(x => x.Settings)
-            .Where(x => x.Participants.Any(p => p.ParticipantId == userId))
+            .Where(x => x.Participants.Any(p => p.ParticipantId == userId));
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (totalCount, data);
     }
 
-    public async Task<List<CourseEdition>> GetMutualCourseEditionsAsync(string userId, string userId2)
+    public async Task<(int totalCount, List<CourseEdition> data)> GetMutualCourseEditionsAsync(string userId, string userId2, int page, int pageSize)
     {
-        // todo pagination
-        return await _context.CourseEditions
+        var query = _context.CourseEditions
             .Include(x => x.Course)
             .Include(x => x.Participants)
             .Include(x => x.Settings)
             .Where(x => x.Participants.Any(p => p.ParticipantId == userId) &&
-                        x.Participants.Any(p => p.ParticipantId == userId2))
+                        x.Participants.Any(p => p.ParticipantId == userId2));
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (totalCount, data);
     }
 
     public async Task<CourseEdition?> GetCourseEditionByCourseIdAndTitleAsync(string title, Guid courseId)

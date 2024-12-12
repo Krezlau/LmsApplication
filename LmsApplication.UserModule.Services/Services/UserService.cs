@@ -1,5 +1,6 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.UserModule.Data.Mapping;
 using LmsApplication.UserModule.Data.Models;
@@ -15,11 +16,11 @@ public interface IUserService
     
     Task<UserModel> GetUserByEmailAsync(string userEmail);
     
-    Task<List<UserModel>> GetUsersAsync();
+    Task<CollectionResource<UserModel>> GetUsersAsync(int page, int pageSize);
     
-    Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId);
+    Task<CollectionResource<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId, int page, int pageSize);
 
-    Task<List<UserModel>> SearchUsersByEmailAsync(string query);
+    Task<CollectionResource<UserModel>> SearchUsersByEmailAsync(string query, int page, int pageSize);
     
     Task UpdateUserAsync(string userId, UserUpdateModel model);
 
@@ -64,14 +65,14 @@ public class UserService : IUserService
         return user.ToModel();
     }
 
-    public async Task<List<UserModel>> GetUsersAsync()
+    public async Task<CollectionResource<UserModel>> GetUsersAsync(int page, int pageSize)
     {
-        var users = await _userRepository.GetAllUsersAsync();
+        var (totalCount, users) = await _userRepository.GetAllUsersAsync(page, pageSize);
         
-        return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();
+        return new CollectionResource<UserModel>(users.Select(x => x.ToModel()).OrderByDescending(x => x.Role), totalCount);
     }
 
-    public async Task<List<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId)
+    public async Task<CollectionResource<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId, int page, int pageSize)
     {
         var userId = _userContext.GetUserId();
         var isAdmin = await _userRepository.IsUserAdminAsync(userId);
@@ -84,16 +85,16 @@ public class UserService : IUserService
         
         var userIds = await _courseEditionProvider.GetCourseEditionParticipantsAsync(courseEditionId);
         
-        var users = await _userRepository.GetUsersByIdsAsync(userIds);
+        var (totalCount, users) = await _userRepository.GetUsersByIdsAsync(userIds, page, pageSize);
         
-        return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();
+        return new CollectionResource<UserModel>(users.Select(x => x.ToModel()).OrderByDescending(x => x.Role), totalCount);
     }
 
-    public async Task<List<UserModel>> SearchUsersByEmailAsync(string query)
+    public async Task<CollectionResource<UserModel>> SearchUsersByEmailAsync(string query, int page, int pageSize)
     {
-        var users = await _userRepository.SearchUsersByEmailAsync(query);
+        var (totalCount, users) = await _userRepository.SearchUsersByEmailAsync(query, page, pageSize);
         
-        return users.Select(x => x.ToModel()).OrderByDescending(x => x.Role).ToList();
+        return new CollectionResource<UserModel>(users.Select(x => x.ToModel()).OrderByDescending(x => x.Role), totalCount);
     }
 
     public async Task UpdateUserAsync(string userId, UserUpdateModel model)

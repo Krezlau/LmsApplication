@@ -1,4 +1,5 @@
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;

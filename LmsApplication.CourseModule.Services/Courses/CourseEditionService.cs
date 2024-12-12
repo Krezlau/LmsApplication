@@ -1,3 +1,4 @@
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.Core.Shared.QueueClients;
 using LmsApplication.Core.Shared.QueueMessages;
 using LmsApplication.Core.Shared.Services;
@@ -7,14 +8,15 @@ using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Data.Mapping;
 using LmsApplication.CourseModule.Services.Providers;
 using LmsApplication.CourseModule.Services.Repositories;
+using CourseEditionModel = LmsApplication.CourseModule.Data.Courses.CourseEditionModel;
 
 namespace LmsApplication.CourseModule.Services.Courses;
 
 public interface ICourseEditionService
 {
-    Task<List<CourseEditionModel>> GetAllCourseEditionsAsync();
+    Task<CollectionResource<CourseEditionModel>> GetAllCourseEditionsAsync(int page, int pageSize);
     
-    Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId);
+    Task<CollectionResource<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId, int page, int pageSize);
     
     Task<CourseEditionModel> GetCourseEditionByIdAsync(Guid id);
     
@@ -26,13 +28,13 @@ public interface ICourseEditionService
 
     Task RemoveUserFromCourseEditionAsync(Guid courseId, CourseEditionRemoveUserModel model);
     
-    Task<List<CourseEditionModel>> GetUserCourseEditionsAsync();
+    Task<CollectionResource<CourseEditionModel>> GetUserCourseEditionsAsync(int page, int pageSize);
 
-    Task<List<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync();
+    Task<CollectionResource<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync(int page, int pageSize);
     
-    Task<List<CourseEditionModel>> GetCourseEditionsByUserIdAsync(string userId);
+    Task<CollectionResource<CourseEditionModel>> GetCourseEditionsByUserIdAsync(string userId, int page, int pageSize);
     
-    Task<List<CourseEditionModel>> GetMutualCourseEditionsAsync(string userId);
+    Task<CollectionResource<CourseEditionModel>> GetMutualCourseEditionsAsync(string userId, int page, int pageSize);
 }
 
 public class CourseEditionService : ICourseEditionService
@@ -69,18 +71,18 @@ public class CourseEditionService : ICourseEditionService
         _courseEditionRegisterModelValidationService = courseEditionRegisterModelValidationService;
     }
 
-    public async Task<List<CourseEditionModel>> GetAllCourseEditionsAsync()
+    public async Task<CollectionResource<CourseEditionModel>> GetAllCourseEditionsAsync(int page, int pageSize)
     {
-        var courseEditions = await _courseEditionRepository.GetAllCourseEditionsAsync();
+        var (totalCount, courseEditions)= await _courseEditionRepository.GetAllCourseEditionsAsync(page, pageSize);
 
-        return courseEditions.Select(x => x.ToModel(_userContext.GetUserId())).ToList();
+        return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(_userContext.GetUserId())), totalCount);
     }
 
-    public async Task<List<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId)
+    public async Task<CollectionResource<CourseEditionModel>> GetCourseEditionsByCourseIdAsync(Guid courseId, int page, int pageSize)
     {
-        var courseEditions = await _courseEditionRepository.GetCourseEditionsByCourseIdAsync(courseId);
+        var (totalCount, courseEditions) = await _courseEditionRepository.GetCourseEditionsByCourseIdAsync(courseId, page, pageSize);
         
-        return courseEditions.Select(x => x.ToModel(_userContext.GetUserId())).ToList();
+        return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(_userContext.GetUserId())), totalCount);
     }
 
     public async Task<CourseEditionModel> GetCourseEditionByIdAsync(Guid id)
@@ -181,33 +183,33 @@ public class CourseEditionService : ICourseEditionService
         await _courseEditionRepository.RemoveParticipantFromCourseEditionAsync(courseId, validationModel.User!.Id);
     }
 
-    public async Task<List<CourseEditionModel>> GetUserCourseEditionsAsync()
+    public async Task<CollectionResource<CourseEditionModel>> GetUserCourseEditionsAsync(int page, int pageSize)
     {
         var userId = _userContext.GetUserId();
-        var courseEditions = await _courseEditionRepository.GetUserCourseEditionsAsync(userId);
+        var (totalCount, courseEditions) = await _courseEditionRepository.GetUserCourseEditionsAsync(userId, page, pageSize);
         
-        return courseEditions.Select(x => x.ToModel(userId)).ToList();
+        return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(userId)), totalCount);
     }
 
-    public async Task<List<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync()
+    public async Task<CollectionResource<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync(int page, int pageSize)
     {
         var userId = _userContext.GetUserId();
-        var courseEditions = await _courseEditionRepository.GetEditionsWithRegistrationOpenAsync(userId);
+        var (totalCount, courseEditions) = await _courseEditionRepository.GetEditionsWithRegistrationOpenAsync(userId, page, pageSize);
         
-        return courseEditions.Select(x => x.ToModel(userId)).ToList();
+        return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(userId)), totalCount);
     }
 
-    public async Task<List<CourseEditionModel>> GetCourseEditionsByUserIdAsync(string userId)
+    public async Task<CollectionResource<CourseEditionModel>> GetCourseEditionsByUserIdAsync(string userId, int page, int pageSize)
     {
-        var courseEditions = await _courseEditionRepository.GetCourseEditionsByUserIdAsync(userId);
+        var (totalCount, courseEditions) = await _courseEditionRepository.GetCourseEditionsByUserIdAsync(userId, page, pageSize);
         
-        return courseEditions.Select(x => x.ToModel(userId)).ToList();
+        return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(userId)), totalCount);
     }
 
-    public async Task<List<CourseEditionModel>> GetMutualCourseEditionsAsync(string userId)
+    public async Task<CollectionResource<CourseEditionModel>> GetMutualCourseEditionsAsync(string userId, int page, int pageSize)
     {
-        var courseEditions = await _courseEditionRepository.GetMutualCourseEditionsAsync(userId, _userContext.GetUserId());
+        var (totalCount, courseEditions) = await _courseEditionRepository.GetMutualCourseEditionsAsync(userId, _userContext.GetUserId(), page, pageSize);
         
-        return courseEditions.Select(x => x.ToModel(userId)).ToList();
+        return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(userId)), totalCount);
     }
 }

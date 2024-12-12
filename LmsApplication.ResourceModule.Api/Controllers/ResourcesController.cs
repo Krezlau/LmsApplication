@@ -36,9 +36,9 @@ public class ResourcesController : ControllerBase
     }
     
     [HttpGet("metadatas/{resourceType}s/{parentId:guid}")]
-    public async Task<IActionResult> GetResourceMetadatas(string resourceType, Guid parentId)
+    public async Task<IActionResult> GetResourceMetadatas(string resourceType, Guid parentId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _resourceService.GetResourcesAsync(ParseResourceType(resourceType), parentId)));
+        return Ok(ApiResponseHelper.Success(await _resourceService.GetResourcesAsync(ParseResourceType(resourceType), parentId, page, pageSize)));
     }
     
     [HttpDelete("{id:guid}")]

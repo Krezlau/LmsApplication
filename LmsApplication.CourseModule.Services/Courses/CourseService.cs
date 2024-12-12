@@ -1,3 +1,4 @@
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
@@ -8,7 +9,7 @@ namespace LmsApplication.CourseModule.Services.Courses;
 
 public interface ICourseService
 {
-    Task<List<CourseModel>> GetAllCoursesAsync();
+    Task<CollectionResource<CourseModel>> GetAllCoursesAsync(int page, int pageSize);
     
     Task<CourseModel> GetCourseByIdAsync(Guid id);
     
@@ -38,11 +39,11 @@ public class CourseService : ICourseService
         _coursePostModelValidationService = coursePostModelValidationService;
     }
 
-    public async Task<List<CourseModel>> GetAllCoursesAsync()
+    public async Task<CollectionResource<CourseModel>> GetAllCoursesAsync(int page, int pageSize)
     {
-        var courses = await _courseRepository.GetAllCoursesAsync();
+        var data = await _courseRepository.GetAllCoursesAsync(page, pageSize);
 
-        return courses.Select(x => x.ToModel()).ToList();
+        return new CollectionResource<CourseModel>(data.courses.Select(x => x.ToModel()), data.totalCount);
     }
 
     public async Task<CourseModel> GetCourseByIdAsync(Guid id)

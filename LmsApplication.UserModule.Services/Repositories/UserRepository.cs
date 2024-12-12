@@ -17,9 +17,11 @@ public interface IUserRepository
     
     Task<List<User>> GetUsersByIdsAsync(List<string> studentIds);
     
-    Task<List<User>> GetAllUsersAsync();
+    Task<(int totalCount, List<User> data)> GetUsersByIdsAsync(List<string> studentIds, int page, int pageSize);
+    
+    Task<(int totalCount, List<User> data)> GetAllUsersAsync(int page, int pageSize);
 
-    Task<List<User>> SearchUsersByEmailAsync(string query);
+    Task<(int totalCount, List<User> data)> SearchUsersByEmailAsync(string query, int page, int pageSize);
     
     Task UpdateAsync(User user);
     
@@ -68,20 +70,47 @@ public class UserRepository : IUserRepository
         return await _userManager.Users.Where(x => studentIds.Contains(x.Id))
             .ToListAsync();
     }
-
-    public async Task<List<User>> GetAllUsersAsync()
+    
+    public async Task<(int totalCount, List<User> data)> GetUsersByIdsAsync(List<string> studentIds, int page, int pageSize)
     {
-        return await _userManager.Users
-            .Include(x => x.Roles)
+        var query = _userManager.Users.Where(x => studentIds.Contains(x.Id));
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (totalCount, data);
     }
 
-    public async Task<List<User>> SearchUsersByEmailAsync(string query)
+    public async Task<(int totalCount, List<User> data)> GetAllUsersAsync(int page, int pageSize)
     {
-        return await _userManager.Users
-            .Include(x => x.Roles)
-            .Where(x => x.NormalizedEmail.Contains(query.ToUpper()))
+        var query = _userManager.Users
+            .Include(x => x.Roles);
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (totalCount, data);
+    }
+
+    public async Task<(int totalCount, List<User> data)> SearchUsersByEmailAsync(string query, int page, int pageSize)
+    {
+        var q = _userManager.Users
+            .Include(x => x.Roles)
+            .Where(x => x.NormalizedEmail.Contains(query.ToUpper()));
+        
+        var totalCount = await q.CountAsync();
+        var data = await q
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        return (totalCount, data);
     }
 
     public async Task UpdateAsync(User user)

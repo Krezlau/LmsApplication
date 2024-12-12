@@ -6,7 +6,7 @@ namespace LmsApplication.CourseModule.Services.Repositories;
 
 public interface ICourseRepository
 {
-    Task<List<Course>> GetAllCoursesAsync();
+    Task<(int totalCount, List<Course> courses)> GetAllCoursesAsync(int page, int pageSize);
     
     Task<Course?> GetCourseByIdAsync(Guid id);
     
@@ -38,12 +38,18 @@ public class CourseRepository : ICourseRepository
         _dbContext = dbContext;
     }
 
-    public async Task<List<Course>> GetAllCoursesAsync()
+    public async Task<(int totalCount, List<Course> courses)> GetAllCoursesAsync(int page, int pageSize)
     {
-        // todo pagination
-        return await _dbContext.Courses
-            .Include(x => x.Categories)
+        var query = _dbContext.Courses
+            .Include(x => x.Categories);
+        
+        var totalCount = query.CountAsync();
+        var courses = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (await totalCount, courses);
     }
 
     public async Task<Course?> GetCourseByIdAsync(Guid id)

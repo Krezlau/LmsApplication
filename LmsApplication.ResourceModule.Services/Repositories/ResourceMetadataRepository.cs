@@ -8,7 +8,7 @@ public interface IResourceMetadataRepository
 {
     Task<ResourceMetadata?> GetResourceAsync(Guid resourceId);
     
-    Task<List<ResourceMetadata>> GetResourcesAsync(ResourceType resourceType, Guid parentId);
+    Task<(int totalCount, List<ResourceMetadata> data)> GetResourcesAsync(ResourceType resourceType, Guid parentId, int page, int pageSize);
     
     Task CreateAsync(ResourceMetadata resourceMetadata);
     
@@ -29,11 +29,18 @@ public class ResourceMetadataRepository : IResourceMetadataRepository
         return await _dbContext.ResourceMetadata.FirstOrDefaultAsync(x => x.Id == resourceId);
     }
 
-    public async Task<List<ResourceMetadata>> GetResourcesAsync(ResourceType resourceType, Guid parentId)
+    public async Task<(int totalCount, List<ResourceMetadata> data)> GetResourcesAsync(ResourceType resourceType, Guid parentId, int page, int pageSize)
     {
-        return await _dbContext.ResourceMetadata
-            .Where(x => x.Type == resourceType && x.ParentId == parentId)
+        var query = _dbContext.ResourceMetadata
+            .Where(x => x.Type == resourceType && x.ParentId == parentId);
+        
+        var totalCount = await query.CountAsync();
+        var data = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        
+        return (totalCount, data);
     }
 
     public async Task CreateAsync(ResourceMetadata resourceMetadata)

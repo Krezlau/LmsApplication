@@ -1,4 +1,4 @@
-namespace LmsApplication.CourseBoardModule.Data.Models;
+namespace LmsApplication.Core.Shared.Models;
 
 public class CollectionResource<T>
 {

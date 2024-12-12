@@ -42,21 +42,21 @@ public class UsersController : ControllerBase
 
     [HttpGet("")]
     [Authorize(AuthPolicies.AdminPolicy)]
-    public async Task<IActionResult> GetAllUsers()
+    public async Task<IActionResult> GetAllUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(await _userService.GetUsersAsync());
+        return Ok(await _userService.GetUsersAsync(page, pageSize));
     }
 
     [HttpGet("by-course-edition/{courseEditionId}")]
-    public async Task<IActionResult> GetUsersByCourseEdition(Guid courseEditionId)
+    public async Task<IActionResult> GetUsersByCourseEdition(Guid courseEditionId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(await _userService.GetUsersByCourseEditionAsync(courseEditionId));
+        return Ok(await _userService.GetUsersByCourseEditionAsync(courseEditionId, page, pageSize));
     }
 
     [HttpGet("search/{query}")]
-    public async Task<IActionResult> SearchUsersByEmail(string query)
+    public async Task<IActionResult> SearchUsersByEmail(string query, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(await _userService.SearchUsersByEmailAsync(query));
+        return Ok(await _userService.SearchUsersByEmailAsync(query, page, pageSize));
     }
 
     [HttpPut("{userId}/role")]

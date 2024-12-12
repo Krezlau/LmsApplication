@@ -20,9 +20,9 @@ public class CoursesController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllCourses()
+    public async Task<IActionResult> GetAllCourses([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _courseService.GetAllCoursesAsync()));
+        return Ok(ApiResponseHelper.Success(await _courseService.GetAllCoursesAsync(page, pageSize)));
     }
     
     [HttpGet("{courseId}")]

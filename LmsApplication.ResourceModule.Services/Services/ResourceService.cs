@@ -14,7 +14,7 @@ public interface IResourceService
 {
     Task<Stream> DownloadResourceAsync(Guid resourceId);
     
-    Task<List<ResourceMetadataModel>> GetResourcesAsync(ResourceType resourceType, Guid parentId);
+    Task<CollectionResource<ResourceMetadataModel>> GetResourcesAsync(ResourceType resourceType, Guid parentId, int page, int pageSize);
     
     Task<ResourceMetadataModel> UploadResourceAsync(ResourceUploadModel model);
     
@@ -46,15 +46,15 @@ public class ResourceService : IResourceService
         _userContext = userContext;
     }
 
-    public async Task<List<ResourceMetadataModel>> GetResourcesAsync(ResourceType resourceType, Guid parentId)
+    public async Task<CollectionResource<ResourceMetadataModel>> GetResourcesAsync(ResourceType resourceType, Guid parentId, int page, int pageSize)
     {
         await ValidateReadAccessToResourcesAsync(_userContext.GetUserId(), resourceType, parentId);
         
-        var resourceMetadataList = await _resourceMetadataRepository.GetResourcesAsync(resourceType, parentId);
+        var (totalCount, resourceMetadataList) = await _resourceMetadataRepository.GetResourcesAsync(resourceType, parentId, page, pageSize);
         
         var users = await _userProvider.GetUsersByIdsAsync(resourceMetadataList.Select(x => x.UserId).ToList());
         
-        return resourceMetadataList.Select(x => x.ToModel(users[x.UserId])).ToList();
+        return new CollectionResource<ResourceMetadataModel>(resourceMetadataList.Select(x => x.ToModel(users[x.UserId])), totalCount);
     }
 
     public async Task<Stream> DownloadResourceAsync(Guid resourceId)

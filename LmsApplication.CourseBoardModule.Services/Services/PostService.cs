@@ -1,4 +1,5 @@
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.Core.Shared.QueueClients;
 using LmsApplication.Core.Shared.QueueMessages;
 using LmsApplication.Core.Shared.Services;

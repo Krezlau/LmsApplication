@@ -1,7 +1,6 @@
 using LmsApplication.Core.Shared.Config;
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Data.Courses;
-using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Services.Courses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,16 +21,16 @@ public class CourseEditionsController : ControllerBase
     
     [HttpGet("all")]
     [Authorize(AuthPolicies.AdminPolicy)]
-    public async Task<IActionResult> GetAllCourseEditions()
+    public async Task<IActionResult> GetAllCourseEditions([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetAllCourseEditionsAsync()));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetAllCourseEditionsAsync(page, pageSize)));
     }
     
     [HttpGet("by-course/{courseId}")]
     [Authorize(AuthPolicies.AdminPolicy)]
-    public async Task<IActionResult> GetCourseEditionsByCourseId(Guid courseId)
+    public async Task<IActionResult> GetCourseEditionsByCourseId(Guid courseId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByCourseIdAsync(courseId)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByCourseIdAsync(courseId, page, pageSize)));
     }
     
     [HttpPost]
@@ -71,27 +70,27 @@ public class CourseEditionsController : ControllerBase
     }
     
     [HttpGet("my-courses")]
-    public async Task<IActionResult> GetMyCourses()
+    public async Task<IActionResult> GetMyCourses([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetUserCourseEditionsAsync()));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetUserCourseEditionsAsync(page, pageSize)));
     }
     
     [HttpGet("registration-open")]
-    public async Task<IActionResult> GetOpenRegistrations()
+    public async Task<IActionResult> GetOpenRegistrations([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetEditionsWithRegistrationOpenAsync()));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetEditionsWithRegistrationOpenAsync(page, pageSize)));
     }
     
     [HttpGet("by-user/{userId}")]
     [Authorize(AuthPolicies.AdminPolicy)]
-    public async Task<IActionResult> GetCourseEditionsByUserId(string userId)
+    public async Task<IActionResult> GetCourseEditionsByUserId(string userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByUserIdAsync(userId)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionsByUserIdAsync(userId, page, pageSize)));
     }
     
     [HttpGet("by-user/{userId}/mutual")]
-    public async Task<IActionResult> GetMutualCourseEditions(string userId)
+    public async Task<IActionResult> GetMutualCourseEditions(string userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetMutualCourseEditionsAsync(userId)));
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetMutualCourseEditionsAsync(userId, page, pageSize)));
     }
 }
