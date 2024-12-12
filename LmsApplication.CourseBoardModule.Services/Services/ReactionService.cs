@@ -28,6 +28,7 @@ public class ReactionService : CourseBoardService, IReactionService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var currentReaction = await _reactionRepository.GetPostReactionAsync(postId, userId);
 
@@ -59,6 +60,7 @@ public class ReactionService : CourseBoardService, IReactionService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var currentReaction = await _reactionRepository.GetCommentReactionAsync(commentId, userId);
 

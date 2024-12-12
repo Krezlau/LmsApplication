@@ -66,6 +66,7 @@ public class CommentService : CourseBoardService, ICommentService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
         
         var validationModel = new CreateCommentValidationModel
         {
@@ -91,6 +92,7 @@ public class CommentService : CourseBoardService, ICommentService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var validationModel = new UpdateCommentValidationModel
         {
@@ -111,6 +113,7 @@ public class CommentService : CourseBoardService, ICommentService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var comment = await _commentRepository.GetCommentByIdAsync(commentId);
         if (comment is null)

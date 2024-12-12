@@ -1,4 +1,3 @@
-using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
 using LmsApplication.Core.Shared.QueueClients;
 using LmsApplication.Core.Shared.QueueMessages;
@@ -69,6 +68,7 @@ public class PostService : CourseBoardService, IPostService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToPostAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
 
         var validationModel = new CreatePostValidationModel
         {
@@ -102,6 +102,7 @@ public class PostService : CourseBoardService, IPostService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
         
         var validationModel = new UpdatePostValidationModel
         {
@@ -122,6 +123,7 @@ public class PostService : CourseBoardService, IPostService
     {
         var userId = UserContext.GetUserId();
         await ValidateUserAccessToEditionAsync(editionId, userId);
+        await ValidateWriteAccessToEditionAsync(editionId);
         
         var post = await _postRepository.GetPostByIdAsync(postId);
         if (post is null) 

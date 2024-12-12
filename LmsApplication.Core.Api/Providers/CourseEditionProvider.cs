@@ -46,12 +46,18 @@ public class CourseEditionProvider :
         {
             Id = courseEdition.Id,
             Name = courseEdition.Title,
+            Status = courseEdition.Status
         };
     }
 
     public async Task<bool> IsUserRegisteredToCourseEditionAsync(Guid courseEditionId, string userId)
     {
         return await _courseEditionRepository.IsUserParticipantInCourseEditionAsync(courseEditionId, userId);
+    }
+
+    public async Task<bool> IsUserParticipantOfAnyCourseEditionAsync(string userId)
+    {
+        return await _courseEditionRepository.IsUserParticipantInAnyCourseEditionAsync(userId);
     }
 
     public async Task<CourseEditionPublicSettingsModel> GetCourseEditionPublicSettingsAsync(Guid courseEditionId)

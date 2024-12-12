@@ -116,6 +116,10 @@ public class UserService : IUserService
         var user = await _userRepository.GetUserByIdAsync(userId);
         if (user is null) 
             throw new KeyNotFoundException("Couldn't find user with the given id.");
+        
+        var isParticipantOfCourses = await _courseEditionProvider.IsUserParticipantOfAnyCourseEditionAsync(userId);
+        if (isParticipantOfCourses) 
+            throw new ArgumentException("User is a participant of a course edition and cannot be changed.");
 
         if (model.Role is UserRole.Student)
         {

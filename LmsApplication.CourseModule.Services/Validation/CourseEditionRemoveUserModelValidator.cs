@@ -1,5 +1,6 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Courses.Validation;
 
 namespace LmsApplication.CourseModule.Services.Validation;
@@ -24,6 +25,12 @@ public class CourseEditionRemoveUserModelValidator : AbstractValidator<CourseEdi
     {
         if (model.CourseEdition is null || model.User is null)
             return;
+
+        if (model.CourseEdition.Status is CourseEditionStatus.Finished)
+        {
+            context.AddFailure("Cannot modify users in finished course edition.");
+            return;
+        }
         
         switch (model.User.Role)
         {

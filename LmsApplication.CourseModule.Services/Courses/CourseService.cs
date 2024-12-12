@@ -3,7 +3,6 @@ using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
 using LmsApplication.CourseModule.Data.Mapping;
 using LmsApplication.CourseModule.Services.Repositories;
-using LmsApplication.CourseModule.Services.Validation;
 
 namespace LmsApplication.CourseModule.Services.Courses;
 

@@ -1,5 +1,6 @@
 using FluentValidation;
 using LmsApplication.Core.Shared.Enums;
+using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Courses.Validation;
 
 namespace LmsApplication.CourseModule.Services.Validation;
@@ -11,7 +12,7 @@ public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditio
         RuleFor(x => x.User)
             .NotNull()
             .WithMessage("Could not find user.");
-
+        
         RuleFor(x => x)
             .Custom(UserValid);
     }
@@ -22,6 +23,12 @@ public class CourseEditionAddUserModelValidator : AbstractValidator<CourseEditio
         if (courseEdition is null)
         {
             context.AddFailure("Course does not exist.");
+            return;
+        }
+        
+        if (courseEdition.Status is CourseEditionStatus.Finished)
+        {
+            context.AddFailure("Cannot modify users in finished course.");
             return;
         }
         

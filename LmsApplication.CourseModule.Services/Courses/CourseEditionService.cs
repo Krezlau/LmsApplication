@@ -1,4 +1,3 @@
-using FluentValidation;
 using LmsApplication.Core.Shared.QueueClients;
 using LmsApplication.Core.Shared.QueueMessages;
 using LmsApplication.Core.Shared.Services;

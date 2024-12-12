@@ -44,6 +44,13 @@ public class CourseEditionSettingsService : ICourseEditionSettingsService
     {
         await ValidateUserAccessAsync(editionId);
         
+        var courseEdition = await _courseEditionRepository.GetCourseEditionByIdAsync(editionId);
+        if (courseEdition is null)
+            throw new ArgumentException("Course edition not found.");
+        
+        if (courseEdition.Status is CourseEditionStatus.Finished)
+            throw new InvalidOperationException("Cannot change settings of a finished course edition.");
+        
         var settings = await _courseEditionSettingsRepository.GetCourseEditionSettingsAsync(editionId) ??
                        new CourseEditionSettings { CourseEditionId = editionId };
         

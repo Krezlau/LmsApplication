@@ -31,12 +31,3 @@ public class CourseEditionModel
     
     public required CourseEditionPublicSettingsModel Settings { get; set; }
 }
-
-public enum CourseEditionStatus
-{
-    Planned,
-    RegistrationOpen,
-    RegistrationClosed,
-    InProgress,
-    Finished
-}
