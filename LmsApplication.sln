@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.ResourceModu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.Functions", "LmsApplication.Functions\LmsApplication.Functions.csproj", "{57016675-F6F1-4300-8D3A-3EA922755274}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LmsApplication.DataSeeder", "LmsApplication.DataSeeder\LmsApplication.DataSeeder.csproj", "{EAF29C33-2122-4416-8B42-5BE34993712E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{57016675-F6F1-4300-8D3A-3EA922755274}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57016675-F6F1-4300-8D3A-3EA922755274}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57016675-F6F1-4300-8D3A-3EA922755274}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAF29C33-2122-4416-8B42-5BE34993712E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAF29C33-2122-4416-8B42-5BE34993712E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAF29C33-2122-4416-8B42-5BE34993712E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAF29C33-2122-4416-8B42-5BE34993712E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FF65ADF2-0726-4FC5-ADD5-7E1623E497CB} = {A66AA6C6-FF05-40AA-A5FC-3609B6AA8EFE}
