@@ -30,7 +30,14 @@ import { CollectionResource } from '../../types/collection-resource';
 export class CourseEditionListComponent implements OnDestroy {
   @Input() course: ApiResponse<CourseModel> | null = null;
   @Input() userId: string = '';
-  @Input() type: 'all' | 'my' | 'open-registration' | 'mutual' | 'user' = 'all';
+  @Input() type:
+    | 'all'
+    | 'my'
+    | 'open-registration'
+    | 'mutual'
+    | 'user'
+    | 'my-course'
+    | 'open-registration-course' = 'all';
 
   sub = new Subscription();
 
@@ -82,9 +89,13 @@ export class CourseEditionListComponent implements OnDestroy {
             )
             .subscribe(
               (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
-                this.courseEditions = [...this.courseEditions, ...data.data!.items];
+                this.courseEditions = [
+                  ...this.courseEditions,
+                  ...data.data!.items,
+                ];
                 this.page++;
-                this.nextPage = data.data?.totalCount! > this.page * this.pageSize;
+                this.nextPage =
+                  data.data?.totalCount! > this.page * this.pageSize;
               },
             ),
         );
@@ -95,9 +106,34 @@ export class CourseEditionListComponent implements OnDestroy {
             .getMyCourseEditions(this.page + 1, this.pageSize)
             .subscribe(
               (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
-                this.courseEditions = [...this.courseEditions, ...data.data!.items];
+                this.courseEditions = [
+                  ...this.courseEditions,
+                  ...data.data!.items,
+                ];
                 this.page++;
-                this.nextPage = data.data?.totalCount! > this.page * this.pageSize;
+                this.nextPage =
+                  data.data?.totalCount! > this.page * this.pageSize;
+              },
+            ),
+        );
+      }
+      if (this.type === 'my-course') {
+        this.sub.add(
+          this.courseEditionService
+            .getMyCourseEditionsForCourse(
+              this.courseId,
+              this.page + 1,
+              this.pageSize,
+            )
+            .subscribe(
+              (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
+                this.courseEditions = [
+                  ...this.courseEditions,
+                  ...data.data!.items,
+                ];
+                this.page++;
+                this.nextPage =
+                  data.data?.totalCount! > this.page * this.pageSize;
               },
             ),
         );
@@ -108,9 +144,34 @@ export class CourseEditionListComponent implements OnDestroy {
             .getOpenRegistrationCourseEditions(this.page + 1, this.pageSize)
             .subscribe(
               (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
-                this.courseEditions = [...this.courseEditions, ...data.data!.items];
+                this.courseEditions = [
+                  ...this.courseEditions,
+                  ...data.data!.items,
+                ];
                 this.page++;
-                this.nextPage = data.data?.totalCount! > this.page * this.pageSize;
+                this.nextPage =
+                  data.data?.totalCount! > this.page * this.pageSize;
+              },
+            ),
+        );
+      }
+      if (this.type === 'open-registration-course') {
+        this.sub.add(
+          this.courseEditionService
+            .getOpenRegistrationCourseEditionsForCourse(
+              this.courseId,
+              this.page + 1,
+              this.pageSize,
+            )
+            .subscribe(
+              (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
+                this.courseEditions = [
+                  ...this.courseEditions,
+                  ...data.data!.items,
+                ];
+                this.page++;
+                this.nextPage =
+                  data.data?.totalCount! > this.page * this.pageSize;
               },
             ),
         );
@@ -121,9 +182,13 @@ export class CourseEditionListComponent implements OnDestroy {
             .getMutualCourseEditions(this.userId, this.page + 1, this.pageSize)
             .subscribe(
               (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
-                this.courseEditions = [...this.courseEditions, ...data.data!.items];
+                this.courseEditions = [
+                  ...this.courseEditions,
+                  ...data.data!.items,
+                ];
                 this.page++;
-                this.nextPage = data.data?.totalCount! > this.page * this.pageSize;
+                this.nextPage =
+                  data.data?.totalCount! > this.page * this.pageSize;
               },
             ),
         );
@@ -134,9 +199,13 @@ export class CourseEditionListComponent implements OnDestroy {
             .getUserCourseEditions(this.userId, this.page + 1, this.pageSize)
             .subscribe(
               (data: ApiResponse<CollectionResource<CourseEditionModel>>) => {
-                this.courseEditions = [...this.courseEditions, ...data.data!.items];
+                this.courseEditions = [
+                  ...this.courseEditions,
+                  ...data.data!.items,
+                ];
                 this.page++;
-                this.nextPage = data.data?.totalCount! > this.page * this.pageSize;
+                this.nextPage =
+                  data.data?.totalCount! > this.page * this.pageSize;
               },
             ),
         );

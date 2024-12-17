@@ -12,6 +12,8 @@ public interface ICourseService
     Task<CollectionResource<CourseModel>> GetAllCoursesAsync(int page, int pageSize);
     
     Task<CourseModel> GetCourseByIdAsync(Guid id);
+
+    Task<CollectionResource<CourseModel>> SearchCourseByNameAsync(string query, int page, int pageSize);
     
     Task<List<CourseCategoryModel>> GetCategoriesAsync();
     
@@ -53,6 +55,13 @@ public class CourseService : ICourseService
             throw new KeyNotFoundException($"{nameof(Course)} not found.");
 
         return course.ToModel();
+    }
+
+    public async Task<CollectionResource<CourseModel>> SearchCourseByNameAsync(string query, int page, int pageSize)
+    {
+        var (totalCount, courses) = await _courseRepository.SearchCoursesByName(query, page, pageSize);
+        
+        return new CollectionResource<CourseModel>(courses.Select(x => x.ToModel()), totalCount);
     }
 
     public async Task<List<CourseCategoryModel>> GetCategoriesAsync()

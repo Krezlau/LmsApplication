@@ -72,4 +72,15 @@ export class CourseService {
       },
     );
   }
+
+  public searchCourses(query: string, page: number = 1, pageSize: number = 5) {
+    return this.http.get<ApiResponse<CollectionResource<CourseModel>>>(
+      `${environment.apiUrl}/api/courses/search/${query}?page=${page}&pageSize=${pageSize}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
 }

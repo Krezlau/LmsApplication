@@ -72,4 +72,10 @@ public class CoursesController : ControllerBase
         
         return Ok(ApiResponseHelper.Success());
     }
+    
+    [HttpGet("search/{query}")]
+    public async Task<IActionResult> SearchCourses(string query, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        return Ok(ApiResponseHelper.Success(await _courseService.SearchCourseByNameAsync(query, page, pageSize)));
+    }
 }

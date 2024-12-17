@@ -26,6 +26,21 @@ export class CourseEditionService {
     );
   }
 
+  getMyCourseEditionsForCourse(
+    courseId: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
+    return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
+      `${environment.apiUrl}/api/courses/editions/${courseId}/my-courses?page=${page}&pageSize=${pageSize}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
   getOpenRegistrationCourseEditions(page: number = 1, pageSize: number = 10) {
     return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
       `${environment.apiUrl}/api/courses/editions/registration-open?page=${page}&pageSize=${pageSize}`,
@@ -37,7 +52,26 @@ export class CourseEditionService {
     );
   }
 
-  getCourseEditionsByCourseId(courseId: string, page: number = 1, pageSize: number = 10) {
+  getOpenRegistrationCourseEditionsForCourse(
+    courseId: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
+    return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
+      `${environment.apiUrl}/api/courses/editions/${courseId}/registration-open?page=${page}&pageSize=${pageSize}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.authState().accessToken}`,
+        },
+      },
+    );
+  }
+
+  getCourseEditionsByCourseId(
+    courseId: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
     return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
       `${environment.apiUrl}/api/courses/editions/by-course/${courseId}?page=${page}&pageSize=${pageSize}`,
       {
@@ -48,7 +82,11 @@ export class CourseEditionService {
     );
   }
 
-  getMutualCourseEditions(userId: string, page: number = 1, pageSize: number = 10) {
+  getMutualCourseEditions(
+    userId: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
     return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
       `${environment.apiUrl}/api/courses/editions/by-user/${userId}/mutual?page=${page}&pageSize=${pageSize}`,
       {
@@ -59,7 +97,11 @@ export class CourseEditionService {
     );
   }
 
-  getUserCourseEditions(userId: string, page: number = 1, pageSize: number = 10) {
+  getUserCourseEditions(
+    userId: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
     return this.http.get<ApiResponse<CollectionResource<CourseEditionModel>>>(
       `${environment.apiUrl}/api/courses/editions/by-user/${userId}?page=${page}&pageSize=${pageSize}`,
       {

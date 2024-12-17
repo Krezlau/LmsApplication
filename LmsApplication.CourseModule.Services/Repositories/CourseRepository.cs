@@ -12,6 +12,8 @@ public interface ICourseRepository
     
     Task<Course?> GetCourseWithEditionsByIdAsync(Guid id);
     
+    Task<(int totalCount, List<Course> courses)> SearchCoursesByName(string query, int page, int pageSize);
+    
     Task<List<CourseCategory>> GetCategoriesAsync();
     
     Task<CourseCategory?> GetCategoryByIdAsync(Guid id);
@@ -65,6 +67,21 @@ public class CourseRepository : ICourseRepository
             .Include(x => x.Categories)
             .Include(x => x.Editions)
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<(int totalCount, List<Course> courses)> SearchCoursesByName(string query, int page, int pageSize)
+    {
+        var q = _dbContext.Courses
+            .Include(x => x.Categories)
+            .Where(x => x.Title.Contains(query));
+        
+        var totalCount = await q.CountAsync();
+        var courses = await q
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        return (totalCount, courses);
     }
 
     public async Task<List<CourseCategory>> GetCategoriesAsync()

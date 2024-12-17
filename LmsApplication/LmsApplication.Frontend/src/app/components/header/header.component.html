@@ -1,8 +1,11 @@
 <div class="navbar bg-base-100">
-  <div class="flex-1" routerLink="home">
+  <div class="navbar-start" routerLink="home">
     <a class="btn btn-ghost text-xl">Lms App</a>
   </div>
-  <div *ngIf="authState().isAuthenticated" class="">
+  <div *ngIf="authState().isAuthenticated" class="navbar-center">
+    <app-search-bar />
+  </div>
+  <div *ngIf="authState().isAuthenticated" class="navbar-end">
     <div
       tabindex="0"
       class="dropdown dropdown-end flex flex-row gap-4 btn btn-ghost no-animation"
@@ -49,7 +52,7 @@
       </ul>
     </div>
   </div>
-  <div *ngIf="!authState().isAuthenticated" class="flex-none gap-2">
+  <div *ngIf="!authState().isAuthenticated" class="navbar-end flex-none gap-2">
     <a class="btn btn-primary" (click)="login()">Login</a>
   </div>
 </div>

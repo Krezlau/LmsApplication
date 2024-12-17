@@ -28,9 +28,9 @@ public interface ICourseEditionService
 
     Task RemoveUserFromCourseEditionAsync(Guid courseId, CourseEditionRemoveUserModel model);
     
-    Task<CollectionResource<CourseEditionModel>> GetUserCourseEditionsAsync(int page, int pageSize);
+    Task<CollectionResource<CourseEditionModel>> GetUserCourseEditionsAsync(int page, int pageSize, Guid? courseId = null);
 
-    Task<CollectionResource<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync(int page, int pageSize);
+    Task<CollectionResource<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync(int page, int pageSize, Guid? courseId = null);
     
     Task<CollectionResource<CourseEditionModel>> GetCourseEditionsByUserIdAsync(string userId, int page, int pageSize);
     
@@ -183,18 +183,18 @@ public class CourseEditionService : ICourseEditionService
         await _courseEditionRepository.RemoveParticipantFromCourseEditionAsync(courseId, validationModel.User!.Id);
     }
 
-    public async Task<CollectionResource<CourseEditionModel>> GetUserCourseEditionsAsync(int page, int pageSize)
+    public async Task<CollectionResource<CourseEditionModel>> GetUserCourseEditionsAsync(int page, int pageSize, Guid? courseId = null)
     {
         var userId = _userContext.GetUserId();
-        var (totalCount, courseEditions) = await _courseEditionRepository.GetUserCourseEditionsAsync(userId, page, pageSize);
+        var (totalCount, courseEditions) = await _courseEditionRepository.GetUserCourseEditionsAsync(userId, courseId, page, pageSize);
         
         return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(userId)), totalCount);
     }
 
-    public async Task<CollectionResource<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync(int page, int pageSize)
+    public async Task<CollectionResource<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync(int page, int pageSize, Guid? courseId = null)
     {
         var userId = _userContext.GetUserId();
-        var (totalCount, courseEditions) = await _courseEditionRepository.GetEditionsWithRegistrationOpenAsync(userId, page, pageSize);
+        var (totalCount, courseEditions) = await _courseEditionRepository.GetEditionsWithRegistrationOpenAsync(userId, courseId, page, pageSize);
         
         return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(userId)), totalCount);
     }

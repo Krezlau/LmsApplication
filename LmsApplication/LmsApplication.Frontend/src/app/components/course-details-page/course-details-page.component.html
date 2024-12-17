@@ -4,7 +4,13 @@
   type="course"
   [id]="courseId"
 ></app-course-resources-list>
-<h2 class="text-xl font-semibold mt-4">Course editions</h2>
-<app-course-edition-list
-  [course]="course$ | async"
-></app-course-edition-list>
+<div *ngIf="authState().userData?.role === 2" class="mt-4">
+  <h2 class="text-xl font-semibold">Course editions</h2>
+  <app-course-edition-list [course]="course$ | async"></app-course-edition-list>
+</div>
+<div *ngIf="authState().userData?.role !== 2" class="mt-4">
+  <h2 class="text-xl font-semibold">My editions from this course</h2>
+  <app-course-edition-list [course]="course$ | async" type="my-course"></app-course-edition-list>
+  <h2 class="text-xl font-semibold">Open registrations from this course</h2>
+  <app-course-edition-list [course]="course$ | async" type="open-registration-course"></app-course-edition-list>
+</div>

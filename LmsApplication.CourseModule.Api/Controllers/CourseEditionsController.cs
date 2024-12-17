@@ -69,6 +69,18 @@ public class CourseEditionsController : ControllerBase
         return Ok(ApiResponseHelper.Success(await _courseEditionService.GetCourseEditionByIdAsync(id)));
     }
     
+    [HttpGet("{courseId}/my-courses")]
+    public async Task<IActionResult> GetMyCourseEditionsForCourse(Guid courseId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetUserCourseEditionsAsync(page, pageSize, courseId=courseId)));
+    }
+    
+    [HttpGet("{courseId}/registration-open")]
+    public async Task<IActionResult> GetOpenRegistrationsForCourse(Guid courseId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        return Ok(ApiResponseHelper.Success(await _courseEditionService.GetEditionsWithRegistrationOpenAsync(page, pageSize, courseId=courseId)));
+    }
+    
     [HttpGet("my-courses")]
     public async Task<IActionResult> GetMyCourses([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
