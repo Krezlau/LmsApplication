@@ -13,15 +13,20 @@ import { CourseEditionSettingsComponent } from './components/course-edition-sett
 import { CourseEditionBoardComponent } from './components/course-edition-board/course-edition-board.component';
 import { CourseEditionResourcesComponent } from './components/course-edition-resources/course-edition-resources.component';
 import { CourseEditionGradesComponent } from './components/course-edition-grades/course-edition-grades.component';
+import { MyCoursesPageComponent } from './components/my-courses-page/my-courses-page.component';
 
 export const routes: Routes = [
   {
     path: 'home',
-    component: HomePageComponent,
+    component: HomePageComponent
   },
   {
     path: 'admin',
     component: AdminPanelPageComponent,
+  },
+  {
+    path: 'my-courses',
+    component: MyCoursesPageComponent,
   },
   {
     path: 'login',

@@ -1,0 +1,73 @@
+<h1 class="text-2xl font-semibold">My Courses</h1>
+<ul *ngIf="!isLoading && courseEditions.length > 0" class="mt-2">
+  <div
+    [ngClass]="{
+      'grid border-b-2': true,
+    }"
+    style="grid-template-columns: 2fr 2fr 1fr 2fr 1fr"
+  >
+    <h2 class="font-semibold">Course</h2>
+    <h2 class="font-semibold">Edition Name</h2>
+    <h2 class="font-semibold">Students</h2>
+    <h2 class="font-semibold">Status</h2>
+    <h2 class="font-semibold">Final Grade</h2>
+  </div>
+  <li
+    *ngFor="let edition of courseEditions"
+    [ngClass]="{
+      'grid p-1 bg-base-200 border-b-[1px] border-white hover:bg-base-300 cursor-pointer': true,
+    }"
+    style="grid-template-columns: 2fr 2fr 1fr 2fr 1fr"
+    (click)="navigateToEdition(edition)"
+  >
+    <h3 class="my-auto">
+      {{ edition.course.title }}
+    </h3>
+    <h3 class="my-auto">
+      {{ edition.title }}
+    </h3>
+    <h3 class="my-auto">
+      {{ edition.studentCount + "/" + edition.studentLimit }}
+    </h3>
+    <h3 class="my-auto">
+      <app-course-edition-status-label
+        [edition]="edition"
+      ></app-course-edition-status-label>
+    </h3>
+    <h3
+      *ngIf="edition.finalGrade"
+      [ngClass]="{
+        'rounded mx-auto w-auto h-[40px] p-2': true,
+        'bg-info text-info-content': !edition.finalGrade,
+        'bg-error text-error-content':
+          edition.finalGrade && edition.finalGrade.value < 3,
+        'bg-warning text-warning-content':
+          edition.finalGrade &&
+          edition.finalGrade.value >= 3 &&
+          edition.finalGrade.value < 4,
+        'bg-success text-success-content':
+          edition.finalGrade && edition.finalGrade.value >= 4,
+      }"
+    >
+      {{
+        edition.finalGrade && edition.finalGrade.value
+          ? edition.finalGrade.value.toFixed(1)
+          : "None"
+      }}
+    </h3>
+  </li>
+</ul>
+<div *ngIf="nextPage" class="mt-3 flex flex-row justify-end">
+  <button class="btn btn-sm btn-info" (click)="ngOnInit()">Load More</button>
+</div>
+<p
+  *ngIf="!isLoading && courseEditions.length === 0"
+  class="italic text-gray-500"
+>
+  No resources found.
+</p>
+<div *ngIf="isLoading" class="flex flex-row justify-center">
+  <span class="loading loading-spinner loading-lg mt-10 mx-auto"
+    >Loading...</span
+  >
+</div>

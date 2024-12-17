@@ -1,3 +1,4 @@
+import { FinalGradeModel } from '../course-board/grade-model';
 import { CourseModel } from './course-model';
 
 export interface CourseEditionModel {
@@ -14,6 +15,7 @@ export interface CourseEditionModel {
   isUserRegistered: boolean;
   course: CourseModel;
   settings: CourseEditionPublicSettings;
+  finalGrade: FinalGradeModel | null;
 }
 
 export enum CourseEditionStatus {
