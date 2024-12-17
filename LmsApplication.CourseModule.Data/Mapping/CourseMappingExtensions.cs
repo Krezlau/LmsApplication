@@ -1,5 +1,7 @@
+using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseModule.Data.Courses;
 using LmsApplication.CourseModule.Data.Entities;
+using CourseEditionModel = LmsApplication.CourseModule.Data.Courses.CourseEditionModel;
 
 namespace LmsApplication.CourseModule.Data.Mapping;
 
@@ -17,7 +19,7 @@ public static class CourseMappingExtensions
         };
     }
     
-    public static CourseEditionModel ToModel(this CourseEdition courseEdition, string currentUserId)
+    public static CourseEditionModel ToModel(this CourseEdition courseEdition, string currentUserId, FinalGradeModel? finalGrade = null)
     {
         return new CourseEditionModel
         {
@@ -34,6 +36,7 @@ public static class CourseMappingExtensions
             Course = courseEdition.Course?.ToModel(),
             IsUserRegistered = courseEdition.Participants.Any(x => x.ParticipantId == currentUserId),
             Settings = courseEdition.Settings.ToPublicModel(),
+            FinalGrade = finalGrade,
         };
     }
     

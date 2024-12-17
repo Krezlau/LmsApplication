@@ -1,6 +1,7 @@
 using LmsApplication.Core.Shared.Models;
 using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Models;
+using FinalGradeModel = LmsApplication.CourseBoardModule.Data.Models.FinalGradeModel;
 
 namespace LmsApplication.CourseBoardModule.Data.Mapping;
 

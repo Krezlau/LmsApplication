@@ -160,7 +160,7 @@ public class CourseBoardModuleSeederService
                     values.Add(new GradesTableRowTextValue()
                     {
                         UserId = user,
-                        Value = faker.Random.Word()[..10],
+                        Value = faker.Random.String(3, 10),
                         TeacherId = faker.PickRandom(teachers),
                         TeacherComment = faker.Random.Words(3)
                     });

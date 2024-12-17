@@ -10,12 +10,14 @@ namespace LmsApplication.CourseModule.Api;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddCourseModuleApi<TUserProv>(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddCourseModuleApi<TUserProv, TCourseBoardProv>(this IServiceCollection services, IConfiguration config)
         where TUserProv : class, IUserProvider
+        where TCourseBoardProv : class, ICourseBoardProvider
     {
         services.AddCourseModuleServices();
         services.AddCourseModuleData(config);
         services.AddScoped<IUserProvider, TUserProv>();
+        services.AddScoped<ICourseBoardProvider, TCourseBoardProv>();
         
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
         services.AddAuthorization(opt =>

@@ -69,7 +69,7 @@ public class UserService : IUserService
     {
         var (totalCount, users) = await _userRepository.GetAllUsersAsync(page, pageSize);
         
-        return new CollectionResource<UserModel>(users.Select(x => x.ToModel()).OrderByDescending(x => x.Role), totalCount);
+        return new CollectionResource<UserModel>(users.Select(x => x.ToModel()), totalCount);
     }
 
     public async Task<CollectionResource<UserModel>> GetUsersByCourseEditionAsync(Guid courseEditionId, int page, int pageSize)

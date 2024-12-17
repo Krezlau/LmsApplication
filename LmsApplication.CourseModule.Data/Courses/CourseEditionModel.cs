@@ -30,4 +30,6 @@ public class CourseEditionModel
     public required bool IsUserRegistered { get; set; }
     
     public required CourseEditionPublicSettingsModel Settings { get; set; }
+    
+    public FinalGradeModel? FinalGrade { get; set; }
 }

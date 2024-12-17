@@ -10,6 +10,8 @@ public interface IFinalGradeRepository
     
     Task<bool> GradeExistsAsync(Guid courseEditionId, string studentId);
     
+    Task<List<FinalGrade>> GetUserFinalGradesAsync(string userId);
+    
     Task CreateAsync(FinalGrade finalGrade);
     
     Task UpdateAsync(FinalGrade finalGrade);
@@ -37,6 +39,13 @@ public class FinalGradeRepository : IFinalGradeRepository
     {
         return await _context.CourseFinalGrades
             .AnyAsync(x => x.CourseEditionId == courseEditionId && x.UserId == studentId);
+    }
+
+    public async Task<List<FinalGrade>> GetUserFinalGradesAsync(string userId)
+    {
+        return await _context.CourseFinalGrades
+            .Where(x => x.UserId == userId)
+            .ToListAsync();
     }
 
     public async Task CreateAsync(FinalGrade finalGrade)

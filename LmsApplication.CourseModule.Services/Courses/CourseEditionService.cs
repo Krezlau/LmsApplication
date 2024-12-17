@@ -48,6 +48,7 @@ public class CourseEditionService : ICourseEditionService
     private readonly IUserProvider _userProvider;
     private readonly IUserContext _userContext;
     private readonly IQueueClient<CourseEnrollmentNotificationQueueMessage> _queueClient;
+    private readonly ICourseBoardProvider _courseBoardProvider;
 
     public CourseEditionService(
         ICourseEditionRepository courseEditionRepository,
@@ -58,7 +59,8 @@ public class CourseEditionService : ICourseEditionService
         IUserProvider userProvider,
         IValidationService<CourseEditionRemoveUserValidationModel> courseEditionRemoveUserModelValidationService,
         IUserContext userContext,
-        IQueueClient<CourseEnrollmentNotificationQueueMessage> queueClient)
+        IQueueClient<CourseEnrollmentNotificationQueueMessage> queueClient,
+        ICourseBoardProvider courseBoardProvider)
     {
         _courseEditionRepository = courseEditionRepository;
         _courseRepository = courseRepository;
@@ -68,6 +70,7 @@ public class CourseEditionService : ICourseEditionService
         _courseEditionRemoveUserModelValidationService = courseEditionRemoveUserModelValidationService;
         _userContext = userContext;
         _queueClient = queueClient;
+        _courseBoardProvider = courseBoardProvider;
         _courseEditionRegisterModelValidationService = courseEditionRegisterModelValidationService;
     }
 
@@ -188,7 +191,9 @@ public class CourseEditionService : ICourseEditionService
         var userId = _userContext.GetUserId();
         var (totalCount, courseEditions) = await _courseEditionRepository.GetUserCourseEditionsAsync(userId, courseId, page, pageSize);
         
-        return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(userId)), totalCount);
+        var finalGrades = await _courseBoardProvider.GetFinalGradesDictionaryAsync(userId);
+        
+        return new CollectionResource<CourseEditionModel>(courseEditions.Select(x => x.ToModel(userId, finalGrades.GetValueOrDefault(x.Id))), totalCount);
     }
 
     public async Task<CollectionResource<CourseEditionModel>> GetEditionsWithRegistrationOpenAsync(int page, int pageSize, Guid? courseId = null)

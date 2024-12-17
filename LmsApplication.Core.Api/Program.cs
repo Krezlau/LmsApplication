@@ -34,7 +34,7 @@ builder.Services.AddHttpLogging(o => { });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IUserContext, UserContext>();
 
-builder.Services.AddCourseModuleApi<UserProvider>(builder.Configuration);
+builder.Services.AddCourseModuleApi<UserProvider, CourseBoardProvider>(builder.Configuration);
 builder.Services.AddCourseBoardModuleApi<UserProvider, CourseEditionProvider>(builder.Configuration);
 builder.Services.AddUserModuleApi<CourseEditionProvider>(builder.Configuration);
 builder.Services.AddResourceModuleApi<UserProvider, CourseProvider, CourseEditionProvider>(builder.Configuration);
