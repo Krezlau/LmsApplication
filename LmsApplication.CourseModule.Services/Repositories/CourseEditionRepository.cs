@@ -58,6 +58,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         
         var totalCount = await query.CountAsync();
         var data = await query
+            .OrderBy(x => x.EndDateUtc)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -75,6 +76,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         
         var totalCount = await query.CountAsync();
         var data = await query
+            .OrderBy(x => x.EndDateUtc)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -107,6 +109,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         
         var totalCount = await query.CountAsync();
         var data = await query
+            .OrderBy(x => x.RegistrationEndDateUtc)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -127,6 +130,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         
         var totalCount = await query.CountAsync();
         var data = await query
+            .OrderBy(x => x.EndDateUtc)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -144,6 +148,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         
         var totalCount = await query.CountAsync();
         var data = await query
+            .OrderBy(x => x.EndDateUtc)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -162,6 +167,7 @@ public class CourseEditionRepository : ICourseEditionRepository
         
         var totalCount = await query.CountAsync();
         var data = await query
+            .OrderBy(x => x.EndDateUtc)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();

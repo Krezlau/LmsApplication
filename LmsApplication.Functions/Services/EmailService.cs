@@ -23,18 +23,19 @@ public class EmailService : IEmailService
     private readonly SmtpClient _smtpClient;
     private readonly ILogger<EmailService> _logger;
     private readonly string _appUrl;
+    private readonly bool _isTestMode;
 
     public EmailService(SmtpClient smtpClient, ILogger<EmailService> logger, IConfiguration config)
     {
         _smtpClient = smtpClient;
         _logger = logger;
         _appUrl = config["AppUrl"] ?? "www.lmsapp.pl";
+        _isTestMode = config.GetValue<bool>("TestMode");
     }
 
     public async Task CreateEmailAsync(CourseEnrollmentNotificationQueueMessage message)
     {
-        // var recipient = message.User.Email,
-        var recipient = "krzysztof.andrzej.jurkowski@gmail.com";
+        var recipient = _isTestMode ? "krzysztof.andrzej.jurkowski@gmail.com" : message.User.Email;
         var title = $"You have been enrolled in a \"{message.CourseName}\" course!";
         var body = $"You have been enrolled in the course " +
                $"<a href=\"{_appUrl}/editions/{message.CourseEditionId}\">{message.CourseEditionName}</a> " +
@@ -53,8 +54,7 @@ public class EmailService : IEmailService
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        // var recipient = message.User.Email,
-        var recipient = "krzysztof.andrzej.jurkowski@gmail.com";
+        var recipient = _isTestMode ? "krzysztof.andrzej.jurkowski@gmail.com" : message.User.Email;
         var title = $"{message.CourseEditionName}: You have a new grade!";
         var body = $"You have received a new grade for the course" +
                    $" <a href=\"{_appUrl}/editions/{message.CourseEditionId}\">{message.CourseEditionName}</a>.<br />" +
@@ -71,8 +71,7 @@ public class EmailService : IEmailService
 
     public async Task CreateEmailAsync(PostNotificationQueueMessage message)
     {
-        //var recipient = message.User.Email,
-        var recipient = "krzysztof.andrzej.jurkowski@gmail.com";
+        var recipient = _isTestMode ? "krzysztof.andrzej.jurkowski@gmail.com" : message.User.Email;
         var title = $"{message.CourseEditionName}: New post in the course!";
         var body = $"There is a new post in the course " +
                $"<a href=\"{_appUrl}/editions/{message.CourseEditionId}\">{message.CourseEditionName}</a> " +
@@ -84,8 +83,7 @@ public class EmailService : IEmailService
 
     public async Task CreateEmailAsync(FinalGradeNotificationQueueMessage message)
     {
-        //var recipient = message.User.Email,
-        var recipient = "krzysztof.andrzej.jurkowski@gmail.com";
+        var recipient = _isTestMode ? "krzysztof.andrzej.jurkowski@gmail.com" : message.User.Email;
         var title = $"{message.CourseEditionName}: You received a final grade from the course!";
         var body = $"You have received a final grade for the course" +
                    $" <a href=\"{_appUrl}/editions/{message.CourseEditionId}\">{message.CourseEditionName}</a>.<br />" +

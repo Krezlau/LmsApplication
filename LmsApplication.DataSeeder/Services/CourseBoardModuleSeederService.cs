@@ -22,7 +22,7 @@ public class CourseBoardModuleSeederService
             .RuleFor(x => x.Content, f => f.Lorem.Sentences(2));
 
         _rowDefFaker = new Faker<GradesTableRowDefinition>()
-            .RuleFor(x => x.Title, _ => $"Assignment {assignmentCount++ % 10 + 1}")
+            .RuleFor(x => x.Title, _ => $"Assignment {assignmentCount++ % 10}")
             .RuleFor(x => x.Description, f => f.Random.Words(3))
             .RuleFor(x => x.RowType, f => f.PickRandom(Enum.GetValues<RowType>()));
     }
@@ -70,6 +70,10 @@ public class CourseBoardModuleSeederService
         
         foreach (var row in rows)
         {
+            if (row.RowType is RowType.Number && _random.Next(1, 10) < 5)
+            {
+                row.IsSummed = true;
+            }
             row.Values = GenerateGrades(row, users, teachers);
         }
 
