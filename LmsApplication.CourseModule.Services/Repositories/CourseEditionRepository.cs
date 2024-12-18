@@ -188,6 +188,7 @@ public class CourseEditionRepository : ICourseEditionRepository
     {
         return await _context.CourseEditions
             .Include(x => x.Course)
+            .ThenInclude(x => x.Categories)
             .Include(x => x.Participants)
             .Include(x => x.Settings)
             .FirstOrDefaultAsync(x => x.Id == id);

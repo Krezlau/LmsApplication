@@ -1,6 +1,8 @@
 <div *ngIf="edition">
   <h1 class="text-4xl font-semibold">{{ edition.title }}</h1>
-  <h2 class="text-lg">{{ edition.course.title }}</h2>
+  <a [routerLink]="['/courses', edition.course.id]" class="link link-hover link-primary"
+    ><h2 class="text-lg">{{ edition.course.title }}</h2></a
+  >
 </div>
 <div *ngIf="edition">
   <nav class="flex flex-row justify-between mt-10 pb-2 text-center">

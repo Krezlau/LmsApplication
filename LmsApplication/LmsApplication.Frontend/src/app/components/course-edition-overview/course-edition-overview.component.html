@@ -1,1 +1,42 @@
-<p>course-edition-overview works!</p>
+<div *ngIf="edition && !editionLoading">
+  <h2 class="text-xl font-semibold">Course Edition Overview</h2>
+  <h3 class="font-semibold mt-4 mb-1">About Course</h3>
+  <div class="grid gap-2" style="grid-template-columns: 1fr 4fr">
+    <p>Course Name</p>
+    <p>{{ edition.course.title }}</p>
+    <p>Description</p>
+    <p>{{ edition.course.description }}</p>
+    <p>Categories</p>
+    <div>
+      <div
+        *ngFor="let category of edition.course.categories"
+        class="badge badge-primary mx-1"
+      >
+        {{ category.name }}
+      </div>
+    </div>
+  </div>
+  <h3 class="font-semibold mt-4 mb-1">Course Edition Details</h3>
+  <div class="grid gap-2" style="grid-template-columns: 1fr 4fr">
+    <p>Edition Name</p>
+    <p>{{ edition.title }}</p>
+    <p>Status</p>
+    <app-course-edition-status-label
+      [edition]="edition"
+    ></app-course-edition-status-label>
+    <p>Students</p>
+    <p>{{ edition.studentCount + "/" + edition.studentLimit }}</p>
+    <ng-container *ngIf="edition.registrationStartDateUtc">
+      <p>Registration Start Date</p>
+      <p>{{ edition.registrationStartDateUtc | date: "mediumDate" }}</p>
+    </ng-container>
+    <ng-container *ngIf="edition.registrationEndDateUtc">
+      <p>Registration End Date</p>
+      <p>{{ edition.registrationEndDateUtc | date: "mediumDate" }}</p>
+    </ng-container>
+    <p>Start Date</p>
+    <p>{{ edition.startDateUtc | date: "mediumDate" }}</p>
+    <p>End Date</p>
+    <p>{{ edition.endDateUtc | date: "mediumDate" }}</p>
+  </div>
+</div>
