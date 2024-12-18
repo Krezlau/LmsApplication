@@ -84,8 +84,8 @@ builder.Services.AddSwaggerGen(opt =>
     opt.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 });
 
-
 builder.Services.AddLogging();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
