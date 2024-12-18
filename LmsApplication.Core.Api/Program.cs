@@ -120,24 +120,6 @@ using (var scope = app.Services.CreateScope())
     courseBoardContext.Database.Migrate();
     var resourceContext = scope.ServiceProvider.GetRequiredService<ResourceDbContext>();
     resourceContext.Database.Migrate();
-    
-    // seed roles like this for now 
-    // should be changed later
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var adminRole = new IdentityRole("Admin");
-    var teacherRole = new IdentityRole("Teacher");
-    if (!await roleManager.RoleExistsAsync("Admin"))
-        await roleManager.CreateAsync(adminRole);
-    if (!await roleManager.RoleExistsAsync("Teacher"))
-        await roleManager.CreateAsync(teacherRole);
-
-    var admin = userContext.Users.FirstOrDefault(u => u.Email == "krez@gmail.com");
-    if (admin is not null)
-    {
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        await userManager.AddToRolesAsync(admin, ["Admin", "Teacher"]);
-    }
-    Console.WriteLine("Migrations applied successfully.");
 }
 
 app.Run();
