@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
         where TCourseEditionProv: class, ICourseEditionProvider
     {
         services.AddCourseBoardModuleData(config);
-        services.AddCourseBoardModuleServices();
+        services.AddCourseBoardModuleServices(config);
         
         services.AddScoped<IUserProvider, TUserProv>();
         services.AddScoped<ICourseEditionProvider, TCourseEditionProv>();

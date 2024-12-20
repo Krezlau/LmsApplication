@@ -7,6 +7,7 @@ using LmsApplication.CourseBoardModule.Data.Entities;
 using LmsApplication.CourseBoardModule.Data.Mapping;
 using LmsApplication.CourseBoardModule.Data.Models;
 using LmsApplication.CourseBoardModule.Data.Models.Validation;
+using LmsApplication.CourseBoardModule.Services.BackgroundServices;
 using LmsApplication.CourseBoardModule.Services.Providers;
 using LmsApplication.CourseBoardModule.Services.Repositories;
 
@@ -29,7 +30,7 @@ public class PostService : CourseBoardService, IPostService
     private readonly IValidationService<CreatePostValidationModel> _postCreateModelValidationService;
     private readonly IValidationService<UpdatePostValidationModel> _postUpdateModelValidationService;
     private readonly IUserProvider _userProvider;
-    private readonly IQueueClient<PostBatchNotificationQueueMessage> _postBatchNotificationQueueClient;
+    private readonly ISendPostNotificationsTaskQueue _sendPostNotificationQueue;
 
     public PostService(
         ICourseEditionProvider courseEditionProvider,
@@ -38,13 +39,13 @@ public class PostService : CourseBoardService, IPostService
         IValidationService<CreatePostValidationModel> postCreateModelValidationService,
         IValidationService<UpdatePostValidationModel> postUpdateModelValidationService,
         IUserProvider userProvider,
-        IQueueClient<PostBatchNotificationQueueMessage> postBatchNotificationQueueClient) : base(courseEditionProvider, userContext)
+        ISendPostNotificationsTaskQueue sendPostNotificationQueue) : base(courseEditionProvider, userContext)
     {
         _postRepository = postRepository;
         _postCreateModelValidationService = postCreateModelValidationService;
         _postUpdateModelValidationService = postUpdateModelValidationService;
         _userProvider = userProvider;
-        _postBatchNotificationQueueClient = postBatchNotificationQueueClient;
+        _sendPostNotificationQueue = sendPostNotificationQueue;
     }
 
     public async Task<CollectionResource<PostModel>> GetPostsAsync(Guid editionId, int page, int pageSize)
@@ -86,16 +87,10 @@ public class PostService : CourseBoardService, IPostService
         };
 
         await _postRepository.CreatePostAsync(post);
-        
-        await _postBatchNotificationQueueClient.EnqueueAsync(new PostBatchNotificationQueueMessage
-        {
-            CourseEditionId = editionId,
-            Poster = validationModel.User!,
-            PostBody = post.Content,
-            TimeStampUtc = DateTime.UtcNow,
-            CourseEditionName = (await CourseEditionProvider.GetCourseEditionAsync(editionId))!.Name,
-        });
 
+        await _sendPostNotificationQueue.QueueBackgroundWorkItemAsync(
+            new SendPostNotificationWorkItem(post, validationModel.User!, editionId));
+        
         return post.ToModel(validationModel.User!, [], userId);
     }
 

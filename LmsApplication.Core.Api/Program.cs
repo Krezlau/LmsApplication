@@ -1,6 +1,5 @@
 using LmsApplication.Core.Api.Middleware;
 using LmsApplication.Core.Api.Providers;
-using LmsApplication.Core.Shared.Config;
 using LmsApplication.Core.Shared.QueueClients;
 using LmsApplication.Core.Shared.QueueMessages;
 using LmsApplication.Core.Shared.Services;
@@ -13,10 +12,7 @@ using LmsApplication.ResourceModule.Data.Database;
 using LmsApplication.UserModule.Api;
 using LmsApplication.UserModule.Data.Database;
 using LmsApplication.UserModule.Data.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,8 +38,6 @@ builder.Services.AddResourceModuleApi<UserProvider, CourseProvider, CourseEditio
 var azureStorage = builder.Configuration.GetConnectionString("StorageConnection");
 builder.Services.AddSingleton<IQueueClient<PostNotificationQueueMessage>>(_ =>
     new QueueClient<PostNotificationQueueMessage>(azureStorage, PostNotificationQueueMessage.QueueName));
-builder.Services.AddSingleton<IQueueClient<PostBatchNotificationQueueMessage>>(_ =>
-    new QueueClient<PostBatchNotificationQueueMessage>(azureStorage, PostBatchNotificationQueueMessage.QueueName));
 builder.Services.AddSingleton<IQueueClient<GradeNotificationQueueMessage>>(_ =>
     new QueueClient<GradeNotificationQueueMessage>(azureStorage, GradeNotificationQueueMessage.QueueName));
 builder.Services.AddSingleton<IQueueClient<CourseEnrollmentNotificationQueueMessage>>(_ =>

@@ -2,15 +2,17 @@ using FluentValidation;
 using LmsApplication.Core.Shared.Services;
 using LmsApplication.CourseBoardModule.Data.Models;
 using LmsApplication.CourseBoardModule.Data.Models.Validation;
+using LmsApplication.CourseBoardModule.Services.BackgroundServices;
 using LmsApplication.CourseBoardModule.Services.Repositories;
 using LmsApplication.CourseBoardModule.Services.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LmsApplication.CourseBoardModule.Services;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddCourseBoardModuleServices(this IServiceCollection services)
+    public static IServiceCollection AddCourseBoardModuleServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IPostService, PostService>();
         services.AddScoped<IReactionService, ReactionService>();
@@ -34,6 +36,14 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IValidationService<GradesTableRowDefinitionCreateModel>, ValidationService<GradesTableRowDefinitionCreateModel>>();
         services.AddScoped<IValidationService<UpdateRowValueValidationModel>, ValidationService<UpdateRowValueValidationModel>>();
         services.AddScoped<IValidationService<CreateFinalGradeValidationModel>, ValidationService<CreateFinalGradeValidationModel>>();
+
+        services.AddHostedService<SendPostNotificationsQueuedService>();
+        services.AddSingleton<ISendPostNotificationsTaskQueue>(_ =>
+        {
+            if (!int.TryParse(configuration["BackgroundTaskQueueCapacity"], out var capacity))
+                capacity = 100;
+            return new SendPostNotificationsTaskQueue(capacity);
+        });
         
         return services;
     }
